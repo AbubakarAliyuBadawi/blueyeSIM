@@ -1,93 +1,150 @@
-# mundus_mir_simulator 
+# Mundus Mir Gazebo Workspace
+
+This workspace should contain all the necessary packages to run the Mundus MIR Simulator. 
+
+## Modules
+**mundus_mir_simulator:** Module containing all the packages directly related to the simulator. This includes the gazebo enviroment, gazebo models, gazebo-ros bridge and gazebo sensors.
+
+**mundus_mir_simulator_launch:** Module containing all the launch files for this workspace. The idea behind this module is to have a single place to set configuration parameters and launch the simulator.
+
+**mundus_mir_navigation:** Module containing all the packages related to navigation. This includes the navigation stack, localization, mapping and path planning.
+
+**mundus_mir_controllers:** Module containing all the packages related to control. This includes the control stack, motion planning and trajectory generation.
+
+**mundus_mir_perception:** Module containing all the packages related to perception. This includes the perception stack, object detection, object tracking and object recognition.
+
+**mundus_mir_mission_planner:** Module containing all the packages related to mission planning. This includes the mission planner, task allocation and task execution.
+
+**utility_toolbox:** Package containing some utilities such as UDP server and noise generation. 
 
 
+## Prerequisite
 
-## Getting started
+- [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
+- [Gazebo Garden](https://gazebosim.org/docs/garden/getstarted/)
+- [Eigen3](https://eigen.tuxfamily.org/dox/GettingStarted.html)
+- [GIT LFS](https://git-lfs.github.com/)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+The ROS2 brigde appears to have added some new dependencies. By running the script in the root of this project your system will install them.
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/aurlab/mundus-mir-project/mundus_mir_simulator.git
-git branch -M main
-git push -uf origin main
+./dep_install.sh
 ```
 
-## Integrate with your tools
+If you are still encuntering issues building the workspace complaining about missing packages the issue will often be that your ROS2 instalation did not come with the necessary packages. You can check if this is the case and install them manually be running `sudo apt install ros-humble-<start of package name> TAB TAB` in your terminal to see if the package exist. If if does simply install it using apt and attempt to rebuild your workspace.
 
-- [ ] [Set up project integrations](https://gitlab.com/aurlab/mundus-mir-project/mundus_mir_simulator/-/settings/integrations)
+```
+sudo apt install ros-humble-<package name>
+```
 
-## Collaborate with your team
+## Cloning the workspace and updating submodules
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+This repository is a collection of git submodules. To clone the repository and all its submodules. This means that you have to clone it with the recursive flag in order for the submodules to be cloned as well. Generaiting a ssh key for the gitlab server is recommended as it will make it easier to work with the repository.
 
-## Test and Deploy
+**ssh:**
+```
+git clone --recursive git@gitlab.com:aurlab/mundus-mir-project/mundus_mir_gazebo_ws.git
+```
 
-Use the built-in continuous integration in GitLab.
+**https:**
+```
+git clone --recursive https://gitlab.com/aurlab/mundus-mir-project/mundus_mir_gazebo_ws.git
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+While we should attempt to keep the submodules up to date on the main commit it is possible that they are not. To check for new updates to submodules run the following command in the root of the workspace.
 
-***
+```
+git submodule update --remote
+```
+If there are updates you can consider adding them to the main commit by running the following command in the root of the workspace.
 
-# Editing this README
+```
+git add <path_to_submodule>
+git commit -m "Update submodule <submodule_name> to latest version"
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+If you are working from this workspace you will do changes to the submodules. If you want to push these changes to their repository navigate to the submodule and push the changes there. Afterwards you can update the submodule list in the mundur_mir_gazebo_ws repository and push the changes there as well.
 
-## Suggestions for a good README
+## Building the workspace and lauching the simulator
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### Source
+Before building your workspace you have to source your ROS2 instalation. This can be done by running the following command in your terminal.
 
-## Name
-Choose a self-explaining name for your project.
+```
+source /opt/ros/humble/setup.bash
+```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+You can add this line to your `.bashrc` file to have it sourced automatically when you open a new terminal. Alternativley what I like to do is set up an alias in my bashrc file that sources the ROS2 instalation making it easy to do with one single command by adding the following to the bashrc:
+```
+alias src_ros="source /opt/ros/humble/setup.bash"
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### Build
+To build the workspace go to the root of the workspace and do a colcon build. 
+```
+colcon build
+```
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+In case you get the following error:
+```
+mir/src/mundus_mir_simulator/mundus_mir_vehicle_interfaces/include/mundus_mir_vehicle_interfaces/blueye_simulator_interface.hpp:8:10: fatal error: Eigen/Dense: No such file or directory
+    8 | #include <Eigen/Dense>
+      |          ^~~~~~~~~~~~~
+compilation terminated.
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+You can fix it by running:
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+```
+cd /usr/local/include/
+sudo ln -sf eigen3/Eigen Eigen
+sudo ln -sf eigen3/unsupported unsupported
+```
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+The default behaviour of colcon is to build in debug mode. While this is fine for development on a laptop it is recommended to build in release mode for performance reasons when working on systems with less compute. This can be done by adding the `--cmake-args -DCMAKE_BUILD_TYPE=Release` flag to the build command. Instead of typing the entire command I prefer to make the release build an alias in my bashrc file aswell.
+```
+colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+```
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+If you are working in python your code is interpreted during execution which means that they do not need to be compiled. You can take advantage of this by using the `--symlink-install` flag when building your workspace. This will create symlinks to the source files instead of copying them to the install directory. This means that you can make changes to the source files and run the code without having to rebuild the workspace. If you are working with python this will speed up your developtment. However, if you add new files or change the CMakeLists.txt file you will have to rebuild the workspace once for the new symlinks to take effect. 
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+```
+colcon build --symlink-install
+```
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+If the package is able to build without any errors you should source the workspace. 
+```
+source install/setup.bash
+```
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+The next time you are working with the workspace you don't have to rebuild but can simply source the setup file and start working. 
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+### Launching the simulation
 
-## License
-For open source projects, say how it is licensed.
+Before launching the simulation you have to tell your system where it can find the Gazebo files. This is done by setting the *GZ_SIM_RESOURCE_PATH* variable to the correct path. If you are in the root directory of mundus_mir_gazebo_ws you can run:
+```
+export GZ_SIM_RESOURCE_PATH=$(pwd)/src/mundus_mir_simulator/gz_models
+export GZ_VERSION=garden
+```
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+If this is not done your launch files will complain about missing plugins. There is a file in the root directory called *set_env* that can be sourced giving the same effect.
+
+```
+source set_env
+```
+
+All the launchfiles can be found in *mundus_mir_simulator_launch*. Here you can also find all the configuration files. See [mundur_mir_simulator_launch](https://gitlab.com/aurlab/mundus-mir-project/packages/mundus_mir_simulator_launch). 
+
+Too launch the mundus_mir_pipeline_world run the following command:
+```
+ros2 launch mundus_mir_simulator_launch mundus_mir_pipeline_world.launch.py
+```
+
+There is also a simpler world
+```
+ros2 launch mundus_mir_simulator_launch mundus_mir_simple_world.launch.py
+```
+
+If you have a joystick connected to your computer you should be able to control the Blueye. For some reason the mapping between the buttons of the joystick and fields in the ros2 joystick msgs seems to vary from system to system. Therefore you may need to change some paramters in the *joystick.yaml* file. Follow the guide in the README of *mundus_mir_simulator_launch*. 
+

@@ -1,0 +1,64 @@
+[submodule "src/mundus_mir_msgs"]
+	path = src/mundus_mir_msgs
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages1/mundus_mir_msgs.git
+	branch = main
+[submodule "src/mundus_mir_simulator/mundus_mir_gz/gz_bringup"]
+	path = src/mundus_mir_simulator/mundus_mir_gz/gz_bringup
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages/gazebo_spesifics/gz_bringup.git
+	branch = main
+[submodule "src/mundus_mir_simulator/mundus_mir_gz/gz_models"]
+	path = src/mundus_mir_simulator/mundus_mir_gz/gz_models
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages/gazebo_spesifics/gz_models.git
+	branch = main
+[submodule "src/mundus_mir_simulator/mundus_mir_gz/gz_sdf_generator"]
+	path = src/mundus_mir_simulator/mundus_mir_gz/gz_sdf_generator
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages/gazebo_spesifics/gz_sdf_generator.git
+	branch = main
+[submodule "src/mundus_mir_simulator/mundus_mir_gz/gz_tf2_broadcaster"]
+	path = src/mundus_mir_simulator/mundus_mir_gz/gz_tf2_broadcaster
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages/gazebo_spesifics/gz_tf2_broadcaster.git
+	branch = main
+[submodule "src/mundus_mir_simulator/mundus_mir_gz/ros_gz"]
+	path = src/mundus_mir_simulator/mundus_mir_gz/ros_gz
+	url = https://github.com/gazebosim/ros_gz.git
+	branch = humble
+[submodule "src/mundus_mir_simulator/mundus_mir_vehicle_interfaces"]
+	path = src/mundus_mir_simulator/mundus_mir_vehicle_interfaces
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages/mundus_mir_vehicle_interfaces.git
+	branch = main
+[submodule "src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_dvl"]
+	path = src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_dvl
+	url = git@gitlab.com:aurlab/rov-control-system/sensors/gz_sensors/gz_dvl.git
+	branch = main
+[submodule "src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_sensor_launch"]
+	path = src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_sensor_launch
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages/gazebo_spesifics/gz_sensor_launch.git
+	branch = main
+[submodule "src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_usbl"]
+	path = src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_usbl
+	url = git@gitlab.com:aurlab/rov-control-system/sensors/gz_sensors/gz_usbl.git
+	branch = main
+[submodule "src/mundus_mir_controllers/mundus_mir_blueye_joystick_cpp"]
+	path = src/mundus_mir_controllers/mundus_mir_blueye_joystick_cpp
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages1/mundus_mir_controllers/mundus_mir_blueye_joystick_cpp.git
+	branch = main
+[submodule "src/mundus_mir_controllers/mundus_mir_waypoint_controller"]
+	path = src/mundus_mir_controllers/mundus_mir_waypoint_controller
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages1/mundus_mir_controllers/mundus_mir_waypoint_controller.git
+	branch = main
+[submodule "src/mundus_mir_controllers/mundus_mir_pid_siso_cpp"]
+	path = src/mundus_mir_controllers/mundus_mir_pid_siso_cpp
+	url = git@gitlab.com:aurlab/rov-control-system/controllers/pid_siso_cpp.git
+	branch = ros2-humble
+[submodule "src/mundus_mir_controllers/mundus_mir_velocity_controller_4dof"]
+	path = src/mundus_mir_controllers/mundus_mir_velocity_controller_4dof
+	url = git@gitlab.com:aurlab/rov-control-system/controllers/velocity_controller_4dof_ros2.git
+	branch = mundus_mir
+[submodule "src/mundus_mir_utility_toolbox"]
+	path = src/mundus_mir_utility_toolbox
+	url = git@gitlab.com:aurlab/rov-control-system/tools/utility_toolbox.git
+	branch = main
+[submodule "src/mundus_mir_simulator/mundus_mir_simulator_launch"]
+	path = src/mundus_mir_simulator/mundus_mir_simulator_launch
+	url = git@gitlab.com:aurlab/mundus-mir-project/packages/mundus_mir_simulator_launch.git
+	branch = main
