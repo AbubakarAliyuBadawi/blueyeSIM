@@ -40,16 +40,16 @@ sudo apt install ros-humble-<package name>
 
 ## Cloning the workspace and updating submodules
 
-This repository is a collection of git submodules. To clone the repository and all its submodules. This means that you have to clone it with the recursive flag in order for the submodules to be cloned as well. Generaiting a ssh key for the gitlab server is recommended as it will make it easier to work with the repository.
+This repository is a collection of git submodules. To clone the repository and all its submodules. This means that you have to clone it with the recursive flag in order for the submodules to be cloned as well. Generaiting a ssh key for the gitlab server is recommended as it will make it easier to work with the repository. You should also make sure to clone the develop branch.
 
 **ssh:**
 ```
-git clone --recursive git@gitlab.com:aurlab/mundus-mir-project/mundus_mir_gazebo_ws.git
+git clone -b develop --recursive git@gitlab.com:aurlab/mundus-mir-project/mundus_mir_gazebo_ws.git
 ```
 
 **https:**
 ```
-git clone --recursive https://gitlab.com/aurlab/mundus-mir-project/mundus_mir_gazebo_ws.git
+git clone -b develop --recursive https://gitlab.com/aurlab/mundus-mir-project/mundus_mir_gazebo_ws.git
 ```
 
 While we should attempt to keep the submodules up to date on the main commit it is possible that they are not. To check for new updates to submodules run the following command in the root of the workspace.
@@ -65,6 +65,16 @@ git commit -m "Update submodule <submodule_name> to latest version"
 ```
 
 If you are working from this workspace you will do changes to the submodules. If you want to push these changes to their repository navigate to the submodule and push the changes there. Afterwards you can update the submodule list in the mundur_mir_gazebo_ws repository and push the changes there as well.
+
+If you want to switch branch, for example from main to develop do the following two commands:
+```
+git switch develop
+```
+```
+git submodule update --remote
+```
+
+And you should be good to go. 
 
 ## Building the workspace and lauching the simulator
 
