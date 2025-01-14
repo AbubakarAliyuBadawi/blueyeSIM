@@ -158,3 +158,108 @@ ros2 launch mundus_mir_simulator_launch mundus_mir_simple_world.launch.py
 
 If you have a joystick connected to your computer you should be able to control the Blueye. For some reason the mapping between the buttons of the joystick and fields in the ros2 joystick msgs seems to vary from system to system. Therefore you may need to change some paramters in the *joystick.yaml* file. Follow the guide in the README of *mundus_mir_simulator_launch*. 
 
+## Launching the Blueye Mission Planner
+
+The Blueye mission planner consists of multiple nodes that work together to manage the ROV's autonomous operations. Here's how to launch and use the mission planner:
+
+### Prerequisites
+- Ensure the Gazebo simulation is running (using one of the world launch files mentioned above)
+- Source your workspace: `source install/setup.bash`
+
+### Launch Battery Node
+
+Before starting the mission, you must launch the battery node which simulates the ROV's battery state:
+```bash
+ros2 run gz_battery gz_battery_node
+```
+
+This node must be running before launching the mission nodes, as it provides essential battery state information that the mission planner relies on for safety decisions and return-to-dock calculations.
+
+Launch order should be:
+1. Gazebo simulation (world)
+2. Battery node (gz_battery_node)
+3. Mission nodes (mission_nodes.launch.py)
+
+### Launch the Mission Components
+
+1. Launch all mission-related nodes using the provided launch file:
+```bash
+ros2 launch mundus_mir_mission_planner mission_nodes.launch.py
+```
+
+This launch file starts three essential nodes:
+- `rov_mission`: Main mission state machine that manages the mission workflow
+- `dock_distance_calc`: Calculates distance to docking station
+- `battery_management`: Monitors battery status and provides return recommendations
+
+### Mission Visualization
+
+You can monitor the mission's progress using the Blueye GUI:
+```bash
+ros2 run mundus_mir_mission_planner blueye_gui
+```
+
+The GUI provides real-time information about:
+- ROV's current position and path
+- Battery level
+- Distance to dock
+- Return status recommendations
+- Energy consumption metrics
+- Mission waypoints visualization
+
+### Mission States
+
+The mission planner operates through the following states:
+1. UNDOCK: Initial state where ROV leaves the docking station
+2. INSPECT_PIPELINE: Main mission state where ROV follows inspection waypoints
+3. RETURN_TO_DOCK: Activated when inspection is complete or battery is low
+
+### Important Parameters
+
+The mission behavior can be configured through the following parameters (in mission_nodes.launch.py):
+- `safety_margin`: Battery safety margin (default: 30%)
+- `update_frequency`: Update rate for battery calculations
+- `window_size`: Time window for battery calculations
+- `min_samples_for_average`: Minimum samples needed for accurate calculations
+
+### Topics to Monitor
+
+Key topics for monitoring mission status:
+- `/blueye/battery`: Battery status
+- `/blueye/distance_to_dock`: Distance to docking station
+- `/blueye/return_recommendation`: Return-to-dock recommendations
+- `/blueye/odometry_frd/gt`: ROV position and orientation
+
+You can monitor any of these topics using standard ROS2 tools:
+```bash
+ros2 topic echo /blueye/return_recommendation
+```
+
+### Safety Features
+
+The mission planner includes several safety features:
+- Automatic return-to-dock when battery levels are critical
+- Continuous monitoring of distance to dock
+- Speed adjustment based on battery status
+- Safety margins for battery calculations
+- Position verification for successful docking
+
+### Troubleshooting
+
+Common issues and solutions:
+1. If the ROV doesn't start moving:
+   - Check if all nodes are running: `ros2 node list`
+   - Verify topic publications: `ros2 topic list`
+   - Ensure waypoint services are available: `ros2 service list`
+
+2. If the GUI doesn't show data:
+   - Verify that the simulation is running
+   - Check if position and battery topics are being published
+   - Restart the GUI node
+
+3. If the ROV doesn't dock properly:
+   - Check dock position parameters in dock_distance_calc.py
+   - Verify the docking approach velocity settings
+   - Ensure proper position feedback from odometry
+
+For more detailed mission configuration and customization, refer to the individual node documentation in the mundus_mir_mission_planner package.
