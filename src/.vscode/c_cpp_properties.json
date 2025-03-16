@@ -1,0 +1,54 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_viewer/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_ros/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_msgs/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/utility_toolbox/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/ros_ign_interfaces/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/ros_gz_sim/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/ros_gz_bridge/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/ros_gz_interfaces/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/pid_siso/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/gz_robot_monitors/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/gz_battery/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/mundus_mir_msgs/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_interfaces/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/bluerov_interfaces/include/**",
+        "/home/badawi/btcpp_ws/install/behaviortree_cpp/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_controllers/mundus_mir_blueye_joystick_cpp/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/blueye_altitude_controller/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_controllers/mundus_mir_pid_siso_cpp/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_controllers/mundus_mir_velocity_controller_4dof/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_controllers/mundus_mir_waypoint_controller/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_simulator/gz_robot_monitors/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_battery/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_dvl/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_sonar/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_underwater_camera/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_gz/gz_sensors/gz_usbl/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_gz/ros_gz/ros_gz_bridge/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_gz/ros_gz/ros_gz_sim/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_vehicle_interfaces/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/mundus_mir_utility_toolbox/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/yasmin/yasmin/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/yasmin/yasmin_ros/include/**",
+        "/home/badawi/Desktop/mundus_mir_simulator/src/yasmin/yasmin_viewer/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

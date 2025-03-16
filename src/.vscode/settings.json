@@ -1,0 +1,48 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_demos/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_mission/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_viewer/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_ros/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_msgs/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/ros_ign_interfaces/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/ros_gz_interfaces/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_guidance_and_control/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_gui/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/mundus_mir_msgs/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/image_processing/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/gz_sdf_generator/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_sensors/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_ros_interface/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_interfaces/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/bluerov_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_demos/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_mission/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_viewer/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_ros/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin_msgs/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/yasmin/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/ros_ign_interfaces/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/ros_gz_interfaces/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_guidance_and_control/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_gui/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/mundus_mir_msgs/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/image_processing/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/gz_sdf_generator/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_sensors/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_ros_interface/lib/python3.10/site-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/blueye_interfaces/local/lib/python3.10/dist-packages",
+        "/home/badawi/Desktop/mundus_mir_simulator/install/bluerov_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "files.associations": {
+        "chrono": "cpp",
+        "algorithm": "cpp"
+    }
+}
