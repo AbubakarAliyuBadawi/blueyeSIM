@@ -214,3 +214,5 @@ cython_debug/
 *.exe
 *.out
 *.app
+src/waypoint_controller_backup.cpp
+src/waypoint_controller_backup.cpp
