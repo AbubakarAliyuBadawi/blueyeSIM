@@ -11,25 +11,34 @@ class MatplotlibVisualizer(Node):
     def __init__(self):
         super().__init__('matplotlib_visualizer')
         
-        # ROV initial position and orientation (using x, y, z; we only use x and y for 2D)
-        self.rov_position = np.array([-180.0, 130.0, 193.0])
+        # Updated docking station position
+        self.docking_station = np.array([-221.0, 59.0, -196.40])
+        self.sunken_ship = np.array([-175.00, 180.00, -197.00])
+        
+        # ROV initial position at docking station and orientation
+        self.rov_position = self.docking_station.copy()
         self.rov_orientation = np.array([0.0, 0.0, 0.0, 1.0])
         
-        # Trajectory: store positions over time
-        self.trajectory = [self.rov_position.copy()]
-        self.max_trajectory_points = 100
+        # Trajectory: initialize as empty until ROV actually moves
+        self.trajectory = []
+        # No maximum number of trajectory points to track entire mission
+        # Flag to detect first actual movement
+        self.movement_started = False
+        # Distance threshold to detect actual movement (in meters)
+        self.movement_threshold = 0.5
 
-        # Static elements (2D: use x and y only)
-        self.docking_station = np.array([-180.0, 130.0, 193.0])
+        # Updated pipeline points extracted from the behavior tree XML
         self.pipeline = np.array([
-            [-175.0, 125.0, 194.0],
-            [-170.0, 126.0, 194.5],
-            [-165.0, 127.0, 195.0]
+            [-210.50, 108.00, -195.00],  # Point 1
+            [-210.50, 134.50, -195.00],  # Point 2
+            [-233.00, 134.50, -195.00],  # Point 3
+            [-233.00, 130.50, -195.00],  # Point 4
+            [-251.00, 130.50, -195.00],  # Point 5
+            [-251.00, 109.50, -195.00],  # Point 6
         ])
-        self.waypoints = np.array([
-            [-175.0, 125.0, 194.0],
-            [-170.0, 126.0, 194.5]
-        ])
+        
+        # Set waypoints as the pipeline points
+        self.waypoints = self.pipeline.copy()
         
         # Setup 2D plot
         self.fig = plt.figure(figsize=(10, 8))
@@ -39,15 +48,26 @@ class MatplotlibVisualizer(Node):
         self.ax.set_ylabel('Y (m)')
         self.ax.set_title('ROV Mission Visualization (2D)')
         
-        # Plot static elements once
+        # Plot static elements
+        # Docking station
         self.ax.scatter(
             self.docking_station[0], self.docking_station[1],
             color='red', s=200, marker='s', label='Docking Station'
         )
+        
+        # Sunken ship
+        self.ax.scatter(
+            self.sunken_ship[0], self.sunken_ship[1],
+            color='brown', s=250, marker='*', label='Sunken Ship'
+        )
+        
+        # Pipeline (connects the waypoints)
         self.ax.plot(
             self.pipeline[:, 0], self.pipeline[:, 1],
             color='orange', linewidth=3, label='Pipeline'
         )
+        
+        # Waypoints
         if self.waypoints.size > 0:
             self.ax.scatter(
                 self.waypoints[:, 0], self.waypoints[:, 1],
@@ -55,9 +75,9 @@ class MatplotlibVisualizer(Node):
             )
         
         # Initialize trajectory (red line) and current ROV marker
-        traj_array = np.array(self.trajectory)
+        # Start with empty trajectory
         self.trajectory_line, = self.ax.plot(
-            traj_array[:, 0], traj_array[:, 1],
+            [], [],
             color='red', linewidth=2, label='Trajectory'
         )
         self.rov_marker, = self.ax.plot(
@@ -65,9 +85,23 @@ class MatplotlibVisualizer(Node):
             'bo', markersize=8, label='ROV'
         )
         
-        # Set fixed axis limits (optional)
-        self.ax.set_xlim(self.rov_position[0] - 50, self.rov_position[0] + 50)
-        self.ax.set_ylim(self.rov_position[1] - 50, self.rov_position[1] + 50)
+        # Set axis limits to include all elements
+        # Find min and max for both x and y among all points
+        all_points = np.vstack((
+            self.docking_station[:2],
+            self.pipeline[:, :2],
+            self.rov_position[:2],
+            self.sunken_ship[:2]
+        ))
+        
+        min_x, min_y = np.min(all_points, axis=0)
+        max_x, max_y = np.max(all_points, axis=0)
+        
+        # Add some padding
+        padding = 20
+        self.ax.set_xlim(min_x - padding, max_x + padding)
+        self.ax.set_ylim(min_y - padding, max_y + padding)
+        
         self.ax.legend()
         
         # Subscribe to ROV odometry topic
@@ -90,24 +124,38 @@ class MatplotlibVisualizer(Node):
         # Update ROV position (x, y, z) and orientation
         pos = msg.pose.pose.position
         quat = msg.pose.pose.orientation
-        self.rov_position = np.array([pos.x, pos.y, pos.z])
+        new_position = np.array([pos.x, pos.y, pos.z])
         self.rov_orientation = np.array([quat.x, quat.y, quat.z, quat.w])
         
-        # Append new position to the trajectory history
-        self.trajectory.append(self.rov_position.copy())
-        if len(self.trajectory) > self.max_trajectory_points:
-            self.trajectory.pop(0)
+        # Check if ROV has actually started moving
+        if not self.movement_started:
+            # Calculate distance from docking station
+            distance = np.linalg.norm(new_position - self.docking_station)
+            if distance > self.movement_threshold:
+                self.movement_started = True
+                # Add the first point at docking station to create a clean start
+                self.trajectory.append(self.docking_station.copy())
+        
+        # Update position after movement check
+        self.rov_position = new_position
+        
+        # Only record trajectory after movement starts
+        if self.movement_started:
+            self.trajectory.append(self.rov_position.copy())
     
     def update_plot(self, frame):
-        # Convert trajectory history to numpy array
-        traj_array = np.array(self.trajectory)
-        # Update the trajectory line (x and y only)
-        self.trajectory_line.set_data(traj_array[:, 0], traj_array[:, 1])
         # Update the ROV marker position (x and y only)
         self.rov_marker.set_data(self.rov_position[0], self.rov_position[1])
-        # (Optional) Adjust axis limits to follow the ROV if desired:
-        # self.ax.set_xlim(self.rov_position[0] - 50, self.rov_position[0] + 50)
-        # self.ax.set_ylim(self.rov_position[1] - 50, self.rov_position[1] + 50)
+        
+        # Only update trajectory line if there are points to plot
+        if len(self.trajectory) > 0:
+            traj_array = np.array(self.trajectory)
+            # Update the trajectory line (x and y only)
+            self.trajectory_line.set_data(traj_array[:, 0], traj_array[:, 1])
+        else:
+            # Empty trajectory - clear the line
+            self.trajectory_line.set_data([], [])
+        
         return self.trajectory_line, self.rov_marker
 
 def main(args=None):

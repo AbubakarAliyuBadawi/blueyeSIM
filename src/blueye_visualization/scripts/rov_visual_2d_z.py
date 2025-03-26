@@ -11,17 +11,16 @@ class DepthVisualizer(Node):
     def __init__(self):
         super().__init__('depth_visualizer')
         
-        # History lists: time (in seconds) and reversed depth (i.e. -z)
+        # History lists: time (in seconds) and actual depth (z)
         self.time_history = []
-        self.trajectory_depth = []  # will store -z values
-        
-        self.max_trajectory_points = 1000  # maximum number of samples
+        self.trajectory_depth = [] # will store z values directly
+        # No limit on trajectory points to track the entire mission
         
         # Setup a 2D plot: x-axis = time, y-axis = depth (reversed)
-        self.fig, self.ax = plt.subplots(figsize=(10, 6))
+        self.fig, self.ax = plt.subplots(figsize=(20, 6))
         self.ax.set_xlabel('Time (s)')
         self.ax.set_ylabel('Depth (m)')
-        self.ax.set_title('ROV Depth Over Time (Reversed)')
+        self.ax.set_title('ROV Depth Over Time')
         
         # Initialize the red depth line and blue marker for current depth
         self.depth_line, = self.ax.plot([], [], color='red', linewidth=2, label='Depth')
@@ -44,17 +43,15 @@ class DepthVisualizer(Node):
         # Extract timestamp from header (in seconds)
         time_stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
         
-        # Extract the depth (z coordinate) and reverse it (so descending appears lower)
+        # Extract the depth (z coordinate) without reversing
         pos = msg.pose.pose.position
-        reversed_depth = -pos.z
+        depth = pos.z
         
+        # Store data for the entire mission
         self.time_history.append(time_stamp)
-        self.trajectory_depth.append(reversed_depth)
+        self.trajectory_depth.append(depth)
         
-        # Limit history size to prevent overflow
-        if len(self.trajectory_depth) > self.max_trajectory_points:
-            self.time_history.pop(0)
-            self.trajectory_depth.pop(0)
+        # No limiting of history size - keep all points for the entire mission
     
     def update_plot(self, frame):
         if self.time_history and self.trajectory_depth:
@@ -67,12 +64,14 @@ class DepthVisualizer(Node):
             
             # Adjust x-axis to span the recorded time and add a small buffer at the end
             self.ax.set_xlim(t[0], t[-1] + 1)
+            
             # Adjust y-axis based on current data range with a small margin
             d_min = np.min(d)
             d_max = np.max(d)
-            self.ax.set_ylim(d_min - 1, d_max + 1)
-        
-        return self.depth_line, self.current_marker
+            margin = (d_max - d_min) * 0.1 if d_max != d_min else 1.0
+            self.ax.set_ylim(d_max + margin, d_min - margin)            
+            return self.depth_line, self.current_marker
+        return self.depth_line,
 
 def main(args=None):
     rclpy.init(args=args)
@@ -83,7 +82,7 @@ def main(args=None):
     spin_thread.start()
     
     try:
-        plt.show()  # Keeps the matplotlib window open
+        plt.show() # Keeps the matplotlib window open
     except KeyboardInterrupt:
         pass
     finally:
