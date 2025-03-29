@@ -696,169 +696,424 @@ void WaypointController::run_waypoint_controller(const std::shared_ptr<mundus_mi
 
 
 
-<?xml version="1.0" ?>
-<!-- Copyright (c) 2024 AUR-LAB Simulator Authors.
-     All rights reserved.
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
-
-<!-- Simple assembly of the Marine Cybernetics Laboratory (MC-lab) at Tyholt, Trondheim -->
-<sdf version="1.9">
-	<world name="pipeline_world">
-		<!--  Parameters for the physics, updates every 1ms and realtime/simtime = 1.0 --> 
-		<physics name="1ms" type="ignored">
-			<max_step_size>0.001</max_step_size>
-			<real_time_factor>1.0</real_time_factor>
-		</physics>
-
-		<!-- Plugins for Gazebo -->
-		<!-- Libraries to simulate the physics -->
-		<plugin
-		    filename="libgz-sim-physics-system.so"
-		    name="gz::sim::systems::Physics">
-		</plugin>
-
-		<!-- Libraries to allow for user commands in the simulator, moving, inserting objs etc. -->
-		<plugin
-		    filename="libgz-sim-user-commands-system.so"
-		    name="gz::sim::systems::UserCommands">
-		</plugin>
-
-		<!-- Broadcasts the simulation into the GUI -->
-		<plugin
-		    filename="libgz-sim-scene-broadcaster-system.so"
-		    name="gz::sim::systems::SceneBroadcaster">
-		</plugin>
+###################################################################pragma endregion
 
 
-    <plugin
-      filename="libgz-sim-buoyancy-system"
-      name="gz::sim::systems::Buoyancy">
-    <uniform_fluid_density>1000</uniform_fluid_density>
-  </plugin>
 
-    <!-- Default sensor -->
-    <plugin
-      filename="libgz-sim-sensors-system.so"
-      name="gz::sim::systems::Sensors">
-      <render_engine>ogre2</render_engine>
-    </plugin>
+#include "mundus_mir_waypoint_controller/mundus_mir_waypoint_controller.hpp"
 
-    <!-- Add sensors to the simulator -->
-    <plugin 
-        filename="libgz-sim-imu-system.so"
-        name="gz::sim::systems::Imu">
-    </plugin>
+float calculate_distance(const Waypoint &waypoint, const nav_msgs::msg::Odometry::SharedPtr msg)
+{
+    // Calculate distance between waypoint and current position
+    return sqrt(pow(waypoint.x - msg->pose.pose.position.x, 2) + pow(waypoint.y - msg->pose.pose.position.y, 2));
+}
 
+double get_yaw_from_quaternion(const geometry_msgs::msg::Quaternion &q)
+{
+    // Convert quaternion to yaw (rotation around Z axis)
+    double siny_cosp = 2 * (q.w * q.z + q.x * q.y);
+    double cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
+    return std::atan2(siny_cosp, cosy_cosp);
+}
 
-	<!-- Light source -->
-	<!--light type="directional" name="sun">
-		<cast_shadows>true</cast_shadows>
-		<pose>0 0 10 0 0 0</pose>
-		<diffuse>0.8 0.8 0.8 1</diffuse>
-		<specular>0.2 0.2 0.2 1</specular>
-		<attenuation>
-		<range>1000</range>
-		<constant>0.9</constant>
-		<linear>0.01</linear>
-		<quadratic>0.001</quadratic>
-		</attenuation>
-		<direction>-0.5 0.1 -0.9</direction>
-	</light-->
+WaypointController::WaypointController() : Node("mundus_mir_waypoint_controller")
+{
+    // Fetch ROS parameters
+    get_ros_parameters();
 
+    // Set up publishers, subscribers and services
+    setup_interfaces();
+}
 
-	<!-- Ocean surface -->
-	<model name="ocean">
-        <pose>
-            0 0 0 0 0 0
-        </pose>
-        <include>
-            <uri>
-				model://models/static_assets/ocean/model.sdf
-            </uri>
-        </include>
-	</model>
+WaypointController::~WaypointController()
+{
+}
 
-    <model name="docking_station_rig">
-        <pose> 130 -170 -195.5 1.57 0 3.1415 </pose>
-		<include>
-			<uri>  
-                model://models/static_assets/docking_station_rig/model_asReal_actual_design.sdf  
-			</uri>
-		</include>
-    </model>
+void WaypointController::controller_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
+{
+    // Check if we should run the controller
+    if (!run_controller_)
+    {
+        return;
+    }
 
-    <!-- Seafloor-->
-    <model name="seabed">
-        <pose> 0 0 -200 0 0 0 </pose>
-		<include>
-			<uri>  
-                model://models/static_assets/ocean_floor/model.sdf
-			</uri>
-		</include>
-    </model>
+    // Check if waypoint following should be run
+    if (go_to_waypoint_)
+    {
 
-    <!-- Shipwreck model -->
-    <model name="sunken_ship">
-        <pose> 100 -150 -180 0 0 0 </pose>
-        <include>
-            <uri>  
-                model://models/static_assets/sunken_ship_distorted/model.sdf
-            </uri>
-        </include>
-    </model>
+        // Check current waypoint against odometry
+        if (calculate_distance(waypoints_.front(), msg) < circle_of_acceptance_)
+        {
+            // If this is the last waypoint we should go to stationkeep
+            if (waypoints_.size() == 1)
+            {
+                stationary_waypoint_ = waypoints_.front();
+                // Don't override the waypoint's heading if fixed_heading is true
+                if (!waypoints_.front().fixed_heading) {
+                    stationary_waypoint_.heading = get_yaw_from_quaternion(msg->pose.pose.orientation);
+                }
+                stationary_waypoint_.fixed_heading = true;
+                go_to_waypoint_ = false;
+                stationary_waypoint_set_ = true;
+            }
+            // If we are close to the waypoint, remove it
+            waypoints_.erase(waypoints_.begin());
+            return;
+        }
 
+        // Go to the current waypoint
+        go_to_waypoint(msg);
+        return;
+    }
 
-    <!-- Submarine model -->
-    <model name="submarine">
-    <pose>120 -170 -160 0 0 0</pose>
-    <include>
-        <uri>
-        model://models/static_assets/Submarine/model.sdf
-        </uri>
-    </include>
-    </model>
+    // If not station keep on stationary_waypoint
+    if (stationary_waypoint_set_)
+    {
+        station_keep(msg);
+        return;
+    }
+    // If it is not set, it should be set to current pose
+    stationary_waypoint_.x = msg->pose.pose.position.x;
+    stationary_waypoint_.y = msg->pose.pose.position.y;
+    stationary_waypoint_.z = msg->pose.pose.position.z;
+    stationary_waypoint_.desired_speed = 0.0;
+    stationary_waypoint_.fixed_heading = true;
+    stationary_waypoint_.heading = get_yaw_from_quaternion(msg->pose.pose.orientation);
+    stationary_waypoint_set_ = true;
+}
 
+void WaypointController::go_to_waypoint(const nav_msgs::msg::Odometry::SharedPtr msg)
+{
+    // Check heading of the robot if it is not supposed to
+    if (!waypoints_.front().fixed_heading)
+    {
+        // If heading is outside tolerance fix it before we start going toward the next waypoint
+        // Desired heading is straight towards the waypoint
+        float desired_heading = atan2(waypoints_.front().y - msg->pose.pose.position.y, waypoints_.front().x - msg->pose.pose.position.x);
+        float heading_err = desired_heading - get_yaw_from_quaternion(msg->pose.pose.orientation);
 
-    <!-- Obstacles for avoidance testing -->
-    <model name="obstacle1">
-    <pose>128.9 -176 -195.6 0 0 0</pose>
-    <include>
-        <uri>model://models/static_assets/Obstacle/model.sdf</uri>
-    </include>
-    </model>
+        // Check for minimum signed angle
+        if (heading_err > M_PI)
+        {
+            heading_err -= 2 * M_PI;
+        }
+        else if (heading_err < -M_PI)
+        {
+            heading_err += 2 * M_PI;
+        }
 
-    <!-- Falling Rock near docking station -->
-    <model name="falling_rock1">
-    <pose>105 -150 -190 0 0 0</pose>
-    <include>
-        <uri>
-        model://models/static_assets/FallingRock/model.sdf
-        </uri>
-    </include>
-    </model>
+        if (abs(heading_err) > heading_tolerance_)
+        {
+            // Rotate towards the correct heading, all other velocity fields are set to 0 by default
+            geometry_msgs::msg::TwistStamped desired_velocity;
+            desired_velocity.header.stamp = msg->header.stamp;
+            desired_velocity.header.frame_id = msg->header.frame_id;
+            // Since we are outside tolerance "max" speed is used
+            desired_velocity.twist.angular.z = heading_err > 0 ? heading_speed_ : -heading_speed_;
+            desired_velocity_pub_->publish(desired_velocity);
+            return;
+        }
 
-    <!-- Pipeline construction -->
-    <model name="pipeline_construction">
-    <pose> -35 -180 -190 0 0 0 </pose>
-		<include>
-			<uri>  
-				<!-- model://models/docking_station_rig/model.sdf -->
-                model://models/static_assetsa/pipeline_construction/model.sdf
-			</uri>
-		</include>
-    </model>
+        // If heading is within tolerance, go to waypoint
+        float z_err = waypoints_.front().z - msg->pose.pose.position.z;
+        geometry_msgs::msg::TwistStamped desired_velocity;
+        desired_velocity.header.stamp = msg->header.stamp;
+        desired_velocity.header.frame_id = msg->header.frame_id;
+        desired_velocity.twist.linear.x = waypoints_.front().desired_speed;
+        // TODO - Add a scaling system that takes size of error into consideration more than just linear scaling
+        desired_velocity.twist.linear.z = z_err > 0 ? min(heave_speed_, heave_speed_ * z_err) : min(-heave_speed_*z_err, -heave_speed_);
+        desired_velocity.twist.angular.z = heading_err > 0 ? min(heading_speed_, heading_speed_*heading_err) : min(-heading_speed_, -heading_speed_*heading_err);
+        desired_velocity_pub_->publish(desired_velocity);
+    }
 
-    </world>
-</sdf>
+    // TODO Publish velocity when heading should be fixed
+    else
+    {
+        // Fixed heading implementation
+        // Calculate position errors in world frame
+        float x_err = waypoints_.front().x - msg->pose.pose.position.x;
+        float y_err = waypoints_.front().y - msg->pose.pose.position.y;
+        float z_err = waypoints_.front().z - msg->pose.pose.position.z;
+        
+        // Get current heading
+        float current_heading = get_yaw_from_quaternion(msg->pose.pose.orientation);
+        
+        // Calculate heading error
+        float heading_err = waypoints_.front().heading - current_heading;
+        if (heading_err > M_PI) heading_err -= 2 * M_PI;
+        if (heading_err < -M_PI) heading_err += 2 * M_PI;
+
+        // Transform world frame errors to body frame
+        float cos_h = cos(current_heading);
+        float sin_h = sin(current_heading);
+        float x_err_body = x_err * cos_h + y_err * sin_h;
+        float y_err_body = -x_err * sin_h + y_err * cos_h;
+
+        // Create velocity command
+        geometry_msgs::msg::TwistStamped desired_velocity;
+        desired_velocity.header.stamp = msg->header.stamp;
+        desired_velocity.header.frame_id = msg->header.frame_id;
+
+        // Scale velocities based on errors
+        float speed = waypoints_.front().desired_speed;
+        desired_velocity.twist.linear.x = x_err_body > 0 ? min(speed, speed * x_err_body) 
+                                                       : max(-speed, -speed * abs(x_err_body));
+        desired_velocity.twist.linear.y = y_err_body > 0 ? min(speed, speed * y_err_body) 
+                                                       : max(-speed, -speed * abs(y_err_body));
+        desired_velocity.twist.linear.z = z_err > 0 ? min(heave_speed_, heave_speed_ * z_err) 
+                                                   : min(-heave_speed_, -heave_speed_ * z_err);
+        
+        // Maintain fixed heading
+        desired_velocity.twist.angular.z = heading_err > 0 ? min(heading_speed_, heading_speed_ * heading_err) 
+                                                         : max(-heading_speed_, -heading_speed_ * heading_err);
+
+        RCLCPP_DEBUG(get_logger(), "Fixed heading control - errors (body frame): x=%.2f, y=%.2f, z=%.2f, h=%.2f",
+                    x_err_body, y_err_body, z_err, heading_err);
+
+        desired_velocity_pub_->publish(desired_velocity);
+
+    }
+}
+
+void WaypointController::station_keep(const nav_msgs::msg::Odometry::SharedPtr msg)
+{
+    // Check all degrees of freedom compared to the stationary waypoint and run correction
+    float x_err_world = stationary_waypoint_.x - msg->pose.pose.position.x;
+    float y_err_world = stationary_waypoint_.y - msg->pose.pose.position.y;
+    float z_err = stationary_waypoint_.z - msg->pose.pose.position.z;
+    float heading_err = stationary_waypoint_.heading - get_yaw_from_quaternion(msg->pose.pose.orientation);
+    if (heading_err > M_PI) heading_err -= 2 * M_PI;
+    if (heading_err < -M_PI) heading_err += 2 * M_PI;
+
+    // Rotate x_err and y_err by taking current heading into consideration
+    float x_err = x_err_world * cos(get_yaw_from_quaternion(msg->pose.pose.orientation)) + y_err_world * sin(get_yaw_from_quaternion(msg->pose.pose.orientation));
+    float y_err = -x_err_world * sin(get_yaw_from_quaternion(msg->pose.pose.orientation)) + y_err_world * cos(get_yaw_from_quaternion(msg->pose.pose.orientation));
+
+    // Station keep on the stationary waypoint, TODO Add scaling based on error more than just linear scaling
+    geometry_msgs::msg::TwistStamped desired_velocity;
+    desired_velocity.header.stamp = msg->header.stamp;
+    desired_velocity.header.frame_id = msg->header.frame_id;
+    desired_velocity.twist.linear.x = x_err > 0 ? min(station_keep_speed_, station_keep_speed_*x_err) : min(-station_keep_speed_, -station_keep_speed_*x_err);
+    desired_velocity.twist.linear.y = y_err > 0 ? min(station_keep_speed_, station_keep_speed_*y_err) : min(-station_keep_speed_, -station_keep_speed_*y_err);
+    desired_velocity.twist.linear.z = z_err > 0 ? min(heave_speed_, heave_speed_*z_err) : min(-heave_speed_, -heave_speed_*z_err);
+    desired_velocity.twist.angular.z = heading_err > 0 ? min(heading_speed_, heading_speed_*heading_err) : min(-heading_speed_, -heading_speed_*heading_err);
+    desired_velocity_pub_->publish(desired_velocity);
+}
+
+string WaypointController::waypoints_to_string()
+{
+    // Get list of waypoints on a string format
+    int cnt = 1;
+    ostringstream waypoints_string;
+    for (const auto &waypoint : waypoints_)
+    {
+        waypoints_string << "Waypoint " + to_string(cnt) + "(x: " << waypoint.x
+                         << ", y: " << waypoint.y
+                         << ", z: " << waypoint.z
+                         << ", desired_speed: " << waypoint.desired_speed
+                         << ", fixed_heading: " << waypoint.fixed_heading
+                         << ", heading: " << waypoint.heading << ")\n";
+        cnt++;
+    }
+    return waypoints_string.str();
+}
+
+void WaypointController::setup_interfaces()
+{
+    // Desired Velocity Publisher
+    desired_velocity_pub_ = create_publisher<geometry_msgs::msg::TwistStamped>(desired_velocity_topic_, 1);
+
+    // Odometry Subscriber
+    odometry_sub_ = create_subscription<nav_msgs::msg::Odometry>(odometry_topic_, 1, bind(&WaypointController::controller_callback, this, placeholders::_1));
+
+    // Waypoint Services
+    add_waypoint_srv_ = create_service<mundus_mir_msgs::srv::AddWaypoint>(add_waypoint_srv_name_, bind(&WaypointController::add_waypoint, this, placeholders::_1, placeholders::_2));
+    insert_waypoint_srv_ = create_service<mundus_mir_msgs::srv::InsertWaypoint>(insert_waypoint_srv_name_, bind(&WaypointController::insert_waypoint, this, placeholders::_1, placeholders::_2));
+    remove_waypoint_srv_ = create_service<mundus_mir_msgs::srv::RemoveWaypoint>(remove_waypoint_srv_name_, bind(&WaypointController::remove_waypoint, this, placeholders::_1, placeholders::_2));
+    get_waypoints_srv_ = create_service<mundus_mir_msgs::srv::GetWaypoints>(get_waypoints_srv_name_, bind(&WaypointController::get_waypoints, this, placeholders::_1, placeholders::_2));
+    clear_waypoints_srv_ = create_service<mundus_mir_msgs::srv::ClearWaypoints>(clear_waypoints_srv_name_, bind(&WaypointController::clear_waypoints, this, placeholders::_1, placeholders::_2));
+    go_to_waypoints_srv_ = create_service<mundus_mir_msgs::srv::GoToWaypoints>(go_to_waypoints_srv_name_, bind(&WaypointController::go_to_waypoints, this, placeholders::_1, placeholders::_2));
+    get_waypoint_status_srv_ = create_service<mundus_mir_msgs::srv::GetWaypointStatus>(get_waypoint_status_srv_name_, bind(&WaypointController::get_waypoint_status, this, placeholders::_1, placeholders::_2));
+    run_waypoint_controller_srv_ = create_service<mundus_mir_msgs::srv::RunWaypointController>(run_waypoint_controller_srv_name_, bind(&WaypointController::run_waypoint_controller, this, placeholders::_1, placeholders::_2));
+}
+
+void WaypointController::get_ros_parameters()
+{
+    // Declare parameters
+    declare_parameter("odometry_topic", "/odom");
+    declare_parameter("desired_vel_topic", "/desired_vel");
+    declare_parameter("waypoint_service/add", "/blueye/add_waypoint");
+    declare_parameter("waypoint_service/insert", "/blueye/insert_waypoint");
+    declare_parameter("waypoint_service/remove", "/blueye/remove_waypoint");
+    declare_parameter("waypoint_service/get", "/blueye/get_waypoints");
+    declare_parameter("waypoint_service/clear", "/blueye/clear_waypoints");
+    declare_parameter("waypoint_service/go_to", "/blueye/go_to_waypoints");
+    declare_parameter("waypoint_service/get_waypoint_status", "/blueye/get_waypoint_status");
+    declare_parameter("waypoint_service/run_waypoint_controller", "/blueye/run_waypoint_controller");
+    declare_parameter("heading_tolerance", 0.3);
+    declare_parameter("circle_of_acceptance", 0.5);
+    declare_parameter("max_heading_rate", 0.1);
+    declare_parameter("max_heave_rate", 0.3);
+    declare_parameter("max_station_keep_rate", 0.3);
+
+    // Get parameters
+    get_parameter("odometry_topic", odometry_topic_);
+    get_parameter("desired_vel_topic", desired_velocity_topic_);
+    get_parameter("waypoint_service/add", add_waypoint_srv_name_);
+    get_parameter("waypoint_service/insert", insert_waypoint_srv_name_);
+    get_parameter("waypoint_service/remove", remove_waypoint_srv_name_);
+    get_parameter("waypoint_service/get", get_waypoints_srv_name_);
+    get_parameter("waypoint_service/clear", clear_waypoints_srv_name_);
+    get_parameter("waypoint_service/go_to", go_to_waypoints_srv_name_);
+    get_parameter("waypoint_service/get_waypoint_status", get_waypoint_status_srv_name_);
+    get_parameter("waypoint_service/run_waypoint_controller", run_waypoint_controller_srv_name_);
+    get_parameter("heading_tolerance", heading_tolerance_);
+    get_parameter("circle_of_acceptance", circle_of_acceptance_);
+    get_parameter("max_heading_rate", heading_speed_);
+    get_parameter("max_heave_rate", heave_speed_);
+    get_parameter("max_station_keep_rate", station_keep_speed_);
+}
+
+void WaypointController::add_waypoint(const std::shared_ptr<mundus_mir_msgs::srv::AddWaypoint::Request> request,
+                                      std::shared_ptr<mundus_mir_msgs::srv::AddWaypoint::Response> response)
+{
+    // Add a new waypoint to the back of the waypoint list
+    Waypoint new_waypoint;
+    new_waypoint.x = request->x;
+    new_waypoint.y = request->y;
+    new_waypoint.z = request->z;
+    new_waypoint.fixed_heading = request->fixed_heading;
+    new_waypoint.heading = request->heading;
+    
+    // Fix: Always set the desired_speed to the requested velocity
+    new_waypoint.desired_speed = request->desired_velocity;
+    
+    waypoints_.push_back(new_waypoint);
+
+    // Set response
+    response->accepted = true;
+}
+
+void WaypointController::insert_waypoint(const std::shared_ptr<mundus_mir_msgs::srv::InsertWaypoint::Request> request,
+                                         std::shared_ptr<mundus_mir_msgs::srv::InsertWaypoint::Response> response)
+{
+    // Add a new waypoint and insert it at desired index
+    Waypoint new_waypoint;
+    new_waypoint.x = request->x;
+    new_waypoint.y = request->y;
+    new_waypoint.z = request->z;
+    new_waypoint.fixed_heading = request->fixed_heading;
+    new_waypoint.heading = request->heading;
+    
+    // Fix: Always set the desired_speed to the requested velocity
+    new_waypoint.desired_speed = request->desired_velocity;
+    
+    int index = request->index > 0 ? request->index : 0;
+    int amount_of_waypoints = waypoints_.size();
+    if (index >= amount_of_waypoints)
+    {
+        waypoints_.push_back(new_waypoint);
+    }
+    else
+    {
+        waypoints_.insert(waypoints_.begin() + index, new_waypoint);
+    }
+
+    // Set response
+    response->accepted = true;
+}
+
+void WaypointController::remove_waypoint(const std::shared_ptr<mundus_mir_msgs::srv::RemoveWaypoint::Request> request,
+                                         std::shared_ptr<mundus_mir_msgs::srv::RemoveWaypoint::Response> response)
+{
+    // Remove waypoint at index
+    int size_of_waypoints = waypoints_.size();
+    if (size_of_waypoints < request->index || request->index < 0)
+    {
+        response->accepted = false;
+        response->error_code = "Index out of bounds.";
+        return;
+    }
+    waypoints_.erase(waypoints_.begin() + request->index);
+
+    // Set response
+    response->accepted = true;
+}
+
+void WaypointController::get_waypoints(const std::shared_ptr<mundus_mir_msgs::srv::GetWaypoints::Request> request,
+                                       std::shared_ptr<mundus_mir_msgs::srv::GetWaypoints::Response> response)
+{
+    // Handle request to avoid warinings
+    (void) request;
+    // Set response
+    response->accepted = true;
+    response->waypoints = waypoints_to_string();
+}
+
+void WaypointController::clear_waypoints(const std::shared_ptr<mundus_mir_msgs::srv::ClearWaypoints::Request> request,
+                                         std::shared_ptr<mundus_mir_msgs::srv::ClearWaypoints::Response> response)
+{
+    // Handle request to avoid warnings
+    (void) request;
+    // Clear all waypoints
+    waypoints_.clear();
+
+    // Set go_to_waypoint variable to false as we no longer have any waypoints
+    go_to_waypoint_ = false;
+    stationary_waypoint_set_ = false;
+
+    // Set response
+    response->accepted = true;
+}
+
+void WaypointController::go_to_waypoints(const std::shared_ptr<mundus_mir_msgs::srv::GoToWaypoints::Request> request,
+                                         std::shared_ptr<mundus_mir_msgs::srv::GoToWaypoints::Response> response)
+{
+    // If no waypoints then we cant go to any
+    if (waypoints_.size() == 0)
+    {
+        response->accepted = false;
+        response->status_code = "No waypoints to go to.";
+        return;
+    }
+    go_to_waypoint_ = request->run;
+    stationary_waypoint_set_ = false;
+
+    // Set response
+    response->accepted = true;
+}
+
+void WaypointController::get_waypoint_status(const std::shared_ptr<mundus_mir_msgs::srv::GetWaypointStatus::Request> request,
+                                             std::shared_ptr<mundus_mir_msgs::srv::GetWaypointStatus::Response> response)
+{
+    // Handle request to avoid warnings
+    (void) request;
+    // Set response
+    response->accepted = true;
+
+    // TODO Figure out how we want to have this message written
+    ostringstream status;
+    status << "Controller running: " << run_controller_ << "\n";
+    if (run_controller_) {
+        status << "Amount of waypoints: " << waypoints_.size() << "\n";
+        status << "Currently going to waypoint: " << go_to_waypoint_ << "\n";
+        if (go_to_waypoint_)
+        {
+            status << "Current waypoint: " << waypoints_.front().x << ", " << waypoints_.front().y << ", " << waypoints_.front().z << "\n";
+        }
+        else {
+            status << "Station Keep On Position: " << stationary_waypoint_.x << ", " << stationary_waypoint_.y << ", " << stationary_waypoint_.z << "\n";
+        }
+    }
+    response->status_code = status.str();
+}
+
+void WaypointController::run_waypoint_controller(const std::shared_ptr<mundus_mir_msgs::srv::RunWaypointController::Request> request,
+                                                 std::shared_ptr<mundus_mir_msgs::srv::RunWaypointController::Response> response)
+{
+    // Set run_controller variable
+    run_controller_ = request->run;
+
+    // Set response
+    response->accepted = true;
+}
