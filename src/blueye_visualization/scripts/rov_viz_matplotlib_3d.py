@@ -4,9 +4,12 @@ from rclpy.node import Node
 from nav_msgs.msg import Odometry
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 (for 3D projection)
+from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.animation as animation
 import threading
+from matplotlib.patches import Circle, PathPatch
+import mpl_toolkits.mplot3d.art3d as art3d
+from matplotlib.lines import Line2D
 
 class MatplotlibVisualizer(Node):
     def __init__(self):
@@ -16,7 +19,7 @@ class MatplotlibVisualizer(Node):
         self.initial_position_set = False
         
         # Initialize placeholders - these will be updated with actual values from odometry
-        self.docking_station = np.array([-221.0, 59.0, 194.90])  # Initial guess, will be updated
+        self.docking_station = np.array([-221.0, 59.0, 194.90])  
         self.rov_position = self.docking_station.copy()
         self.rov_orientation = np.array([0.0, 0.0, 0.0, 1.0])
         
@@ -24,7 +27,7 @@ class MatplotlibVisualizer(Node):
         self.plot_lock = threading.Lock()
         
         # Sunken ship position
-        self.sunken_ship = np.array([-175.00, 180.00, 197.00])
+        self.sunken_ship = np.array([-175.00, 180.00, 195.00])
         
         # Updated pipeline points extracted from the behavior tree XML
         self.pipeline = np.array([
@@ -38,6 +41,11 @@ class MatplotlibVisualizer(Node):
         
         # Set waypoints as the pipeline points
         self.waypoints = self.pipeline.copy()
+        
+        # Add obstacle position - in front of docking station
+        self.obstacle_position = np.array([-221.0, 80.0, 195.00])  # Same depth as pipeline
+        self.obstacle_radius = 1.0  # Radius of the obstacle
+        self.obstacle_height = 3.0  # Height of the cylindrical obstacle
         
         # Store positions over time 
         self.trajectory = []
@@ -81,6 +89,14 @@ class MatplotlibVisualizer(Node):
             color='brown', s=250, marker='*', label='Sunken Ship'
         )
         
+        # Add obstacle as a 3D cylinder
+        X, Y, Z = self.create_cylinder(
+            center=[self.obstacle_position[0], self.obstacle_position[1], self.obstacle_position[2]],
+            radius=self.obstacle_radius,
+            height=self.obstacle_height
+        )
+        self.obstacle_plot = self.ax.plot_surface(X, Y, Z, color='red', alpha=0.7)
+        
         # For ROV position - start at docking station with larger marker
         self.rov_scatter = self.ax.scatter(
             self.rov_position[0], self.rov_position[1], self.rov_position[2],
@@ -90,17 +106,26 @@ class MatplotlibVisualizer(Node):
         # Initialize trajectory line - empty at start
         self.trajectory_line, = self.ax.plot([], [], [], color='cyan', linewidth=2, label='Trajectory')
         
-        # Add legend
-        self.ax.legend()
+        # Custom legend entry for the obstacle
+        custom_legend_elements = [
+            Line2D([0], [0], marker='o', color='w', markerfacecolor='red', 
+                markersize=10, label='Obstacle', markeredgecolor='black')
+        ]
+        
+        # Get handles and labels
+        handles, labels = self.ax.get_legend_handles_labels()
+        handles.extend(custom_legend_elements)
+        labels.append('Obstacle')
+        self.ax.legend(handles, labels)
         
         # Update axis limits to include all elements
         self.update_axis_limits()
         
         # Set axis labels and title
-        self.ax.set_xlabel('X (m)')
-        self.ax.set_ylabel('Y (m)')
-        self.ax.set_zlabel('Z (m)')
-        self.ax.set_title('ROV Mission Visualization')
+        self.ax.set_xlabel('East (m)')
+        self.ax.set_ylabel('North (m)')
+        self.ax.set_zlabel('Depth (m)')
+        self.ax.set_title('ROV 3D Mission Visualization')
         
         # Subscribe to ROV position topic
         self.subscription = self.create_subscription(
@@ -115,10 +140,27 @@ class MatplotlibVisualizer(Node):
             self.fig, self.update_plot, interval=200, blit=False
         )
         
-        print("Visualization ready. Waiting for ROV position data...")
+        # print("Visualization ready. Waiting for ROV position data...")
         
         # Show plot without blocking the ROS spin thread
         plt.show(block=False)
+    
+    def create_cylinder(self, center, radius, height, resolution=20):
+        """Create a 3D cylinder for visualization"""
+        x_center, y_center, z_bottom = center
+        z_top = z_bottom - height  # Note: in the visualization, z increases downward
+        
+        # Create circles at the top and bottom of cylinder
+        theta = np.linspace(0, 2*np.pi, resolution)
+        x = radius * np.cos(theta) + x_center
+        y = radius * np.sin(theta) + y_center
+        
+        # Create the cylinder sides
+        X = np.vstack([x, x])
+        Y = np.vstack([y, y])
+        Z = np.vstack([np.ones(resolution)*z_top, np.ones(resolution)*z_bottom])
+        
+        return X, Y, Z
     
     def odometry_callback(self, msg):
         # Extract position and orientation data
@@ -130,13 +172,13 @@ class MatplotlibVisualizer(Node):
         self.rov_orientation = np.array([quat.x, quat.y, quat.z, quat.w])
         
         # Debug print all received positions
-        print(f"Received position: [{pos.x:.2f}, {pos.y:.2f}, {pos.z:.2f}]")
+        # print(f"Received position: [{pos.x:.2f}, {pos.y:.2f}, {pos.z:.2f}]")
         
         # If this is our first position, set it as initial position
         with self.plot_lock:
             if not self.initial_position_set:
                 self.initial_position_set = True
-                print(f"ROV initial position set to: {new_position}")
+                # print(f"ROV initial position set to: {new_position}")
                 # Add the starting point to trajectory
                 self.trajectory.append(new_position.copy())
             else:
@@ -153,7 +195,7 @@ class MatplotlibVisualizer(Node):
     def update_plot(self, frame):
         with self.plot_lock:
             # Debug print the position being updated
-            print(f"Updating ROV position to: {self.rov_position}")
+            # print(f"Updating ROV position to: {self.rov_position}")
             
             # Update the ROV marker position directly
             if hasattr(self, 'rov_scatter'):
@@ -195,6 +237,7 @@ class MatplotlibVisualizer(Node):
         # Include pipeline and other elements
         all_points.extend(self.pipeline)
         all_points.append(self.sunken_ship)
+        all_points.append(self.obstacle_position)  # Add obstacle position
         
         # Convert to numpy array
         all_points = np.array(all_points)
@@ -210,7 +253,7 @@ class MatplotlibVisualizer(Node):
         # Set limits with FLIPPED Z-AXIS (max first, then min)
         self.ax.set_xlim(min_x - padding_xy, max_x + padding_xy)
         self.ax.set_ylim(min_y - padding_xy, max_y + padding_xy)
-        self.ax.set_zlim(max_z + padding_z, min_z - padding_z)  # REVERSED order flips Z-axis
+        self.ax.set_zlim(max_z + padding_z, min_z - padding_z)
 
 def main(args=None):
     rclpy.init(args=args)
@@ -221,7 +264,7 @@ def main(args=None):
     spin_thread.start()
     
     try:
-        plt.show()  # Keeps the matplotlib window open
+        plt.show() 
     except KeyboardInterrupt:
         pass
     finally:

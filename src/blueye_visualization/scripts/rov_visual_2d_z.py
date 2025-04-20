@@ -13,8 +13,7 @@ class DepthVisualizer(Node):
         
         # History lists: time (in seconds) and actual depth (z)
         self.time_history = []
-        self.trajectory_depth = [] # will store z values directly
-        # No limit on trajectory points to track the entire mission
+        self.trajectory_depth = []
         
         # Setup a 2D plot: x-axis = time, y-axis = depth (reversed)
         self.fig, self.ax = plt.subplots(figsize=(20, 6))
@@ -51,8 +50,6 @@ class DepthVisualizer(Node):
         self.time_history.append(time_stamp)
         self.trajectory_depth.append(depth)
         
-        # No limiting of history size - keep all points for the entire mission
-    
     def update_plot(self, frame):
         if self.time_history and self.trajectory_depth:
             t = np.array(self.time_history)
@@ -82,7 +79,7 @@ def main(args=None):
     spin_thread.start()
     
     try:
-        plt.show() # Keeps the matplotlib window open
+        plt.show() 
     except KeyboardInterrupt:
         pass
     finally:

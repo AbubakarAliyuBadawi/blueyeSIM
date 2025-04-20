@@ -3,8 +3,10 @@ import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
 import numpy as np
+from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.patches as patches
 import threading
 
 class MatplotlibVisualizer(Node):
@@ -21,10 +23,7 @@ class MatplotlibVisualizer(Node):
         
         # Trajectory: initialize as empty until ROV actually moves
         self.trajectory = []
-        # No maximum number of trajectory points to track entire mission
-        # Flag to detect first actual movement
         self.movement_started = False
-        # Distance threshold to detect actual movement (in meters)
         self.movement_threshold = 0.5
 
         # Updated pipeline points extracted from the behavior tree XML
@@ -37,6 +36,10 @@ class MatplotlibVisualizer(Node):
             [-251.00, 109.50, -195.00],  # Point 6
         ])
         
+        # Add obstacle position - in front of docking station
+        self.obstacle_position = np.array([-221.0, 80.0, -195.0])  # Adjust X,Y as needed
+        self.obstacle_radius = 1.0  # Size of the obstacle
+        
         # Set waypoints as the pipeline points
         self.waypoints = self.pipeline.copy()
         
@@ -44,11 +47,10 @@ class MatplotlibVisualizer(Node):
         self.fig = plt.figure(figsize=(10, 8))
         self.ax = self.fig.add_subplot(111)  # 2D axes
         
-        self.ax.set_xlabel('X (m)')
-        self.ax.set_ylabel('Y (m)')
+        self.ax.set_xlabel('East (m)')
+        self.ax.set_ylabel('North (m)')
         self.ax.set_title('ROV Mission Visualization (2D)')
         
-        # Plot static elements
         # Docking station
         self.ax.scatter(
             self.docking_station[0], self.docking_station[1],
@@ -73,9 +75,20 @@ class MatplotlibVisualizer(Node):
                 self.waypoints[:, 0], self.waypoints[:, 1],
                 color='green', s=100, marker='^', label='Waypoints'
             )
+            
+        # Add obstacle as a circle
+        obstacle_circle = patches.Circle(
+            (self.obstacle_position[0], self.obstacle_position[1]),
+            radius=self.obstacle_radius,
+            color='red',
+            alpha=0.8,
+            edgecolor='black',
+            linewidth=1.0,
+            zorder=5
+        )
+        self.ax.add_patch(obstacle_circle)
         
         # Initialize trajectory (red line) and current ROV marker
-        # Start with empty trajectory
         self.trajectory_line, = self.ax.plot(
             [], [],
             color='red', linewidth=2, label='Trajectory'
@@ -86,12 +99,12 @@ class MatplotlibVisualizer(Node):
         )
         
         # Set axis limits to include all elements
-        # Find min and max for both x and y among all points
         all_points = np.vstack((
             self.docking_station[:2],
             self.pipeline[:, :2],
             self.rov_position[:2],
-            self.sunken_ship[:2]
+            self.sunken_ship[:2],
+            self.obstacle_position[:2]
         ))
         
         min_x, min_y = np.min(all_points, axis=0)
@@ -102,7 +115,22 @@ class MatplotlibVisualizer(Node):
         self.ax.set_xlim(min_x - padding, max_x + padding)
         self.ax.set_ylim(min_y - padding, max_y + padding)
         
-        self.ax.legend()
+        
+        # Create a custom legend entry for the obstacle
+        custom_legend_elements = [
+            Line2D([0], [0], marker='o', color='w', markerfacecolor='red', 
+                markersize=10, label='Obstacle', markeredgecolor='black')
+        ]
+
+        # Get the existing handles and labels
+        handles, labels = self.ax.get_legend_handles_labels()
+
+        # Replace the legend call
+        # self.ax.legend()  <-- Comment out or remove this line
+        # Add this instead:
+        self.ax.legend(handles + custom_legend_elements, labels + ['Obstacle'])
+
+        # self.ax.legend()
         
         # Subscribe to ROV odometry topic
         self.subscription = self.create_subscription(
@@ -167,7 +195,7 @@ def main(args=None):
     spin_thread.start()
     
     try:
-        plt.show()  # Keeps the matplotlib window open
+        plt.show()
     except KeyboardInterrupt:
         pass
     finally:
