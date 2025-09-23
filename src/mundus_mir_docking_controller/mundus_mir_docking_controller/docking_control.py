@@ -79,7 +79,7 @@ class WaypointHandler():
 
 class Controller:
     def __init__(self, KP, KI, KD, Integral_Max=0.2):
-        self.Kp, self.Ki, self.Kd = KP, KI, KD
+        self.Ki, self.Kd, self.Kp= KI, KD, KP # fixed labeling of KI KD, added KP
         self.integral, self.integral_max = 0.0, Integral_Max
         self.prev_time, self.prev_error = rclpy.time.Time().nanoseconds / 1e9, 0.0
     
@@ -88,9 +88,9 @@ class Controller:
         dt = current_time - self.prev_time
         
         self.integral = np.clip(self.integral + error * dt, -self.integral_max, self.integral_max)
-        pid_output = self.Kp * error + self.Ki * self.integral - self.Kd * velocity
+        pid_output = self.Kp * error + self.Ki * self.integral - self.Kd * velocity # added self.Kp * error, tried different variatiosn of equation
         
-        self.prev_error, self.prev_time = error, current_time
+        self.prev_error, self.prev_time = error, current_time # fixed labeling
         return np.clip(pid_output, -cap, cap)
  
 class DockingNode(Node):

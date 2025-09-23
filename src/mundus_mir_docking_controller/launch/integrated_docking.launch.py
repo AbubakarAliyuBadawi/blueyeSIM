@@ -63,7 +63,7 @@ def generate_launch_description():
     )
     
     docking_sequence = TimerAction(
-    period=20.0,  # delay in seconds
+    period=15.0,  # delay in seconds
     actions=[
         Node(
             package='mundus_mir_docking_controller',
