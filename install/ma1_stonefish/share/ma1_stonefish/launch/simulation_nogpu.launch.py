@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/ma1_simulator/ma1_stonefish/launch/simulation_nogpu.launch.py

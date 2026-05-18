@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/vortex_msgs/rosidl_generator_py/vortex_msgs/vortex_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" "TARGETS" "vortex_msgs__rosidl_typesupport_introspection_c__pyext" "DESTINATION" "local/lib/python3.10/dist-packages/vortex_msgs")

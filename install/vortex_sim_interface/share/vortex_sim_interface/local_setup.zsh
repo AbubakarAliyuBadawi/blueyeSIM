@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/vortex_sim_interface/ament_cmake_environment_hooks/local_setup.zsh

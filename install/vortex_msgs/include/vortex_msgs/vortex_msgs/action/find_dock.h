@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/vortex_msgs/rosidl_generator_c/vortex_msgs/action/find_dock.h

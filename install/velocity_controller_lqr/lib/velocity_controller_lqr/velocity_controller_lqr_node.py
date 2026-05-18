@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-auv/control/velocity_controller_lqr/scripts/velocity_controller_lqr_node.py

@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/joystick_interface_auv/ament_cmake_environment_hooks/local_setup.sh

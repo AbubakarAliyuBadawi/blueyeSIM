@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-stonefish-sim/stonefish_sim/scenarios/README.md

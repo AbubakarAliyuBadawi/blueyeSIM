@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-auv/mission/waypoint_manager/include/waypoint_manager/waypoint_manager.hpp

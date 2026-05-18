@@ -1,3 +1,0 @@
-/home/badawi/Desktop/auto-pilot/install/thrust_allocator_auv/lib/libthrust_allocator_auv_component.so
-/home/badawi/Desktop/auto-pilot/install/thrust_allocator_auv/share/thrust_allocator_auv/cmake/export_thrust_allocator_auv_componentExport.cmake
-/home/badawi/Desktop/auto-pilot/install/thrust_allocator_auv/share/thrust_allocator_auv/cmake/export_thrust_allocator_auv_componentExport-noconfig.cmake

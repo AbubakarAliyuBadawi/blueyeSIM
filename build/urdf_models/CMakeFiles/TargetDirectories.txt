@@ -1,9 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/urdf_models/CMakeFiles/uninstall.dir
-/home/badawi/Desktop/auto-pilot/build/urdf_models/CMakeFiles/urdf_models_uninstall.dir
-/home/badawi/Desktop/auto-pilot/build/urdf_models/CMakeFiles/test.dir
-/home/badawi/Desktop/auto-pilot/build/urdf_models/CMakeFiles/edit_cache.dir
-/home/badawi/Desktop/auto-pilot/build/urdf_models/CMakeFiles/rebuild_cache.dir
-/home/badawi/Desktop/auto-pilot/build/urdf_models/CMakeFiles/list_install_components.dir
-/home/badawi/Desktop/auto-pilot/build/urdf_models/CMakeFiles/install.dir
-/home/badawi/Desktop/auto-pilot/build/urdf_models/CMakeFiles/install/local.dir
-/home/badawi/Desktop/auto-pilot/build/urdf_models/CMakeFiles/install/strip.dir

@@ -1,6 +1,0 @@
-# CMake generated Testfile for 
-# Source directory: /home/badawi/Desktop/auto-pilot/src/vortex-stonefish-interface
-# Build directory: /home/badawi/Desktop/auto-pilot/build/vortex_sim_interface
-# 
-# This file includes the relevant testing commands required for 
-# testing this directory and lists subdirectories to be tested as well.

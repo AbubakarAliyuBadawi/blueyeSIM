@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-auv/mission/waypoint_manager/launch/waypoint_manager.launch.py

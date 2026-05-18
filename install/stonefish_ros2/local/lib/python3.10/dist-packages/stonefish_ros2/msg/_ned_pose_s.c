@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/rosidl_generator_py/stonefish_ros2/msg/_ned_pose_s.c

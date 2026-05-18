@@ -1,8 +1,0 @@
-setup.py
-vortex_utils/__init__.py
-vortex_utils/python_utils.py
-vortex_utils/ros_converter.py
-vortex_utils.egg-info/PKG-INFO
-vortex_utils.egg-info/SOURCES.txt
-vortex_utils.egg-info/dependency_links.txt
-vortex_utils.egg-info/top_level.txt

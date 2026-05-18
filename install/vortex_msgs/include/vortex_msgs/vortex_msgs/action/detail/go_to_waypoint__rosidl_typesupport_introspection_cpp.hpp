@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/vortex_msgs/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/go_to_waypoint__rosidl_typesupport_introspection_cpp.hpp

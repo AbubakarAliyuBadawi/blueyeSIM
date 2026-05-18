@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/vortex_sim_interface/vortex_sim_interface" "TARGETS" "vortex_sim_interface" "DESTINATION" "lib/vortex_sim_interface")

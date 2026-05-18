@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/vortex_msgs/ament_cmake_python/vortex_msgs/vortex_msgs.egg-info/SOURCES.txt

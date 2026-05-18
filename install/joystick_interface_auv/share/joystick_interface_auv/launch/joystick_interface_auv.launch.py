@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-auv/mission/joystick_interface_auv/launch/joystick_interface_auv.launch.py

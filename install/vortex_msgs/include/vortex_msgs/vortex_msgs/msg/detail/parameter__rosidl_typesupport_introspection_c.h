@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/vortex_msgs/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/parameter__rosidl_typesupport_introspection_c.h

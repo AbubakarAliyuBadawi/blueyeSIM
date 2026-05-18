@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/vortex_utils/ament_cmake_core/vortex_utilsConfig-version.cmake

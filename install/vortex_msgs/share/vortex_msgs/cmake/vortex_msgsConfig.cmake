@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/vortex_msgs/ament_cmake_core/vortex_msgsConfig.cmake

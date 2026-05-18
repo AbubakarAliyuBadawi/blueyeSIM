@@ -1,4 +1,0 @@
-[console_scripts]
-stonefish_aruco_pose = mundus_mir_stonefish_docking_controller.stonefish_aruco_pose:main
-stonefish_docking_controller = mundus_mir_stonefish_docking_controller.stonefish_docking_controller:main
-stonefish_sensor_republisher = mundus_mir_stonefish_docking_controller.stonefish_sensor_republisher:main

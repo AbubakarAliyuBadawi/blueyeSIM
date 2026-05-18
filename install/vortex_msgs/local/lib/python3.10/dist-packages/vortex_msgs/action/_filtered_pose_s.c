@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/vortex_msgs/rosidl_generator_py/vortex_msgs/action/_filtered_pose_s.c

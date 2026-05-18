@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-auv/guidance/los_guidance/launch/los_guidance.launch.py

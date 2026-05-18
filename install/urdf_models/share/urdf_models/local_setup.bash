@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/urdf_models/ament_cmake_environment_hooks/local_setup.bash

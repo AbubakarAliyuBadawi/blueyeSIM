@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/rosidl_generator_c/stonefish_ros2/msg/detail/thruster_state__struct.h

@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/mundus_mir_vehicle_interfaces/blueye_simulator_interface" "TARGETS" "blueye_simulator_interface" "DESTINATION" "lib/mundus_mir_vehicle_interfaces")

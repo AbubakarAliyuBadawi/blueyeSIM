@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/stonefish_simulator" "/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/stonefish_simulator_nogpu" "TARGETS" "stonefish_simulator" "stonefish_simulator_nogpu" "DESTINATION" "lib/stonefish_ros2")

@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/thrust_allocator_auv/ament_cmake_core/thrust_allocator_auvConfig-version.cmake

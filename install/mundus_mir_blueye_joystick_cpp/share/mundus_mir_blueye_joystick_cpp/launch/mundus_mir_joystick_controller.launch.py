@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/mundus_mir_blueye_joystick_cpp/launch/mundus_mir_joystick_controller.launch.py

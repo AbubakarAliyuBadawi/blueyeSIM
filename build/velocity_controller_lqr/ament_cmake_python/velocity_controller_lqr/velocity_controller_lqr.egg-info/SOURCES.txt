@@ -1,7 +1,0 @@
-setup.py
-velocity_controller_lqr/__init__.py
-velocity_controller_lqr/velocity_controller_lqr_lib.py
-velocity_controller_lqr.egg-info/PKG-INFO
-velocity_controller_lqr.egg-info/SOURCES.txt
-velocity_controller_lqr.egg-info/dependency_links.txt
-velocity_controller_lqr.egg-info/top_level.txt

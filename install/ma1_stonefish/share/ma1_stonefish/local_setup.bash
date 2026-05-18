@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/ament_cmake_environment_hooks/local_setup.bash

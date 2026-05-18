@@ -1,6 +1,0 @@
-float32 x
-float32 y
-float32 z
-float32 desired_velocity
-bool fixed_heading 
-float32 heading # Only matters if fixed_heading is set to true 

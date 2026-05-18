@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/pid_controller_dp/ament_cmake_environment_hooks/local_setup.sh

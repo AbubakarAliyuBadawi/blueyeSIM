@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-stonefish-sim/stonefish_sim/launch/orca_sim.launch.py

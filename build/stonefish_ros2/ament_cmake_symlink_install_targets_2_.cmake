@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/rosidl_generator_py/stonefish_ros2/stonefish_ros2_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" "TARGETS" "stonefish_ros2__rosidl_typesupport_c__pyext" "DESTINATION" "local/lib/python3.10/dist-packages/stonefish_ros2")

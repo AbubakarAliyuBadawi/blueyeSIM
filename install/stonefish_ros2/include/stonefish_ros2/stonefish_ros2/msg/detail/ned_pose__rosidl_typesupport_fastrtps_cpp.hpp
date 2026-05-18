@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/rosidl_typesupport_fastrtps_cpp/stonefish_ros2/msg/detail/ned_pose__rosidl_typesupport_fastrtps_cpp.hpp

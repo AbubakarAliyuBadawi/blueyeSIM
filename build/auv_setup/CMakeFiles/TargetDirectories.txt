@@ -1,9 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/auv_setup/CMakeFiles/uninstall.dir
-/home/badawi/Desktop/auto-pilot/build/auv_setup/CMakeFiles/auv_setup_uninstall.dir
-/home/badawi/Desktop/auto-pilot/build/auv_setup/CMakeFiles/test.dir
-/home/badawi/Desktop/auto-pilot/build/auv_setup/CMakeFiles/edit_cache.dir
-/home/badawi/Desktop/auto-pilot/build/auv_setup/CMakeFiles/rebuild_cache.dir
-/home/badawi/Desktop/auto-pilot/build/auv_setup/CMakeFiles/list_install_components.dir
-/home/badawi/Desktop/auto-pilot/build/auv_setup/CMakeFiles/install.dir
-/home/badawi/Desktop/auto-pilot/build/auv_setup/CMakeFiles/install/local.dir
-/home/badawi/Desktop/auto-pilot/build/auv_setup/CMakeFiles/install/strip.dir

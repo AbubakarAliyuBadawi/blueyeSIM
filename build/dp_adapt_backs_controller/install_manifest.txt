@@ -1,3 +1,0 @@
-/home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/lib/libdp_adapt_backs_controller_component.so
-/home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/cmake/export_dp_adapt_backs_controller_componentExport.cmake
-/home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/cmake/export_dp_adapt_backs_controller_componentExport-noconfig.cmake

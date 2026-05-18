@@ -1,3 +1,0 @@
-source;share/joystick_interface_auv/environment/ament_prefix_path.sh
-source;share/joystick_interface_auv/environment/path.sh
-source;share/joystick_interface_auv/environment/pythonpath.sh

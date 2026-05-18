@@ -1,8 +1,0 @@
-source;share/los_guidance/hook/cmake_prefix_path.ps1
-source;share/los_guidance/hook/cmake_prefix_path.dsv
-source;share/los_guidance/hook/cmake_prefix_path.sh
-source;share/los_guidance/local_setup.bash
-source;share/los_guidance/local_setup.dsv
-source;share/los_guidance/local_setup.ps1
-source;share/los_guidance/local_setup.sh
-source;share/los_guidance/local_setup.zsh

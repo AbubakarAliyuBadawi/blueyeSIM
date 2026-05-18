@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-stonefish-interface/launch/vortex_sim_interface.launch.py

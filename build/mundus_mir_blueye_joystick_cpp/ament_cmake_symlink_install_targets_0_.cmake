@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/mundus_mir_blueye_joystick_cpp/joystick_controller" "TARGETS" "joystick_controller" "DESTINATION" "lib/mundus_mir_blueye_joystick_cpp")

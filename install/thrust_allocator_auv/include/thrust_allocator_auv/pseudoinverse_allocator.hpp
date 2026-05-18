@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-auv/motion/thrust_allocator_auv/include/thrust_allocator_auv/pseudoinverse_allocator.hpp

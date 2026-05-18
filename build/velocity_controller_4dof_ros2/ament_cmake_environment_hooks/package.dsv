@@ -1,4 +1,0 @@
-source;share/velocity_controller_4dof_ros2/local_setup.bash
-source;share/velocity_controller_4dof_ros2/local_setup.dsv
-source;share/velocity_controller_4dof_ros2/local_setup.sh
-source;share/velocity_controller_4dof_ros2/local_setup.zsh

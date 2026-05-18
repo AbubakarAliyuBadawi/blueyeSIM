@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/src/vortex-auv/guidance/los_guidance/include/los_guidance/los_guidance.hpp

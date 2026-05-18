@@ -1,1 +1,0 @@
-/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/rosidl_cmake/rosidl_cmake-extras.cmake
