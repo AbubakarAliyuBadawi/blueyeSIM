@@ -55,7 +55,7 @@ def generate_launch_description():
                 "fy": 1662.8,
                 "cx": 960.0,
                 "cy": 540.0,
-                "min_markers_for_detection": 3,
+                "min_markers_for_detection": 2,
             }
         ],
     )
@@ -114,6 +114,7 @@ def generate_launch_description():
         parameters=[
             {
                 "use_sim_time": False,
+                "heading_hold_enabled": False,
                 "topic_subscriber_odometry": "/blueye/odom",
                 "topic_subscriber_desired": "/blueye/ref_vel",
                 "topic_publisher": "/blueye/cmd_force",

@@ -52,10 +52,12 @@ VelocityController4dof::VelocityController4dof ()
     declare_parameter<double> ("rt_yaw_satUpper", 500.0);
     declare_parameter<double> ("rt_yaw_satLower", -500.0);
 
+    declare_parameter<bool>   ("heading_hold_enabled", true);
     declare_parameter<double> ("kp_heading", 1.5);
     declare_parameter<double> ("yaw_rate_deadband", 0.05);
     declare_parameter<double> ("max_corrective_yaw_rate", 0.5);
 
+    get_parameter ("heading_hold_enabled",    heading_hold_enabled_);
     get_parameter ("kp_heading",              kp_heading_);
     get_parameter ("yaw_rate_deadband",       yaw_rate_deadband_);
     get_parameter ("max_corrective_yaw_rate", max_corrective_yaw_rate_);
@@ -157,20 +159,22 @@ const geometry_msgs::msg::TwistStamped::SharedPtr msg) {
     auto joystick_psi = msg->twist.angular.z;
 
     double vel_psi;
-    if (std::abs(joystick_psi) > yaw_rate_deadband_) {
-        // User actively yawing: track current heading so hold starts clean on release
-        desired_yaw_        = current_yaw_;
-        heading_initialized_ = true;
-        vel_psi              = joystick_psi;
-    } else {
-        // Heading hold: drive heading error to zero with a P controller
-        if (!heading_initialized_) {
-            desired_yaw_        = current_yaw_;
+    if (heading_hold_enabled_) {
+        if (std::abs(joystick_psi) > yaw_rate_deadband_) {
+            desired_yaw_         = current_yaw_;
             heading_initialized_ = true;
+            vel_psi              = joystick_psi;
+        } else {
+            if (!heading_initialized_) {
+                desired_yaw_         = current_yaw_;
+                heading_initialized_ = true;
+            }
+            double error = std::fmod((desired_yaw_ - current_yaw_) + M_PI, 2.0 * M_PI) - M_PI;
+            vel_psi = std::max(-max_corrective_yaw_rate_,
+                               std::min(max_corrective_yaw_rate_, kp_heading_ * error));
         }
-        double error = std::fmod((desired_yaw_ - current_yaw_) + M_PI, 2.0 * M_PI) - M_PI;
-        vel_psi = std::max(-max_corrective_yaw_rate_,
-                           std::min(max_corrective_yaw_rate_, kp_heading_ * error));
+    } else {
+        vel_psi = joystick_psi;
     }
 
     desired_values_ << vel_x, vel_y, vel_z, vel_psi;

@@ -298,7 +298,7 @@ class StonefishDockingController(Node):
         twist_msg.twist.linear.x = self.surge_controller.compute(error_surge, self.current_u, xy_cap)
         twist_msg.twist.linear.y = -self.sway_controller.compute(error_sway, -self.current_v, xy_cap)
         twist_msg.twist.linear.z = self.heave_controller.compute(error_heave, -self.current_w)
-        twist_msg.twist.angular.z = self.yaw_controller.compute(error_yaw, -self.current_r, yaw_cap)
+        twist_msg.twist.angular.z = self.yaw_controller.compute(error_yaw, self.current_r, yaw_cap)
         self.command_pub.publish(twist_msg)
         self.publish_status(
             "publishing_ref_vel "
