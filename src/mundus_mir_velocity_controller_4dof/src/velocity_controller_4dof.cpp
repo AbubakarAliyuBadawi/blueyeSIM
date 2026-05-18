@@ -52,6 +52,14 @@ VelocityController4dof::VelocityController4dof ()
     declare_parameter<double> ("rt_yaw_satUpper", 500.0);
     declare_parameter<double> ("rt_yaw_satLower", -500.0);
 
+    declare_parameter<double> ("kp_heading", 1.5);
+    declare_parameter<double> ("yaw_rate_deadband", 0.05);
+    declare_parameter<double> ("max_corrective_yaw_rate", 0.5);
+
+    get_parameter ("kp_heading",              kp_heading_);
+    get_parameter ("yaw_rate_deadband",       yaw_rate_deadband_);
+    get_parameter ("max_corrective_yaw_rate", max_corrective_yaw_rate_);
+
     get_parameter ("rt_surge_kp", surge_param_ (0));
     get_parameter ("rt_surge_ki", surge_param_ (1));
     get_parameter ("rt_surge_kd", surge_param_ (2));
@@ -127,24 +135,43 @@ VelocityController4dof::VelocityController4dof ()
 
 void VelocityController4dof::subscriber_odometry_callback_ (
 const nav_msgs::msg::Odometry::SharedPtr msg) {
-    // Callback for receiving the current values msg and populating object
-    // variables.
     auto vel_x   = msg->twist.twist.linear.x;
     auto vel_y   = msg->twist.twist.linear.y;
     auto vel_z   =-msg->twist.twist.linear.z;
     auto vel_psi = msg->twist.twist.angular.z;
 
     current_values_ << vel_x, vel_y, vel_z, vel_psi;
+
+    // Extract yaw from quaternion for heading hold
+    const auto & q = msg->pose.pose.orientation;
+    double siny_cosp = 2.0 * (q.w * q.z + q.x * q.y);
+    double cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z);
+    current_yaw_ = std::atan2(siny_cosp, cosy_cosp);
 }
 
 void VelocityController4dof::subscriber_desired_callback_ (
 const geometry_msgs::msg::TwistStamped::SharedPtr msg) {
-    // Callback for receiving the desired values msg and populating object
-    // variables.
-    auto vel_x   = msg->twist.linear.x;
-    auto vel_y   = msg->twist.linear.y;
-    auto vel_z   = msg->twist.linear.z;
-    auto vel_psi = msg->twist.angular.z;
+    auto vel_x        = msg->twist.linear.x;
+    auto vel_y        = msg->twist.linear.y;
+    auto vel_z        = msg->twist.linear.z;
+    auto joystick_psi = msg->twist.angular.z;
+
+    double vel_psi;
+    if (std::abs(joystick_psi) > yaw_rate_deadband_) {
+        // User actively yawing: track current heading so hold starts clean on release
+        desired_yaw_        = current_yaw_;
+        heading_initialized_ = true;
+        vel_psi              = joystick_psi;
+    } else {
+        // Heading hold: drive heading error to zero with a P controller
+        if (!heading_initialized_) {
+            desired_yaw_        = current_yaw_;
+            heading_initialized_ = true;
+        }
+        double error = std::fmod((desired_yaw_ - current_yaw_) + M_PI, 2.0 * M_PI) - M_PI;
+        vel_psi = std::max(-max_corrective_yaw_rate_,
+                           std::min(max_corrective_yaw_rate_, kp_heading_ * error));
+    }
 
     desired_values_ << vel_x, vel_y, vel_z, vel_psi;
 }

@@ -56,6 +56,14 @@ class VelocityController4dof : public rclcpp::Node {
     // Current and desired values
     Eigen::Vector4d current_values_, desired_values_;
 
+    // Heading hold state
+    double current_yaw_   {0.0};
+    double desired_yaw_   {0.0};
+    bool   heading_initialized_ {false};
+    double kp_heading_          {1.5};
+    double yaw_rate_deadband_   {0.05};
+    double max_corrective_yaw_rate_ {0.5};
+
     // ROS2 Timer
     rclcpp::TimerBase::SharedPtr timer_;
 
