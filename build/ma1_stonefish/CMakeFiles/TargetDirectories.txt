@@ -1,0 +1,9 @@
+/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/CMakeFiles/uninstall.dir
+/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/CMakeFiles/ma1_stonefish_uninstall.dir
+/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/CMakeFiles/test.dir
+/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/CMakeFiles/edit_cache.dir
+/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/CMakeFiles/rebuild_cache.dir
+/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/CMakeFiles/list_install_components.dir
+/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/CMakeFiles/install.dir
+/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/CMakeFiles/install/local.dir
+/home/badawi/Desktop/auto-pilot/build/ma1_stonefish/CMakeFiles/install/strip.dir

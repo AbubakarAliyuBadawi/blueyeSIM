@@ -1,0 +1,29 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mundus_mir_msgs/msg/ActuatorInput.msg
+// generated code does not contain a copyright notice
+
+#include "std_msgs/msg/Header.idl"
+
+module mundus_mir_msgs {
+  module msg {
+    struct ActuatorInput {
+      std_msgs::msg::Header header;
+
+      double thrust1;
+
+      double thrust2;
+
+      double thrust3;
+
+      double thrust4;
+
+      double thrust5;
+
+      double thrust6;
+
+      double thrust7;
+
+      double thrust8;
+    };
+  };
+};

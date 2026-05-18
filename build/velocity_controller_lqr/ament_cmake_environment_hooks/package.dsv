@@ -1,0 +1,4 @@
+source;share/velocity_controller_lqr/local_setup.bash
+source;share/velocity_controller_lqr/local_setup.dsv
+source;share/velocity_controller_lqr/local_setup.sh
+source;share/velocity_controller_lqr/local_setup.zsh

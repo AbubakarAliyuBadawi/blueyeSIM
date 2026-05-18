@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/thruster_visualization/thruster_visualization_node" "TARGETS" "thruster_visualization_node" "DESTINATION" "lib/thruster_visualization")

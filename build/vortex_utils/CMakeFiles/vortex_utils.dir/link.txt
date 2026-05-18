@@ -1,0 +1,2 @@
+/usr/bin/ar qc libvortex_utils.a CMakeFiles/vortex_utils.dir/src/cpp_utils.cpp.o
+/usr/bin/ranlib libvortex_utils.a

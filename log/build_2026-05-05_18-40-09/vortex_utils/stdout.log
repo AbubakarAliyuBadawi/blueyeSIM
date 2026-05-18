@@ -1,0 +1,71 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found ament_cmake_pytest: 1.3.12 (/opt/ros/humble/share/ament_cmake_pytest/cmake)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/badawi/Desktop/auto-pilot/build/vortex_utils
+[ 50%] [32mBuilding CXX object CMakeFiles/vortex_utils.dir/src/cpp_utils.cpp.o[0m
+[ 50%] Built target ament_cmake_python_symlink_vortex_utils
+running egg_info
+creating vortex_utils.egg-info
+writing vortex_utils.egg-info/PKG-INFO
+writing dependency_links to vortex_utils.egg-info/dependency_links.txt
+writing top-level names to vortex_utils.egg-info/top_level.txt
+writing manifest file 'vortex_utils.egg-info/SOURCES.txt'
+reading manifest file 'vortex_utils.egg-info/SOURCES.txt'
+writing manifest file 'vortex_utils.egg-info/SOURCES.txt'
+[ 50%] Built target ament_cmake_python_build_vortex_utils_egg
+[100%] [32m[1mLinking CXX static library libvortex_utils.a[0m
+[100%] Built target vortex_utils
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/environment/library_path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/environment/library_path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/include/vortex_utils/cpp_utils.hpp
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/environment/pythonpath.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/environment/pythonpath.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils-0.0.0-py3.10.egg-info/PKG-INFO
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils-0.0.0-py3.10.egg-info/SOURCES.txt
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils-0.0.0-py3.10.egg-info/dependency_links.txt
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils-0.0.0-py3.10.egg-info/top_level.txt
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils/__init__.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils/python_utils.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils/ros_converter.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/ament_index/resource_index/package_run_dependencies/vortex_utils
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/ament_index/resource_index/parent_prefix_path/vortex_utils
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/environment/ament_prefix_path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/environment/ament_prefix_path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/environment/path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/environment/path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/local_setup.bash
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/local_setup.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/local_setup.zsh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/local_setup.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/package.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/ament_index/resource_index/packages/vortex_utils
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/cmake/ament_cmake_export_targets-extras.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/cmake/ament_cmake_export_libraries-extras.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/cmake/vortex_utilsConfig.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/cmake/vortex_utilsConfig-version.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/package.xml
+-- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_utils/lib/libvortex_utils.a
+Listing '/home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils'...
+Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils/__init__.py'...
+Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils/python_utils.py'...
+Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_utils/local/lib/python3.10/dist-packages/vortex_utils/ros_converter.py'...
+-- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/cmake/vortex_utilsExport.cmake
+-- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/cmake/vortex_utilsExport-noconfig.cmake

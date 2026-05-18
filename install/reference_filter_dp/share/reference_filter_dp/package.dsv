@@ -1,0 +1,11 @@
+source;share/reference_filter_dp/hook/cmake_prefix_path.ps1
+source;share/reference_filter_dp/hook/cmake_prefix_path.dsv
+source;share/reference_filter_dp/hook/cmake_prefix_path.sh
+source;share/reference_filter_dp/hook/ld_library_path_lib.ps1
+source;share/reference_filter_dp/hook/ld_library_path_lib.dsv
+source;share/reference_filter_dp/hook/ld_library_path_lib.sh
+source;share/reference_filter_dp/local_setup.bash
+source;share/reference_filter_dp/local_setup.dsv
+source;share/reference_filter_dp/local_setup.ps1
+source;share/reference_filter_dp/local_setup.sh
+source;share/reference_filter_dp/local_setup.zsh

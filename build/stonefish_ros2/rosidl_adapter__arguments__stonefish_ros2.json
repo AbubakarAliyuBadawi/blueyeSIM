@@ -1,0 +1,16 @@
+{
+  "package_name": "stonefish_ros2",
+  "non_idl_tuples": [
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:msg/Int32Stamped.msg",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:msg/BeaconInfo.msg",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:msg/NEDPose.msg",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:msg/INS.msg",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:msg/DVLBeam.msg",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:msg/DVL.msg",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:msg/ThrusterState.msg",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:msg/DebugPhysics.msg",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:srv/SonarSettings.srv",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:srv/SonarSettings2.srv",
+    "/home/badawi/Desktop/auto-pilot/src/stonefish_ros2:srv/Respawn.srv"
+  ]
+}

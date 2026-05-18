@@ -1,0 +1,6 @@
+setup.py
+mundus_mir_msgs/__init__.py
+mundus_mir_msgs.egg-info/PKG-INFO
+mundus_mir_msgs.egg-info/SOURCES.txt
+mundus_mir_msgs.egg-info/dependency_links.txt
+mundus_mir_msgs.egg-info/top_level.txt

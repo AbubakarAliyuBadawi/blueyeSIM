@@ -1,0 +1,28 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mundus_mir_msgs/msg/EstimatorState.msg
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/Quaternion.idl"
+#include "geometry_msgs/msg/Vector3.idl"
+#include "std_msgs/msg/Header.idl"
+
+module mundus_mir_msgs {
+  module msg {
+    typedef double double__225[225];
+    struct EstimatorState {
+      std_msgs::msg::Header header;
+
+      geometry_msgs::msg::Vector3 position;
+
+      geometry_msgs::msg::Vector3 velocity;
+
+      geometry_msgs::msg::Quaternion orientation;
+
+      geometry_msgs::msg::Vector3 bias_accel;
+
+      geometry_msgs::msg::Vector3 bias_ars;
+
+      double__225 covariance;
+    };
+  };
+};

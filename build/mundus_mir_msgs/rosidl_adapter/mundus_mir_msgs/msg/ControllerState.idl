@@ -1,0 +1,51 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mundus_mir_msgs/msg/ControllerState.msg
+// generated code does not contain a copyright notice
+
+#include "std_msgs/msg/Header.idl"
+
+module mundus_mir_msgs {
+  module msg {
+    struct ControllerState {
+      std_msgs::msg::Header header;
+
+      int64 q;
+
+      double m1;
+
+      double m2;
+
+      double m3;
+
+      double m4;
+
+      double d1;
+
+      double d2;
+
+      double d3;
+
+      double d4;
+
+      double d5;
+
+      double d6;
+
+      double d7;
+
+      double d8;
+
+      double bias_x;
+
+      double bias_y;
+
+      double bias_z;
+
+      double bias_ang1;
+
+      double bias_ang2;
+
+      double bias_ang3;
+    };
+  };
+};

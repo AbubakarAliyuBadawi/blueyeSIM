@@ -1,0 +1,7 @@
+#request
+geometry_msgs/Point[] obstacles
+geometry_msgs/Point start
+geometry_msgs/Point goal
+geometry_msgs/Point origin
+int32 height
+int32 width

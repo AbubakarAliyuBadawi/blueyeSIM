@@ -1,0 +1,1 @@
+/home/badawi/Desktop/auto-pilot/build/thruster_visualization/ament_cmake_core/thruster_visualizationConfig-version.cmake

@@ -1,0 +1,4 @@
+source;share/mundus_mir_waypoint_controller/local_setup.bash
+source;share/mundus_mir_waypoint_controller/local_setup.dsv
+source;share/mundus_mir_waypoint_controller/local_setup.sh
+source;share/mundus_mir_waypoint_controller/local_setup.zsh

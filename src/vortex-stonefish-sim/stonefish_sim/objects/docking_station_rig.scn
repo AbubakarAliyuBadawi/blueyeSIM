@@ -1,0 +1,516 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <robot name="Docking Station Rig" fixed="true" self_collisions="false">
+    <base_link name="rig_base" type="model" physics="submerged">
+      <physical>
+        <mesh filename="object_files/docking_station_rig_collision_manual.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_rig.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Steel"/>
+      <look name="SafetyYellow"/>
+    </base_link>
+
+    <link name="aruco_0" type="box">
+      <dimensions xyz="0.169 0.169 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_0" uv_mode="1"/>
+      <origin xyz="1.4925 1.176 -1.9199" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_0_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_0"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_0_back" type="box">
+      <dimensions xyz="0.169 0.169 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.4925 1.178 -1.9199" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_0_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_0_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_1" type="box">
+      <dimensions xyz="0.169 0.169 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_1" uv_mode="1"/>
+      <origin xyz="1.8327 2.1781 -1.4464" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_1_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_1"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_1_back" type="box">
+      <dimensions xyz="0.169 0.169 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.8327 2.1801 -1.4464" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_1_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_1_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_2" type="box">
+      <dimensions xyz="0.169 0.169 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_2" uv_mode="1"/>
+      <origin xyz="1.1698 2.1781 -1.46" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_2_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_2"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_2_back" type="box">
+      <dimensions xyz="0.169 0.169 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.1698 2.1801 -1.46" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_2_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_2_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_3" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_3" uv_mode="1"/>
+      <origin xyz="1.4925 1.176 -0.95922" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_3_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_3"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_3_back" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.4925 1.178 -0.95922" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_3_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_3_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_4" type="box">
+      <dimensions xyz="0.169 0.169 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_4" uv_mode="1"/>
+      <origin xyz="1.4925 2.1781 -1.4939" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_4_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_4"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_4_back" type="box">
+      <dimensions xyz="0.169 0.169 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.4925 2.1801 -1.4939" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_4_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_4_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_5" type="box">
+      <dimensions xyz="0.12 0.12 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_5" uv_mode="1"/>
+      <origin xyz="0.86261 1.176 -1.1461" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_5_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_5"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_5_back" type="box">
+      <dimensions xyz="0.12 0.12 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="0.86261 1.178 -1.1461" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_5_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_5_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_6" type="box">
+      <dimensions xyz="0.12 0.12 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_6" uv_mode="1"/>
+      <origin xyz="1.4925 2.1781 -1.2135" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_6_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_6"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_6_back" type="box">
+      <dimensions xyz="0.12 0.12 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.4925 2.1801 -1.2135" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_6_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_6_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_7" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_7" uv_mode="1"/>
+      <origin xyz="1.782 1.176 -1.875" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_7_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_7"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_7_back" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.782 1.178 -1.875" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_7_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_7_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_8" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_8" uv_mode="1"/>
+      <origin xyz="1.972 1.176 -1.684" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_8_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_8"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_8_back" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.972 1.178 -1.684" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_8_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_8_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_9" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_9" uv_mode="1"/>
+      <origin xyz="0.19152 1.176 -1.0447" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_9_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_9"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_9_back" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="0.19152 1.178 -1.0447" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_9_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_9_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_10" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_10" uv_mode="1"/>
+      <origin xyz="1.203 1.176 -1.875" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_10_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_10"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_10_back" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.203 1.178 -1.875" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_10_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_10_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <!-- Marker 11, 19, 20: back face (opposite direction) -->
+    <link name="aruco_11" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_11" uv_mode="1"/>
+      <origin xyz="0.16104 2.1781 -1.875" rpy="-1.5708 -1.5708 0.0"/>
+    </link>
+    <joint name="aruco_11_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_11"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_11_back" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="0.16104 2.1761 -1.875" rpy="-1.5708 -1.5708 0.0"/>
+    </link>
+    <joint name="aruco_11_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_11_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_12" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_12" uv_mode="1"/>
+      <origin xyz="0.19152 1.176 -1.875" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_12_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_12"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_12_back" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="0.19152 1.178 -1.875" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_12_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_12_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_13" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_13" uv_mode="1"/>
+      <origin xyz="1.972 1.176 -1.0447" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_13_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_13"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_13_back" type="box">
+      <dimensions xyz="0.08 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.972 1.178 -1.0447" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_13_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_13_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_14" type="box">
+      <dimensions xyz="0.09 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_14" uv_mode="1"/>
+      <origin xyz="1.5325 2.1781 -1.6156" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_14_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_14"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_14_back" type="box">
+      <dimensions xyz="0.09 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.5325 2.1801 -1.6156" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_14_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_14_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_15" type="box">
+      <dimensions xyz="0.09 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_15" uv_mode="1"/>
+      <origin xyz="1.4525 2.1781 -1.6156" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_15_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_15"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_15_back" type="box">
+      <dimensions xyz="0.09 0.08 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.4525 2.1801 -1.6156" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_15_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_15_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_16" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_16" uv_mode="1"/>
+      <origin xyz="0.79951 1.176 -1.6993" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_16_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_16"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_16_back" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="0.79951 1.178 -1.6993" rpy="1.5708 1.5708 0.0"/>
+    </link>
+    <joint name="aruco_16_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_16_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <!-- Marker 17, 18: side faces (facing ±X) -->
+    <link name="aruco_17" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_17" uv_mode="1"/>
+      <origin xyz="0.008167 1.68 -1.6951" rpy="1.5708 0.0 1.5708"/>
+    </link>
+    <joint name="aruco_17_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_17"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_17_back" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="0.010167 1.68 -1.6951" rpy="1.5708 0.0 1.5708"/>
+    </link>
+    <joint name="aruco_17_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_17_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_18" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_18" uv_mode="1"/>
+      <origin xyz="2.0181 1.68 -1.6983" rpy="1.5708 0.0 -1.5708"/>
+    </link>
+    <joint name="aruco_18_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_18"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_18_back" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="2.0161 1.68 -1.6983" rpy="1.5708 0.0 -1.5708"/>
+    </link>
+    <joint name="aruco_18_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_18_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_19" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_19" uv_mode="1"/>
+      <origin xyz="0.88297 2.1781 -1.6953" rpy="-1.5708 -1.5708 0.0"/>
+    </link>
+    <joint name="aruco_19_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_19"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_19_back" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="0.88297 2.1761 -1.6953" rpy="-1.5708 -1.5708 0.0"/>
+    </link>
+    <joint name="aruco_19_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_19_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <link name="aruco_20" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Aruco5x5_20" uv_mode="1"/>
+      <origin xyz="1.8796 2.1781 -1.6975" rpy="-1.5708 -1.5708 0.0"/>
+    </link>
+    <joint name="aruco_20_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_20"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <link name="aruco_20_back" type="box">
+      <dimensions xyz="0.25 0.25 0.002"/>
+      <material name="Neutral"/>
+      <look name="Black"/>
+      <origin xyz="1.8796 2.1761 -1.6975" rpy="-1.5708 -1.5708 0.0"/>
+    </link>
+    <joint name="aruco_20_back_joint" type="fixed">
+      <parent name="rig_base"/>
+      <child name="aruco_20_back"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <comm name="Dock_USBL_Beacon" device_id="9" type="usbl">
+      <specs min_vertical_fov="0.0" max_vertical_fov="220.0" range="4000.0"/>
+      <connect device_id="5" occlusion_test="false"/>
+      <autoping rate="1.0"/>
+      <origin xyz="1.3 2.18 -2.0" rpy="0.0 0.0 0.0"/>
+      <link name="rig_base"/>
+    </comm>
+
+
+    <world_transform xyz="$(param docking_rig_position)" rpy="$(param docking_rig_orientation)"/>
+  </robot>
+
+</scenario>

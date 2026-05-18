@@ -1,0 +1,3 @@
+/home/badawi/Desktop/auto-pilot/install/vortex_utils/lib/libvortex_utils.a
+/home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/cmake/vortex_utilsExport.cmake
+/home/badawi/Desktop/auto-pilot/install/vortex_utils/share/vortex_utils/cmake/vortex_utilsExport-noconfig.cmake

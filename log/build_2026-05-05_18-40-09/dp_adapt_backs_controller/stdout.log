@@ -1,0 +1,76 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found rclcpp: 16.0.17 (/opt/ros/humble/share/rclcpp/cmake)
+-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+-- Found FastRTPS: /opt/ros/humble/include  
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Found rclcpp_components: 16.0.17 (/opt/ros/humble/share/rclcpp_components/cmake)
+-- Found nav_msgs: 4.9.0 (/opt/ros/humble/share/nav_msgs/cmake)
+-- Found tf2: 0.25.18 (/opt/ros/humble/share/tf2/cmake)
+-- Found vortex_msgs: 0.0.1 (/home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/badawi/Desktop/auto-pilot/build/dp_adapt_backs_controller
+[ 16%] [32mBuilding CXX object CMakeFiles/dp_adapt_backs_controller_component.dir/src/dp_adapt_backs_controller_ros.cpp.o[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/dp_adapt_backs_controller_component.dir/src/dp_adapt_backs_controller_utils.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/dp_adapt_backs_controller_component.dir/src/dp_adapt_backs_controller.cpp.o[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/dp_adapt_backs_controller_node.dir/rclcpp_components/node_main_dp_adapt_backs_controller_node.cpp.o[0m
+[ 83%] [32m[1mLinking CXX executable dp_adapt_backs_controller_node[0m
+[ 83%] Built target dp_adapt_backs_controller_node
+[100%] [32m[1mLinking CXX shared library libdp_adapt_backs_controller_component.so[0m
+[100%] Built target dp_adapt_backs_controller_component
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/lib/dp_adapt_backs_controller/dp_adapt_backs_controller_node
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/include/dp_adapt_backs_controller/dp_adapt_backs_controller.hpp
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/include/dp_adapt_backs_controller/dp_adapt_backs_controller_ros.hpp
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/include/dp_adapt_backs_controller/dp_adapt_backs_controller_utils.hpp
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/include/dp_adapt_backs_controller/typedefs.hpp
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller//launch/dp_adapt_backs_controller.launch.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller//config/adapt_params.yaml
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/ament_index/resource_index/package_run_dependencies/dp_adapt_backs_controller
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/ament_index/resource_index/parent_prefix_path/dp_adapt_backs_controller
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/environment/ament_prefix_path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/environment/ament_prefix_path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/environment/path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/environment/path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/local_setup.bash
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/local_setup.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/local_setup.zsh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/local_setup.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/package.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/ament_index/resource_index/packages/dp_adapt_backs_controller
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/ament_index/resource_index/rclcpp_components/dp_adapt_backs_controller
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/cmake/ament_cmake_export_targets-extras.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/cmake/dp_adapt_backs_controllerConfig.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/cmake/dp_adapt_backs_controllerConfig-version.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/package.xml
+-- Installing: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/lib/libdp_adapt_backs_controller_component.so
+-- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/lib/libdp_adapt_backs_controller_component.so" to ""
+-- Installing: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/cmake/export_dp_adapt_backs_controller_componentExport.cmake
+-- Installing: /home/badawi/Desktop/auto-pilot/install/dp_adapt_backs_controller/share/dp_adapt_backs_controller/cmake/export_dp_adapt_backs_controller_componentExport-noconfig.cmake

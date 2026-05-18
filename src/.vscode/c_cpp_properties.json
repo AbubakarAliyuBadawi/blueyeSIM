@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/badawi/Desktop/auto-pilot/install/thrust_allocator_auv/include/**",
+        "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/badawi/Desktop/auto-pilot/src/vortex-auv/motion/thrust_allocator_auv/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

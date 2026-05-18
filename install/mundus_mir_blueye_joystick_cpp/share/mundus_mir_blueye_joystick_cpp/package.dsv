@@ -1,0 +1,8 @@
+source;share/mundus_mir_blueye_joystick_cpp/hook/cmake_prefix_path.ps1
+source;share/mundus_mir_blueye_joystick_cpp/hook/cmake_prefix_path.dsv
+source;share/mundus_mir_blueye_joystick_cpp/hook/cmake_prefix_path.sh
+source;share/mundus_mir_blueye_joystick_cpp/local_setup.bash
+source;share/mundus_mir_blueye_joystick_cpp/local_setup.dsv
+source;share/mundus_mir_blueye_joystick_cpp/local_setup.ps1
+source;share/mundus_mir_blueye_joystick_cpp/local_setup.sh
+source;share/mundus_mir_blueye_joystick_cpp/local_setup.zsh

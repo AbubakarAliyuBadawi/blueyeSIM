@@ -1,0 +1,1 @@
+/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/rosidl_typesupport_introspection_c/stonefish_ros2/msg/detail/thruster_state__rosidl_typesupport_introspection_c.h

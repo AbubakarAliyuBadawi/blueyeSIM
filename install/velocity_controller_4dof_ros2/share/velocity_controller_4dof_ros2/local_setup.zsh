@@ -1,0 +1,1 @@
+/home/badawi/Desktop/auto-pilot/build/velocity_controller_4dof_ros2/ament_cmake_environment_hooks/local_setup.zsh

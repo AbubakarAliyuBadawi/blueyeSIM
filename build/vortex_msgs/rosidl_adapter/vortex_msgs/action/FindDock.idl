@@ -1,0 +1,25 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from vortex_msgs/action/FindDock.action
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+
+module vortex_msgs {
+  module action {
+    @verbatim (language="comment", text=
+      "Goal")
+    struct FindDock_Goal {
+      boolean start_search;
+    };
+    @verbatim (language="comment", text=
+      "Result")
+    struct FindDock_Result {
+      geometry_msgs::msg::PoseStamped dock_pose;
+    };
+    @verbatim (language="comment", text=
+      "Feedback")
+    struct FindDock_Feedback {
+      float time_elapsed;
+    };
+  };
+};

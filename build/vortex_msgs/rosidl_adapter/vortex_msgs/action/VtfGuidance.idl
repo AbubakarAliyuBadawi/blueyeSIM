@@ -1,0 +1,26 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from vortex_msgs/action/VtfGuidance.action
+// generated code does not contain a copyright notice
+
+#include "vortex_msgs/msg/ReferenceFilter.idl"
+#include "vortex_msgs/msg/Waypoints.idl"
+
+module vortex_msgs {
+  module action {
+    @verbatim (language="comment", text=
+      "Goal")
+    struct VtfGuidance_Goal {
+      vortex_msgs::msg::Waypoints goal;
+    };
+    @verbatim (language="comment", text=
+      "Result")
+    struct VtfGuidance_Result {
+      boolean success;
+    };
+    @verbatim (language="comment", text=
+      "Feedback")
+    struct VtfGuidance_Feedback {
+      vortex_msgs::msg::ReferenceFilter feedback;
+    };
+  };
+};

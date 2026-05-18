@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <robot name="Blueye" fixed="false" self_collisions="false">
+    <base_link name="blueye_base" type="model" physics="submerged">
+      <physical>
+        <mesh filename="object_files/blueye.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/blueye.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Neutral"/>
+      <look name="BlueyeBlue"/>
+      <mass value="8.6"/>
+      <inertia xyz="0.27 0.16 0.20"/>
+      <hydrodynamics viscous_drag="0.10 0.18 0.18" quadratic_drag="0.3 0.8 0.5"/>
+      <cg xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+    </base_link>
+
+    <world_transform xyz="$(param blueye_position)" rpy="$(param blueye_orientation)"/>
+  </robot>
+
+</scenario>

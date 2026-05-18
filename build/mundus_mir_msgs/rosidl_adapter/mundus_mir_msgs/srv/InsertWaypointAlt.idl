@@ -1,0 +1,31 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from mundus_mir_msgs/srv/InsertWaypointAlt.srv
+// generated code does not contain a copyright notice
+
+
+module mundus_mir_msgs {
+  module srv {
+    struct InsertWaypointAlt_Request {
+      float x;
+
+      float y;
+
+      float z;
+
+      float desired_velocity;
+
+      boolean fixed_heading;
+
+      float heading;
+
+      boolean altitude_mode;
+
+      float target_altitude;
+
+      int32 index;
+    };
+    struct InsertWaypointAlt_Response {
+      boolean accepted;
+    };
+  };
+};

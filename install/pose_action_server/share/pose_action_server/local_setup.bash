@@ -1,0 +1,1 @@
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/ament_cmake_environment_hooks/local_setup.bash

@@ -1,0 +1,1 @@
+/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/rosidl_generator_cpp/stonefish_ros2/msg/detail/int32_stamped__traits.hpp

@@ -1,0 +1,8 @@
+source;share/joystick_interface_auv/hook/cmake_prefix_path.ps1
+source;share/joystick_interface_auv/hook/cmake_prefix_path.dsv
+source;share/joystick_interface_auv/hook/cmake_prefix_path.sh
+source;share/joystick_interface_auv/local_setup.bash
+source;share/joystick_interface_auv/local_setup.dsv
+source;share/joystick_interface_auv/local_setup.ps1
+source;share/joystick_interface_auv/local_setup.sh
+source;share/joystick_interface_auv/local_setup.zsh

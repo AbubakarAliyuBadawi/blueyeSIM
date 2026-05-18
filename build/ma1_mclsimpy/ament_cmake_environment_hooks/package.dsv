@@ -1,0 +1,4 @@
+source;share/ma1_mclsimpy/local_setup.bash
+source;share/ma1_mclsimpy/local_setup.dsv
+source;share/ma1_mclsimpy/local_setup.sh
+source;share/ma1_mclsimpy/local_setup.zsh

@@ -1,0 +1,888 @@
+[0.032s] Invoking command in '/home/badawi/Desktop/auto-pilot/build/vortex_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake /home/badawi/Desktop/auto-pilot/src/vortex-msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/badawi/Desktop/auto-pilot/install/vortex_msgs
+[0.079s] -- The C compiler identification is GNU 11.4.0
+[0.139s] -- The CXX compiler identification is GNU 11.4.0
+[0.148s] -- Detecting C compiler ABI info
+[0.213s] -- Detecting C compiler ABI info - done
+[0.224s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.224s] -- Detecting C compile features
+[0.225s] -- Detecting C compile features - done
+[0.229s] -- Detecting CXX compiler ABI info
+[0.301s] -- Detecting CXX compiler ABI info - done
+[0.313s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.313s] -- Detecting CXX compile features
+[0.314s] -- Detecting CXX compile features - done
+[0.317s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.861s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.949s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.966s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.976s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.985s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[1.049s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.099s] -- Found geometry_msgs: 4.9.0 (/opt/ros/humble/share/geometry_msgs/cmake)
+[1.163s] -- Found nav_msgs: 4.9.0 (/opt/ros/humble/share/nav_msgs/cmake)
+[1.194s] -- Found shape_msgs: 4.9.0 (/opt/ros/humble/share/shape_msgs/cmake)
+[1.225s] -- Found sensor_msgs: 4.9.0 (/opt/ros/humble/share/sensor_msgs/cmake)
+[2.008s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[2.358s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.844s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.885s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[2.888s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[2.920s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[2.921s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[2.921s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[2.921s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[2.946s] -- Found PythonExtra: .so  
+[3.113s] -- Configuring done
+[3.228s] -- Generating done
+[3.250s] -- Build files have been written to: /home/badawi/Desktop/auto-pilot/build/vortex_msgs
+[3.261s] Invoked command in '/home/badawi/Desktop/auto-pilot/build/vortex_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake /home/badawi/Desktop/auto-pilot/src/vortex-msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/badawi/Desktop/auto-pilot/install/vortex_msgs
+[3.263s] Invoking command in '/home/badawi/Desktop/auto-pilot/build/vortex_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake --build /home/badawi/Desktop/auto-pilot/build/vortex_msgs -- -j20 -l20
+[3.326s] [  1%] [34m[1mGenerating C code for ROS interfaces[0m
+[3.341s] [  1%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[3.344s] [  1%] Built target ament_cmake_python_symlink_vortex_msgs
+[3.709s] running egg_info
+[3.748s] creating vortex_msgs.egg-info
+[3.748s] writing vortex_msgs.egg-info/PKG-INFO
+[3.749s] writing dependency_links to vortex_msgs.egg-info/dependency_links.txt
+[3.749s] writing top-level names to vortex_msgs.egg-info/top_level.txt
+[3.750s] writing manifest file 'vortex_msgs.egg-info/SOURCES.txt'
+[3.862s] reading manifest file 'vortex_msgs.egg-info/SOURCES.txt'
+[3.863s] writing manifest file 'vortex_msgs.egg-info/SOURCES.txt'
+[3.903s] [  1%] Built target ament_cmake_python_build_vortex_msgs_egg
+[7.242s] [  1%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/clusters__functions.c.o[0m
+[7.242s] [  1%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/pwm__functions.c.o[0m
+[7.242s] [  2%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/landmark__functions.c.o[0m
+[7.242s] [  2%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/km_binary__functions.c.o[0m
+[7.243s] [  4%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/odometry_array__functions.c.o[0m
+[7.243s] [  4%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/parameter_array__functions.c.o[0m
+[7.244s] [  4%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/landmark_array__functions.c.o[0m
+[7.246s] [  5%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/thruster_forces__functions.c.o[0m
+[7.246s] [  5%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/dvl_altitude__functions.c.o[0m
+[7.247s] [  5%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/parameter__functions.c.o[0m
+[7.248s] [  6%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/waypoints__functions.c.o[0m
+[7.250s] [  7%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/reference_filter__functions.c.o[0m
+[7.253s] [  7%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/hybridpath_reference__functions.c.o[0m
+[7.253s] [  7%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/srv/detail/mission_parameters__functions.c.o[0m
+[7.253s] [  7%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/msg/detail/los_guidance__functions.c.o[0m
+[7.253s] [  7%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/srv/detail/waypoint__functions.c.o[0m
+[7.287s] [  7%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/find_dock__functions.c.o[0m
+[7.287s] [  8%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/filtered_landmarks__functions.c.o[0m
+[7.291s] [  9%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/go_to_waypoint__functions.c.o[0m
+[7.337s] [  9%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/locate_dock__functions.c.o[0m
+[7.343s] [ 10%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/navigate_waypoints__functions.c.o[0m
+[7.347s] [ 10%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/vtf_guidance__functions.c.o[0m
+[7.348s] [ 10%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/reference_filter_waypoint__functions.c.o[0m
+[7.352s] [ 11%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/los_guidance__functions.c.o[0m
+[7.364s] [ 11%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/waypoint_manager__functions.c.o[0m
+[7.364s] [ 12%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/hybridpath_guidance__functions.c.o[0m
+[7.366s] [ 12%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_c.dir/rosidl_generator_c/vortex_msgs/action/detail/filtered_pose__functions.c.o[0m
+[7.567s] [ 12%] [32m[1mLinking C shared library libvortex_msgs__rosidl_generator_c.so[0m
+[7.644s] [ 12%] Built target vortex_msgs__rosidl_generator_c
+[7.658s] [ 13%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[7.663s] [ 15%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[7.663s] [ 15%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[7.740s] [ 15%] Built target vortex_msgs__cpp
+[7.755s] [ 16%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[7.759s] [ 17%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[7.759s] [ 18%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[11.526s] [ 18%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/thruster_forces__type_support.cpp.o[0m
+[11.529s] [ 18%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/clusters__type_support.cpp.o[0m
+[11.532s] [ 18%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/km_binary__type_support.cpp.o[0m
+[11.533s] [ 19%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/pwm__type_support.cpp.o[0m
+[11.543s] [ 19%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/parameter__type_support.cpp.o[0m
+[11.543s] [ 21%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/landmark_array__type_support.cpp.o[0m
+[11.543s] [ 20%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/landmark__type_support.cpp.o[0m
+[11.543s] [ 21%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/odometry_array__type_support.cpp.o[0m
+[11.545s] [ 21%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/los_guidance__type_support.cpp.o[0m
+[11.551s] [ 22%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/hybridpath_reference__type_support.cpp.o[0m
+[11.552s] [ 22%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/parameter_array__type_support.cpp.o[0m
+[11.561s] [ 22%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/waypoints__type_support.cpp.o[0m
+[11.561s] [ 23%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/srv/mission_parameters__type_support.cpp.o[0m
+[11.561s] [ 23%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/dvl_altitude__type_support.cpp.o[0m
+[11.562s] [ 24%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/msg/reference_filter__type_support.cpp.o[0m
+[11.624s] [ 25%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/filtered_landmarks__type_support.cpp.o[0m
+[11.630s] [ 25%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/srv/waypoint__type_support.cpp.o[0m
+[11.634s] [ 25%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/find_dock__type_support.cpp.o[0m
+[11.646s] [ 25%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/locate_dock__type_support.cpp.o[0m
+[11.647s] [ 26%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/go_to_waypoint__type_support.cpp.o[0m
+[11.656s] [ 26%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/navigate_waypoints__type_support.cpp.o[0m
+[11.671s] [ 27%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/reference_filter_waypoint__type_support.cpp.o[0m
+[11.682s] [ 27%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/vtf_guidance__type_support.cpp.o[0m
+[11.690s] [ 27%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/filtered_pose__type_support.cpp.o[0m
+[11.690s] [ 29%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/waypoint_manager__type_support.cpp.o[0m
+[11.693s] [ 29%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/los_guidance__type_support.cpp.o[0m
+[11.703s] [ 29%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/vortex_msgs/action/hybridpath_guidance__type_support.cpp.o[0m
+[11.825s] [ 29%] [32m[1mLinking CXX shared library libvortex_msgs__rosidl_typesupport_c.so[0m
+[11.894s] [ 29%] Built target vortex_msgs__rosidl_typesupport_c
+[12.078s] [ 29%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/thruster_forces__type_support.cpp.o[0m
+[12.078s] [ 29%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/clusters__type_support.cpp.o[0m
+[12.079s] [ 29%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/km_binary__type_support.cpp.o[0m
+[12.079s] [ 29%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/landmark_array__type_support.cpp.o[0m
+[12.079s] [ 29%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/parameter__type_support.cpp.o[0m
+[12.081s] [ 30%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/pwm__type_support.cpp.o[0m
+[12.091s] [ 31%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/odometry_array__type_support.cpp.o[0m
+[12.091s] [ 32%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/landmark__type_support.cpp.o[0m
+[12.093s] [ 32%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/parameter_array__type_support.cpp.o[0m
+[12.100s] [ 33%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/hybridpath_reference__type_support.cpp.o[0m
+[12.100s] [ 34%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/reference_filter__type_support.cpp.o[0m
+[12.112s] [ 34%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/dvl_altitude__type_support.cpp.o[0m
+[12.118s] [ 34%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/los_guidance__type_support.cpp.o[0m
+[12.124s] [ 34%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/msg/waypoints__type_support.cpp.o[0m
+[12.130s] [ 35%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/srv/mission_parameters__type_support.cpp.o[0m
+[12.136s] [ 35%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/srv/waypoint__type_support.cpp.o[0m
+[12.565s] [ 36%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/filtered_landmarks__type_support.cpp.o[0m
+[12.585s] [ 36%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/find_dock__type_support.cpp.o[0m
+[12.633s] [ 37%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/go_to_waypoint__type_support.cpp.o[0m
+[12.648s] [ 37%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/locate_dock__type_support.cpp.o[0m
+[12.669s] [ 37%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/navigate_waypoints__type_support.cpp.o[0m
+[12.682s] [ 38%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/reference_filter_waypoint__type_support.cpp.o[0m
+[12.709s] [ 38%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/vtf_guidance__type_support.cpp.o[0m
+[12.718s] [ 39%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/los_guidance__type_support.cpp.o[0m
+[12.739s] [ 39%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/filtered_pose__type_support.cpp.o[0m
+[12.760s] [ 39%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/hybridpath_guidance__type_support.cpp.o[0m
+[12.896s] [ 40%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vortex_msgs/action/waypoint_manager__type_support.cpp.o[0m
+[13.700s] [ 41%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/thruster_forces__type_support.cpp.o[0m
+[13.702s] [ 41%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/clusters__type_support.cpp.o[0m
+[13.707s] [ 41%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/pwm__type_support.cpp.o[0m
+[13.707s] [ 41%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/km_binary__type_support.cpp.o[0m
+[13.712s] [ 42%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/landmark__type_support.cpp.o[0m
+[13.713s] [ 42%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/landmark_array__type_support.cpp.o[0m
+[13.716s] [ 42%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/los_guidance__type_support.cpp.o[0m
+[13.718s] [ 42%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/hybridpath_reference__type_support.cpp.o[0m
+[13.718s] [ 42%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/parameter__type_support.cpp.o[0m
+[13.723s] [ 43%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/parameter_array__type_support.cpp.o[0m
+[13.731s] [ 43%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/dvl_altitude__type_support.cpp.o[0m
+[13.732s] [ 44%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/odometry_array__type_support.cpp.o[0m
+[13.732s] [ 45%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/reference_filter__type_support.cpp.o[0m
+[13.734s] [ 46%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/msg/detail/waypoints__type_support.cpp.o[0m
+[13.738s] [ 46%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/srv/detail/mission_parameters__type_support.cpp.o[0m
+[13.787s] [ 46%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/srv/detail/waypoint__type_support.cpp.o[0m
+[13.846s] [ 46%] [32m[1mLinking CXX shared library libvortex_msgs__rosidl_typesupport_cpp.so[0m
+[14.008s] [ 46%] Built target vortex_msgs__rosidl_typesupport_cpp
+[14.063s] [ 47%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/filtered_landmarks__type_support.cpp.o[0m
+[14.613s] [ 48%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/go_to_waypoint__type_support.cpp.o[0m
+[14.617s] [ 48%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/find_dock__type_support.cpp.o[0m
+[14.632s] [ 48%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/locate_dock__type_support.cpp.o[0m
+[14.672s] [ 49%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/navigate_waypoints__type_support.cpp.o[0m
+[14.683s] [ 49%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/reference_filter_waypoint__type_support.cpp.o[0m
+[14.722s] [ 49%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/vtf_guidance__type_support.cpp.o[0m
+[14.766s] [ 50%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/los_guidance__type_support.cpp.o[0m
+[14.810s] [ 50%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/filtered_pose__type_support.cpp.o[0m
+[14.827s] [ 51%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/hybridpath_guidance__type_support.cpp.o[0m
+[14.907s] [ 51%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vortex_msgs/action/detail/waypoint_manager__type_support.cpp.o[0m
+[15.026s] [ 51%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/clusters__type_support.c.o[0m
+[15.026s] [ 52%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/thruster_forces__type_support.c.o[0m
+[15.026s] [ 52%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/pwm__type_support.c.o[0m
+[15.028s] [ 52%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/km_binary__type_support.c.o[0m
+[15.059s] [ 53%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/landmark__type_support.c.o[0m
+[15.107s] [ 53%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/landmark_array__type_support.c.o[0m
+[15.128s] [ 54%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/odometry_array__type_support.c.o[0m
+[15.138s] [ 54%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/parameter__type_support.c.o[0m
+[15.140s] [ 55%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/parameter_array__type_support.c.o[0m
+[15.149s] [ 55%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/hybridpath_reference__type_support.c.o[0m
+[15.195s] [ 55%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/los_guidance__type_support.c.o[0m
+[15.222s] [ 56%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/reference_filter__type_support.c.o[0m
+[15.231s] [ 56%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/dvl_altitude__type_support.c.o[0m
+[15.235s] [ 57%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/msg/detail/waypoints__type_support.c.o[0m
+[15.262s] [ 57%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/srv/detail/mission_parameters__type_support.c.o[0m
+[15.268s] [ 58%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/srv/detail/waypoint__type_support.c.o[0m
+[15.270s] [ 58%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/filtered_landmarks__type_support.c.o[0m
+[15.316s] [ 58%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/find_dock__type_support.c.o[0m
+[15.332s] [ 59%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/go_to_waypoint__type_support.c.o[0m
+[15.334s] [ 59%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/locate_dock__type_support.c.o[0m
+[15.366s] [ 60%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/navigate_waypoints__type_support.c.o[0m
+[15.382s] [ 60%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/reference_filter_waypoint__type_support.c.o[0m
+[15.397s] [ 60%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/vtf_guidance__type_support.c.o[0m
+[15.406s] [ 61%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/los_guidance__type_support.c.o[0m
+[15.456s] [ 61%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/filtered_pose__type_support.c.o[0m
+[15.472s] [ 62%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/hybridpath_guidance__type_support.c.o[0m
+[15.493s] [ 62%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vortex_msgs/action/detail/waypoint_manager__type_support.c.o[0m
+[15.653s] [ 63%] [32m[1mLinking C shared library libvortex_msgs__rosidl_typesupport_introspection_c.so[0m
+[15.814s] [ 63%] Built target vortex_msgs__rosidl_typesupport_introspection_c
+[15.854s] [ 63%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/pwm__type_support_c.cpp.o[0m
+[15.857s] [ 63%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/clusters__type_support_c.cpp.o[0m
+[15.859s] [ 63%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/parameter_array__type_support_c.cpp.o[0m
+[15.859s] [ 64%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/thruster_forces__type_support_c.cpp.o[0m
+[15.859s] [ 64%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/landmark_array__type_support_c.cpp.o[0m
+[15.859s] [ 64%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/parameter__type_support_c.cpp.o[0m
+[15.859s] [ 64%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/km_binary__type_support_c.cpp.o[0m
+[15.870s] [ 65%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/odometry_array__type_support_c.cpp.o[0m
+[15.870s] [ 65%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/los_guidance__type_support_c.cpp.o[0m
+[15.873s] [ 66%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/hybridpath_reference__type_support_c.cpp.o[0m
+[15.874s] [ 67%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/landmark__type_support_c.cpp.o[0m
+[15.909s] [ 68%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/reference_filter__type_support_c.cpp.o[0m
+[16.176s] [ 68%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/dvl_altitude__type_support_c.cpp.o[0m
+[16.210s] [ 69%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/msg/detail/waypoints__type_support_c.cpp.o[0m
+[16.318s] [ 69%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/srv/detail/mission_parameters__type_support_c.cpp.o[0m
+[16.343s] [ 69%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/srv/detail/waypoint__type_support_c.cpp.o[0m
+[16.434s] [ 70%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/filtered_landmarks__type_support_c.cpp.o[0m
+[16.566s] [ 70%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/find_dock__type_support_c.cpp.o[0m
+[16.566s] [ 71%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/go_to_waypoint__type_support_c.cpp.o[0m
+[16.636s] [ 71%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/locate_dock__type_support_c.cpp.o[0m
+[16.644s] [ 71%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/navigate_waypoints__type_support_c.cpp.o[0m
+[16.744s] [ 72%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/reference_filter_waypoint__type_support_c.cpp.o[0m
+[16.831s] [ 72%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/vtf_guidance__type_support_c.cpp.o[0m
+[16.867s] [ 73%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/los_guidance__type_support_c.cpp.o[0m
+[16.871s] [ 73%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/filtered_pose__type_support_c.cpp.o[0m
+[16.888s] [ 74%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/hybridpath_guidance__type_support_c.cpp.o[0m
+[16.941s] [ 74%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vortex_msgs/action/detail/waypoint_manager__type_support_c.cpp.o[0m
+[17.062s] [ 75%] [32m[1mLinking CXX shared library libvortex_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[17.259s] [ 75%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/clusters__type_support.cpp.o[0m
+[17.260s] [ 76%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/thruster_forces__type_support.cpp.o[0m
+[17.266s] [ 76%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/pwm__type_support.cpp.o[0m
+[17.269s] [ 77%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/landmark__type_support.cpp.o[0m
+[17.270s] [ 77%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/km_binary__type_support.cpp.o[0m
+[17.280s] [ 77%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/parameter__type_support.cpp.o[0m
+[17.284s] [ 77%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/landmark_array__type_support.cpp.o[0m
+[17.290s] [ 78%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/odometry_array__type_support.cpp.o[0m
+[17.510s] [ 78%] Built target vortex_msgs__rosidl_typesupport_introspection_cpp
+[17.546s] [ 78%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/parameter_array__type_support.cpp.o[0m
+[17.549s] [ 79%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/hybridpath_reference__type_support.cpp.o[0m
+[17.554s] [ 79%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/los_guidance__type_support.cpp.o[0m
+[17.723s] [ 80%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/reference_filter__type_support.cpp.o[0m
+[17.812s] [ 80%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/dvl_altitude__type_support.cpp.o[0m
+[17.829s] [ 81%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/msg/detail/dds_fastrtps/waypoints__type_support.cpp.o[0m
+[17.909s] [ 81%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/srv/detail/dds_fastrtps/waypoint__type_support.cpp.o[0m
+[17.910s] [ 81%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/srv/detail/dds_fastrtps/mission_parameters__type_support.cpp.o[0m
+[18.053s] [ 82%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/filtered_landmarks__type_support.cpp.o[0m
+[18.092s] [ 82%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/find_dock__type_support.cpp.o[0m
+[18.097s] [ 83%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/go_to_waypoint__type_support.cpp.o[0m
+[18.275s] [ 83%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/locate_dock__type_support.cpp.o[0m
+[18.279s] [ 83%] [32m[1mLinking CXX shared library libvortex_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[18.307s] [ 83%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/navigate_waypoints__type_support.cpp.o[0m
+[18.312s] [ 84%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/reference_filter_waypoint__type_support.cpp.o[0m
+[18.312s] [ 84%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/vtf_guidance__type_support.cpp.o[0m
+[18.384s] [ 85%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/los_guidance__type_support.cpp.o[0m
+[18.402s] [ 85%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/filtered_pose__type_support.cpp.o[0m
+[18.437s] [ 86%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/hybridpath_guidance__type_support.cpp.o[0m
+[18.466s] [ 86%] [32mBuilding CXX object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vortex_msgs/action/detail/dds_fastrtps/waypoint_manager__type_support.cpp.o[0m
+[18.662s] [ 86%] Built target vortex_msgs__rosidl_typesupport_fastrtps_c
+[19.497s] [ 86%] [32m[1mLinking CXX shared library libvortex_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[19.605s] [ 86%] Built target vortex_msgs__rosidl_typesupport_fastrtps_cpp
+[19.631s] [ 86%] Built target vortex_msgs
+[19.658s] [ 86%] [34m[1mGenerating Python code for ROS interfaces[0m
+[28.594s] [ 86%] Built target vortex_msgs__py
+[28.615s] [ 86%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_thruster_forces_s.c.o[0m
+[28.616s] [ 86%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_landmark_array_s.c.o[0m
+[28.617s] [ 86%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_odometry_array_s.c.o[0m
+[28.618s] [ 87%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_clusters_s.c.o[0m
+[28.618s] [ 88%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_pwm_s.c.o[0m
+[28.618s] [ 88%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_parameter_array_s.c.o[0m
+[28.618s] [ 89%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_km_binary_s.c.o[0m
+[28.618s] [ 89%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_hybridpath_reference_s.c.o[0m
+[28.618s] [ 90%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_parameter_s.c.o[0m
+[28.618s] [ 91%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/srv/_mission_parameters_s.c.o[0m
+[28.618s] [ 91%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_waypoints_s.c.o[0m
+[28.618s] [ 93%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_landmark_s.c.o[0m
+[28.618s] [ 93%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_dvl_altitude_s.c.o[0m
+[28.620s] [ 93%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_los_guidance_s.c.o[0m
+[28.621s] [ 93%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/srv/_waypoint_s.c.o[0m
+[28.622s] [ 94%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_filtered_landmarks_s.c.o[0m
+[28.623s] [ 94%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_find_dock_s.c.o[0m
+[28.623s] [ 94%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/msg/_reference_filter_s.c.o[0m
+[28.624s] [ 94%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_go_to_waypoint_s.c.o[0m
+[28.666s] [ 95%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_locate_dock_s.c.o[0m
+[28.785s] [ 95%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_navigate_waypoints_s.c.o[0m
+[28.786s] [ 96%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_reference_filter_waypoint_s.c.o[0m
+[28.787s] [ 97%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_los_guidance_s.c.o[0m
+[28.788s] [ 97%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_vtf_guidance_s.c.o[0m
+[28.797s] [ 97%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_filtered_pose_s.c.o[0m
+[28.797s] [ 98%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_waypoint_manager_s.c.o[0m
+[28.797s] [ 98%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_generator_py.dir/rosidl_generator_py/vortex_msgs/action/_hybridpath_guidance_s.c.o[0m
+[28.991s] [ 98%] [32m[1mLinking C shared library rosidl_generator_py/vortex_msgs/libvortex_msgs__rosidl_generator_py.so[0m
+[29.040s] [ 98%] Built target vortex_msgs__rosidl_generator_py
+[29.062s] [ 99%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/vortex_msgs/_vortex_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[29.063s] [100%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/vortex_msgs/_vortex_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[29.064s] [100%] [32mBuilding C object CMakeFiles/vortex_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/vortex_msgs/_vortex_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[29.416s] [100%] [32m[1mLinking C shared library rosidl_generator_py/vortex_msgs/vortex_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[29.421s] [100%] [32m[1mLinking C shared library rosidl_generator_py/vortex_msgs/vortex_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[29.453s] [100%] [32m[1mLinking C shared library rosidl_generator_py/vortex_msgs/vortex_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[29.468s] [100%] Built target vortex_msgs__rosidl_typesupport_fastrtps_c__pyext
+[29.476s] [100%] Built target vortex_msgs__rosidl_typesupport_introspection_c__pyext
+[29.513s] [100%] Built target vortex_msgs__rosidl_typesupport_c__pyext
+[29.526s] Invoked command in '/home/badawi/Desktop/auto-pilot/build/vortex_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake --build /home/badawi/Desktop/auto-pilot/build/vortex_msgs -- -j20 -l20
+[29.529s] Invoking command in '/home/badawi/Desktop/auto-pilot/build/vortex_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake --install /home/badawi/Desktop/auto-pilot/build/vortex_msgs
+[29.537s] -- Install configuration: ""
+[29.537s] -- Execute custom install script
+[29.538s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/ament_index/resource_index/rosidl_interfaces/vortex_msgs
+[29.546s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__functions.h
+[29.556s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__struct.h
+[29.565s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__type_support.h
+[29.574s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__functions.h
+[29.586s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__struct.h
+[29.597s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__type_support.h
+[29.605s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__functions.h
+[29.615s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__struct.h
+[29.624s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__type_support.h
+[29.632s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__functions.h
+[29.639s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__struct.h
+[29.645s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__type_support.h
+[29.652s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__functions.h
+[29.658s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__struct.h
+[29.664s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__type_support.h
+[29.670s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__functions.h
+[29.678s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__struct.h
+[29.687s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__type_support.h
+[29.694s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__functions.h
+[29.700s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__struct.h
+[29.707s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__type_support.h
+[29.713s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__functions.h
+[29.723s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__struct.h
+[29.734s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__type_support.h
+[29.745s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__functions.h
+[29.755s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__struct.h
+[29.765s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__type_support.h
+[29.775s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__functions.h
+[29.785s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__struct.h
+[29.794s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__type_support.h
+[29.804s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__functions.h
+[29.812s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__struct.h
+[29.821s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__type_support.h
+[29.829s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/filtered_landmarks.h
+[29.836s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/filtered_pose.h
+[29.845s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/find_dock.h
+[29.852s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/go_to_waypoint.h
+[29.857s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/hybridpath_guidance.h
+[29.865s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/locate_dock.h
+[29.871s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/los_guidance.h
+[29.879s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/navigate_waypoints.h
+[29.887s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/reference_filter_waypoint.h
+[29.896s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/vtf_guidance.h
+[29.904s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/waypoint_manager.h
+[29.913s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/clusters.h
+[29.921s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__functions.h
+[29.928s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__struct.h
+[29.937s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__type_support.h
+[29.944s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__functions.h
+[29.951s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__struct.h
+[29.958s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__type_support.h
+[29.965s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__functions.h
+[29.971s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__struct.h
+[29.978s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__type_support.h
+[29.985s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__functions.h
+[29.995s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__struct.h
+[30.002s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__type_support.h
+[30.009s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__functions.h
+[30.017s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__struct.h
+[30.028s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__type_support.h
+[30.039s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__functions.h
+[30.049s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__struct.h
+[30.057s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__type_support.h
+[30.064s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__functions.h
+[30.071s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__struct.h
+[30.079s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__type_support.h
+[30.087s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__functions.h
+[30.095s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__struct.h
+[30.102s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__type_support.h
+[30.110s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__functions.h
+[30.118s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__struct.h
+[30.129s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__type_support.h
+[30.136s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__functions.h
+[30.143s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__struct.h
+[30.149s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__type_support.h
+[30.158s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__functions.h
+[30.168s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__struct.h
+[30.176s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__type_support.h
+[30.184s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__functions.h
+[30.191s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__struct.h
+[30.198s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__type_support.h
+[30.204s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__functions.h
+[30.210s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__struct.h
+[30.217s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__type_support.h
+[30.223s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__functions.h
+[30.229s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__struct.h
+[30.236s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__type_support.h
+[30.245s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/dvl_altitude.h
+[30.255s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/hybridpath_reference.h
+[30.261s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/km_binary.h
+[30.267s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/landmark.h
+[30.272s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/landmark_array.h
+[30.278s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/los_guidance.h
+[30.284s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/odometry_array.h
+[30.291s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/parameter.h
+[30.299s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/parameter_array.h
+[30.305s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/pwm.h
+[30.313s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/reference_filter.h
+[30.323s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/rosidl_generator_c__visibility_control.h
+[30.331s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/thruster_forces.h
+[30.337s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/waypoints.h
+[30.344s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__functions.h
+[30.350s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__struct.h
+[30.357s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__type_support.h
+[30.364s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__functions.h
+[30.371s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__struct.h
+[30.380s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__type_support.h
+[30.389s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/mission_parameters.h
+[30.398s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/waypoint.h
+[30.406s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/environment/library_path.sh
+[30.413s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/environment/library_path.dsv
+[30.420s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__rosidl_typesupport_fastrtps_c.h
+[30.428s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__rosidl_typesupport_fastrtps_c.h
+[30.437s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__rosidl_typesupport_fastrtps_c.h
+[30.445s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__rosidl_typesupport_fastrtps_c.h
+[30.452s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__rosidl_typesupport_fastrtps_c.h
+[30.459s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__rosidl_typesupport_fastrtps_c.h
+[30.466s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__rosidl_typesupport_fastrtps_c.h
+[30.477s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__rosidl_typesupport_fastrtps_c.h
+[30.483s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__rosidl_typesupport_fastrtps_c.h
+[30.488s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__rosidl_typesupport_fastrtps_c.h
+[30.494s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__rosidl_typesupport_fastrtps_c.h
+[30.501s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__rosidl_typesupport_fastrtps_c.h
+[30.508s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__rosidl_typesupport_fastrtps_c.h
+[30.516s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__rosidl_typesupport_fastrtps_c.h
+[30.524s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__rosidl_typesupport_fastrtps_c.h
+[30.532s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__rosidl_typesupport_fastrtps_c.h
+[30.540s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__rosidl_typesupport_fastrtps_c.h
+[30.550s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__rosidl_typesupport_fastrtps_c.h
+[30.559s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__rosidl_typesupport_fastrtps_c.h
+[30.567s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__rosidl_typesupport_fastrtps_c.h
+[30.577s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__rosidl_typesupport_fastrtps_c.h
+[30.585s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__rosidl_typesupport_fastrtps_c.h
+[30.595s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__rosidl_typesupport_fastrtps_c.h
+[30.602s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__rosidl_typesupport_fastrtps_c.h
+[30.611s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__rosidl_typesupport_fastrtps_c.h
+[30.618s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[30.624s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__rosidl_typesupport_fastrtps_c.h
+[30.632s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__rosidl_typesupport_fastrtps_c.h
+[30.641s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__rosidl_typesupport_introspection_c.h
+[30.648s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__rosidl_typesupport_introspection_c.h
+[30.654s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__rosidl_typesupport_introspection_c.h
+[30.661s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__rosidl_typesupport_introspection_c.h
+[30.668s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__rosidl_typesupport_introspection_c.h
+[30.675s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__rosidl_typesupport_introspection_c.h
+[30.683s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__rosidl_typesupport_introspection_c.h
+[30.691s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__rosidl_typesupport_introspection_c.h
+[30.700s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__rosidl_typesupport_introspection_c.h
+[30.707s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__rosidl_typesupport_introspection_c.h
+[30.714s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__rosidl_typesupport_introspection_c.h
+[30.723s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__rosidl_typesupport_introspection_c.h
+[30.730s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__rosidl_typesupport_introspection_c.h
+[30.737s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__rosidl_typesupport_introspection_c.h
+[30.744s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__rosidl_typesupport_introspection_c.h
+[30.750s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__rosidl_typesupport_introspection_c.h
+[30.758s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__rosidl_typesupport_introspection_c.h
+[30.765s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__rosidl_typesupport_introspection_c.h
+[30.772s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__rosidl_typesupport_introspection_c.h
+[30.779s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__rosidl_typesupport_introspection_c.h
+[30.786s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__rosidl_typesupport_introspection_c.h
+[30.792s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__rosidl_typesupport_introspection_c.h
+[30.799s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__rosidl_typesupport_introspection_c.h
+[30.808s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__rosidl_typesupport_introspection_c.h
+[30.814s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__rosidl_typesupport_introspection_c.h
+[30.821s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[30.828s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__rosidl_typesupport_introspection_c.h
+[30.834s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__rosidl_typesupport_introspection_c.h
+[30.842s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__builder.hpp
+[30.849s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__struct.hpp
+[30.855s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__traits.hpp
+[30.862s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__type_support.hpp
+[30.870s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__builder.hpp
+[30.877s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__struct.hpp
+[30.885s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__traits.hpp
+[30.892s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__type_support.hpp
+[30.899s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__builder.hpp
+[30.909s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__struct.hpp
+[30.918s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__traits.hpp
+[30.926s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__type_support.hpp
+[30.934s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__builder.hpp
+[30.940s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__struct.hpp
+[30.949s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__traits.hpp
+[30.956s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__type_support.hpp
+[30.962s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__builder.hpp
+[30.969s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__struct.hpp
+[30.976s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__traits.hpp
+[30.984s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__type_support.hpp
+[30.992s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__builder.hpp
+[31.000s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__struct.hpp
+[31.009s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__traits.hpp
+[31.017s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__type_support.hpp
+[31.023s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__builder.hpp
+[31.034s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__struct.hpp
+[31.045s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__traits.hpp
+[31.053s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__type_support.hpp
+[31.060s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__builder.hpp
+[31.069s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__struct.hpp
+[31.076s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__traits.hpp
+[31.082s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__type_support.hpp
+[31.088s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__builder.hpp
+[31.095s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__struct.hpp
+[31.103s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__traits.hpp
+[31.110s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__type_support.hpp
+[31.116s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__builder.hpp
+[31.122s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__struct.hpp
+[31.129s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__traits.hpp
+[31.136s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__type_support.hpp
+[31.143s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__builder.hpp
+[31.150s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__struct.hpp
+[31.157s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__traits.hpp
+[31.165s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__type_support.hpp
+[31.171s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/filtered_landmarks.hpp
+[31.177s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/filtered_pose.hpp
+[31.184s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/find_dock.hpp
+[31.190s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/go_to_waypoint.hpp
+[31.199s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/hybridpath_guidance.hpp
+[31.207s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/locate_dock.hpp
+[31.214s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/los_guidance.hpp
+[31.221s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/navigate_waypoints.hpp
+[31.229s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/reference_filter_waypoint.hpp
+[31.236s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/vtf_guidance.hpp
+[31.244s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/waypoint_manager.hpp
+[31.252s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/clusters.hpp
+[31.264s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__builder.hpp
+[31.271s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__struct.hpp
+[31.280s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__traits.hpp
+[31.287s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__type_support.hpp
+[31.293s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__builder.hpp
+[31.300s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__struct.hpp
+[31.309s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__traits.hpp
+[31.316s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__type_support.hpp
+[31.326s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__builder.hpp
+[31.333s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__struct.hpp
+[31.339s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__traits.hpp
+[31.347s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__type_support.hpp
+[31.354s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__builder.hpp
+[31.361s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__struct.hpp
+[31.370s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__traits.hpp
+[31.377s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__type_support.hpp
+[31.385s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__builder.hpp
+[31.393s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__struct.hpp
+[31.399s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__traits.hpp
+[31.406s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__type_support.hpp
+[31.413s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__builder.hpp
+[31.421s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__struct.hpp
+[31.430s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__traits.hpp
+[31.439s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__type_support.hpp
+[31.449s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__builder.hpp
+[31.457s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__struct.hpp
+[31.465s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__traits.hpp
+[31.472s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__type_support.hpp
+[31.480s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__builder.hpp
+[31.488s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__struct.hpp
+[31.495s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__traits.hpp
+[31.503s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__type_support.hpp
+[31.510s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__builder.hpp
+[31.517s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__struct.hpp
+[31.526s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__traits.hpp
+[31.538s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__type_support.hpp
+[31.545s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__builder.hpp
+[31.556s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__struct.hpp
+[31.562s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__traits.hpp
+[31.570s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__type_support.hpp
+[31.578s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__builder.hpp
+[31.586s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__struct.hpp
+[31.593s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__traits.hpp
+[31.600s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__type_support.hpp
+[31.609s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__builder.hpp
+[31.616s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__struct.hpp
+[31.623s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__traits.hpp
+[31.630s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__type_support.hpp
+[31.637s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__builder.hpp
+[31.644s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__struct.hpp
+[31.651s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__traits.hpp
+[31.658s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__type_support.hpp
+[31.665s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__builder.hpp
+[31.672s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__struct.hpp
+[31.679s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__traits.hpp
+[31.687s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__type_support.hpp
+[31.694s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/dvl_altitude.hpp
+[31.701s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/hybridpath_reference.hpp
+[31.708s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/km_binary.hpp
+[31.718s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/landmark.hpp
+[31.727s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/landmark_array.hpp
+[31.734s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/los_guidance.hpp
+[31.744s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/odometry_array.hpp
+[31.753s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/parameter.hpp
+[31.762s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/parameter_array.hpp
+[31.771s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/pwm.hpp
+[31.777s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/reference_filter.hpp
+[31.785s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[31.791s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/thruster_forces.hpp
+[31.798s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/waypoints.hpp
+[31.804s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__builder.hpp
+[31.812s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__struct.hpp
+[31.819s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__traits.hpp
+[31.828s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__type_support.hpp
+[31.834s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__builder.hpp
+[31.840s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__struct.hpp
+[31.847s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__traits.hpp
+[31.853s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__type_support.hpp
+[31.860s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/mission_parameters.hpp
+[31.865s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/waypoint.hpp
+[31.873s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__rosidl_typesupport_fastrtps_cpp.hpp
+[31.879s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__rosidl_typesupport_fastrtps_cpp.hpp
+[31.885s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__rosidl_typesupport_fastrtps_cpp.hpp
+[31.891s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__rosidl_typesupport_fastrtps_cpp.hpp
+[31.897s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__rosidl_typesupport_fastrtps_cpp.hpp
+[31.905s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__rosidl_typesupport_fastrtps_cpp.hpp
+[31.914s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__rosidl_typesupport_fastrtps_cpp.hpp
+[31.921s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__rosidl_typesupport_fastrtps_cpp.hpp
+[31.929s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__rosidl_typesupport_fastrtps_cpp.hpp
+[31.937s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__rosidl_typesupport_fastrtps_cpp.hpp
+[31.944s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__rosidl_typesupport_fastrtps_cpp.hpp
+[31.954s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__rosidl_typesupport_fastrtps_cpp.hpp
+[31.963s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__rosidl_typesupport_fastrtps_cpp.hpp
+[31.972s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__rosidl_typesupport_fastrtps_cpp.hpp
+[31.978s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__rosidl_typesupport_fastrtps_cpp.hpp
+[31.988s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__rosidl_typesupport_fastrtps_cpp.hpp
+[31.995s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__rosidl_typesupport_fastrtps_cpp.hpp
+[32.002s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__rosidl_typesupport_fastrtps_cpp.hpp
+[32.009s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__rosidl_typesupport_fastrtps_cpp.hpp
+[32.015s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__rosidl_typesupport_fastrtps_cpp.hpp
+[32.021s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__rosidl_typesupport_fastrtps_cpp.hpp
+[32.030s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__rosidl_typesupport_fastrtps_cpp.hpp
+[32.038s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__rosidl_typesupport_fastrtps_cpp.hpp
+[32.046s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__rosidl_typesupport_fastrtps_cpp.hpp
+[32.056s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__rosidl_typesupport_fastrtps_cpp.hpp
+[32.063s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[32.070s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__rosidl_typesupport_fastrtps_cpp.hpp
+[32.078s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__rosidl_typesupport_fastrtps_cpp.hpp
+[32.085s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_landmarks__rosidl_typesupport_introspection_cpp.hpp
+[32.092s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/filtered_pose__rosidl_typesupport_introspection_cpp.hpp
+[32.099s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/find_dock__rosidl_typesupport_introspection_cpp.hpp
+[32.107s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/go_to_waypoint__rosidl_typesupport_introspection_cpp.hpp
+[32.114s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/hybridpath_guidance__rosidl_typesupport_introspection_cpp.hpp
+[32.120s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/locate_dock__rosidl_typesupport_introspection_cpp.hpp
+[32.130s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/los_guidance__rosidl_typesupport_introspection_cpp.hpp
+[32.140s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/navigate_waypoints__rosidl_typesupport_introspection_cpp.hpp
+[32.148s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/reference_filter_waypoint__rosidl_typesupport_introspection_cpp.hpp
+[32.155s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/vtf_guidance__rosidl_typesupport_introspection_cpp.hpp
+[32.164s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/action/detail/waypoint_manager__rosidl_typesupport_introspection_cpp.hpp
+[32.174s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/clusters__rosidl_typesupport_introspection_cpp.hpp
+[32.180s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/dvl_altitude__rosidl_typesupport_introspection_cpp.hpp
+[32.185s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/hybridpath_reference__rosidl_typesupport_introspection_cpp.hpp
+[32.192s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/km_binary__rosidl_typesupport_introspection_cpp.hpp
+[32.199s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark__rosidl_typesupport_introspection_cpp.hpp
+[32.206s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/landmark_array__rosidl_typesupport_introspection_cpp.hpp
+[32.213s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/los_guidance__rosidl_typesupport_introspection_cpp.hpp
+[32.224s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/odometry_array__rosidl_typesupport_introspection_cpp.hpp
+[32.233s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter__rosidl_typesupport_introspection_cpp.hpp
+[32.240s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/parameter_array__rosidl_typesupport_introspection_cpp.hpp
+[32.251s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/pwm__rosidl_typesupport_introspection_cpp.hpp
+[32.259s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/reference_filter__rosidl_typesupport_introspection_cpp.hpp
+[32.270s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/thruster_forces__rosidl_typesupport_introspection_cpp.hpp
+[32.277s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/msg/detail/waypoints__rosidl_typesupport_introspection_cpp.hpp
+[32.291s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/mission_parameters__rosidl_typesupport_introspection_cpp.hpp
+[32.300s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/vortex_msgs/vortex_msgs/srv/detail/waypoint__rosidl_typesupport_introspection_cpp.hpp
+[32.307s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/environment/pythonpath.sh
+[32.314s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/environment/pythonpath.dsv
+[32.321s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs-0.0.1-py3.10.egg-info/PKG-INFO
+[32.330s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs-0.0.1-py3.10.egg-info/SOURCES.txt
+[32.341s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs-0.0.1-py3.10.egg-info/dependency_links.txt
+[32.352s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs-0.0.1-py3.10.egg-info/top_level.txt
+[32.361s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/__init__.py
+[32.371s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/_vortex_msgs_s.ep.rosidl_typesupport_c.c
+[32.378s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/_vortex_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[32.385s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/_vortex_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[32.395s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/__init__.py
+[32.403s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_filtered_landmarks.py
+[32.410s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_filtered_landmarks_s.c
+[32.419s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_filtered_pose.py
+[32.426s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_filtered_pose_s.c
+[32.432s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_find_dock.py
+[32.442s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_find_dock_s.c
+[32.448s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_go_to_waypoint.py
+[32.453s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_go_to_waypoint_s.c
+[32.459s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_hybridpath_guidance.py
+[32.466s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_hybridpath_guidance_s.c
+[32.473s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_locate_dock.py
+[32.482s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_locate_dock_s.c
+[32.488s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_los_guidance.py
+[32.498s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_los_guidance_s.c
+[32.504s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_navigate_waypoints.py
+[32.510s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_navigate_waypoints_s.c
+[32.517s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_reference_filter_waypoint.py
+[32.524s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_reference_filter_waypoint_s.c
+[32.531s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_vtf_guidance.py
+[32.539s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_vtf_guidance_s.c
+[32.545s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_waypoint_manager.py
+[32.552s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_waypoint_manager_s.c
+[32.561s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/libvortex_msgs__rosidl_generator_py.so
+[32.567s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/__init__.py
+[32.574s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_clusters.py
+[32.585s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_clusters_s.c
+[32.592s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_dvl_altitude.py
+[32.599s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_dvl_altitude_s.c
+[32.608s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_hybridpath_reference.py
+[32.615s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_hybridpath_reference_s.c
+[32.622s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_km_binary.py
+[32.630s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_km_binary_s.c
+[32.638s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_landmark.py
+[32.646s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_landmark_array.py
+[32.655s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_landmark_array_s.c
+[32.663s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_landmark_s.c
+[32.670s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_los_guidance.py
+[32.676s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_los_guidance_s.c
+[32.682s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_odometry_array.py
+[32.691s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_odometry_array_s.c
+[32.698s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_parameter.py
+[32.704s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_parameter_array.py
+[32.711s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_parameter_array_s.c
+[32.717s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_parameter_s.c
+[32.723s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_pwm.py
+[32.730s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_pwm_s.c
+[32.736s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_reference_filter.py
+[32.743s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_reference_filter_s.c
+[32.749s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_thruster_forces.py
+[32.756s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_thruster_forces_s.c
+[32.762s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_waypoints.py
+[32.769s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_waypoints_s.c
+[32.778s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/srv/__init__.py
+[32.785s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/srv/_mission_parameters.py
+[32.791s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/srv/_mission_parameters_s.c
+[32.799s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/srv/_waypoint.py
+[32.806s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/srv/_waypoint_s.c
+[32.814s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/vortex_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[32.821s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/vortex_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[32.828s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/vortex_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[32.835s] -- Up-to-date symlink: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/vortex_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[32.835s] -- Up-to-date symlink: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/vortex_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[32.835s] -- Up-to-date symlink: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/vortex_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[32.835s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Clusters.idl
+[32.841s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/ThrusterForces.idl
+[32.850s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Pwm.idl
+[32.858s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/KMBinary.idl
+[32.865s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Landmark.idl
+[32.871s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/LandmarkArray.idl
+[32.882s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/OdometryArray.idl
+[32.889s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Parameter.idl
+[32.897s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/ParameterArray.idl
+[32.904s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/HybridpathReference.idl
+[32.914s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/LOSGuidance.idl
+[32.922s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/ReferenceFilter.idl
+[32.930s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/DVLAltitude.idl
+[32.939s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Waypoints.idl
+[32.945s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/srv/MissionParameters.idl
+[32.951s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/srv/Waypoint.idl
+[32.959s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/FilteredLandmarks.idl
+[32.965s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/FindDock.idl
+[32.971s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/GoToWaypoint.idl
+[32.978s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/LocateDock.idl
+[32.985s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/NavigateWaypoints.idl
+[32.996s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/ReferenceFilterWaypoint.idl
+[33.007s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/VtfGuidance.idl
+[33.015s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/LOSGuidance.idl
+[33.023s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/FilteredPose.idl
+[33.032s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/HybridpathGuidance.idl
+[33.042s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/WaypointManager.idl
+[33.049s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Clusters.msg
+[33.058s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/ThrusterForces.msg
+[33.065s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Pwm.msg
+[33.072s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/KMBinary.msg
+[33.080s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Landmark.msg
+[33.089s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/LandmarkArray.msg
+[33.096s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/OdometryArray.msg
+[33.105s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Parameter.msg
+[33.111s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/ParameterArray.msg
+[33.117s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/HybridpathReference.msg
+[33.124s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/LOSGuidance.msg
+[33.131s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/ReferenceFilter.msg
+[33.138s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/DVLAltitude.msg
+[33.145s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/msg/Waypoints.msg
+[33.152s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/srv/MissionParameters.srv
+[33.161s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/srv/MissionParameters_Request.msg
+[33.171s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/srv/MissionParameters_Response.msg
+[33.179s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/srv/Waypoint.srv
+[33.186s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/srv/Waypoint_Request.msg
+[33.194s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/srv/Waypoint_Response.msg
+[33.202s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/FilteredLandmarks.action
+[33.211s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/FindDock.action
+[33.220s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/GoToWaypoint.action
+[33.228s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/LocateDock.action
+[33.236s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/NavigateWaypoints.action
+[33.244s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/ReferenceFilterWaypoint.action
+[33.252s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/VtfGuidance.action
+[33.259s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/LOSGuidance.action
+[33.265s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/FilteredPose.action
+[33.274s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/HybridpathGuidance.action
+[33.285s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/action/WaypointManager.action
+[33.293s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/ament_index/resource_index/package_run_dependencies/vortex_msgs
+[33.300s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/ament_index/resource_index/parent_prefix_path/vortex_msgs
+[33.308s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/environment/ament_prefix_path.sh
+[33.317s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/environment/ament_prefix_path.dsv
+[33.323s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/environment/path.sh
+[33.334s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/environment/path.dsv
+[33.341s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/local_setup.bash
+[33.351s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/local_setup.sh
+[33.359s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/local_setup.zsh
+[33.366s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/local_setup.dsv
+[33.374s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/package.dsv
+[33.381s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/ament_index/resource_index/packages/vortex_msgs
+[33.391s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/rosidl_cmake-extras.cmake
+[33.399s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[33.407s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[33.414s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[33.421s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[33.428s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[33.438s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[33.446s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgsConfig.cmake
+[33.454s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgsConfig-version.cmake
+[33.464s] -- Symlinking: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/package.xml
+[33.472s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_generator_c.so
+[33.473s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_generator_c.so" to ""
+[33.473s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_fastrtps_c.so
+[33.473s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[33.473s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_introspection_c.so
+[33.474s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_introspection_c.so" to ""
+[33.474s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_c.so
+[33.474s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_c.so" to ""
+[33.474s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_fastrtps_cpp.so
+[33.475s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[33.475s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_introspection_cpp.so
+[33.475s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[33.475s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_cpp.so
+[33.475s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_typesupport_cpp.so" to ""
+[33.577s] Listing '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs'...
+[33.578s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/__init__.py'...
+[33.578s] Listing '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action'...
+[33.578s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/__init__.py'...
+[33.578s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_filtered_landmarks.py'...
+[33.578s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_filtered_pose.py'...
+[33.578s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_find_dock.py'...
+[33.578s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_go_to_waypoint.py'...
+[33.579s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_hybridpath_guidance.py'...
+[33.579s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_locate_dock.py'...
+[33.579s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_los_guidance.py'...
+[33.579s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_navigate_waypoints.py'...
+[33.579s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_reference_filter_waypoint.py'...
+[33.579s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_vtf_guidance.py'...
+[33.579s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/action/_waypoint_manager.py'...
+[33.579s] Listing '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/__init__.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_clusters.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_dvl_altitude.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_hybridpath_reference.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_km_binary.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_landmark.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_landmark_array.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_los_guidance.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_odometry_array.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_parameter.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_parameter_array.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_pwm.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_reference_filter.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_thruster_forces.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/msg/_waypoints.py'...
+[33.580s] Listing '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/srv'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/srv/__init__.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/srv/_mission_parameters.py'...
+[33.580s] Compiling '/home/badawi/Desktop/auto-pilot/install/vortex_msgs/local/lib/python3.10/dist-packages/vortex_msgs/srv/_waypoint.py'...
+[33.582s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_generator_py.so
+[33.585s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/lib/libvortex_msgs__rosidl_generator_py.so" to ""
+[33.585s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/export_vortex_msgs__rosidl_generator_cExport.cmake
+[33.585s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/export_vortex_msgs__rosidl_generator_cExport-noconfig.cmake
+[33.585s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/export_vortex_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[33.585s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/export_vortex_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[33.585s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgs__rosidl_typesupport_introspection_cExport.cmake
+[33.585s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[33.586s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgs__rosidl_typesupport_cExport.cmake
+[33.586s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[33.586s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/export_vortex_msgs__rosidl_generator_cppExport.cmake
+[33.586s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/export_vortex_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[33.586s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/export_vortex_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[33.586s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[33.587s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[33.587s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgs__rosidl_typesupport_cppExport.cmake
+[33.587s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/vortex_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[33.587s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/export_vortex_msgs__rosidl_generator_pyExport.cmake
+[33.587s] -- Installing: /home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake/export_vortex_msgs__rosidl_generator_pyExport-noconfig.cmake
+[33.591s] Invoked command in '/home/badawi/Desktop/auto-pilot/build/vortex_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake --install /home/badawi/Desktop/auto-pilot/build/vortex_msgs

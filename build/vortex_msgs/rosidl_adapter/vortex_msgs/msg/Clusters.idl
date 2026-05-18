@@ -1,0 +1,20 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from vortex_msgs/msg/Clusters.msg
+// generated code does not contain a copyright notice
+
+#include "sensor_msgs/msg/PointCloud2.idl"
+#include "std_msgs/msg/Header.idl"
+
+module vortex_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Centroid at index i in centroids corresponds to cluster at index i in clusters")
+    struct Clusters {
+      std_msgs::msg::Header header;
+
+      sensor_msgs::msg::PointCloud2 centroids;
+
+      sequence<sensor_msgs::msg::PointCloud2> clusters;
+    };
+  };
+};

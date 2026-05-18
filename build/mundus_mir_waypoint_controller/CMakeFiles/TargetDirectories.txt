@@ -1,0 +1,10 @@
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/uninstall.dir
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/mundus_mir_waypoint_controller_uninstall.dir
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/waypoint_controller.dir
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/test.dir
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/edit_cache.dir
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/rebuild_cache.dir
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/list_install_components.dir
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/install.dir
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/install/local.dir
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_waypoint_controller/CMakeFiles/install/strip.dir

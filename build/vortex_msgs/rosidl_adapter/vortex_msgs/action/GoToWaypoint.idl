@@ -1,0 +1,25 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from vortex_msgs/action/GoToWaypoint.action
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+
+module vortex_msgs {
+  module action {
+    @verbatim (language="comment", text=
+      "Goal")
+    struct GoToWaypoint_Goal {
+      geometry_msgs::msg::PoseStamped waypoint;
+    };
+    @verbatim (language="comment", text=
+      "Result")
+    struct GoToWaypoint_Result {
+      boolean success;
+    };
+    @verbatim (language="comment", text=
+      "Feedback")
+    struct GoToWaypoint_Feedback {
+      geometry_msgs::msg::PoseStamped current_pose;
+    };
+  };
+};

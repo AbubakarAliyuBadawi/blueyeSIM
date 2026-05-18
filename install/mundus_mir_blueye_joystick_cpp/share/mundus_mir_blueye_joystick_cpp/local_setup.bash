@@ -1,0 +1,1 @@
+/home/badawi/Desktop/auto-pilot/build/mundus_mir_blueye_joystick_cpp/ament_cmake_environment_hooks/local_setup.bash

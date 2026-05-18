@@ -1,0 +1,10 @@
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/uninstall.dir
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/pose_action_server_uninstall.dir
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/pose_action_server_node.dir
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/test.dir
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/edit_cache.dir
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/rebuild_cache.dir
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/list_install_components.dir
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/install.dir
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/install/local.dir
+/home/badawi/Desktop/auto-pilot/build/pose_action_server/CMakeFiles/install/strip.dir

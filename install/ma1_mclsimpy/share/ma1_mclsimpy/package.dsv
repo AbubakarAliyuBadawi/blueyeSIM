@@ -1,0 +1,8 @@
+source;share/ma1_mclsimpy/hook/cmake_prefix_path.ps1
+source;share/ma1_mclsimpy/hook/cmake_prefix_path.dsv
+source;share/ma1_mclsimpy/hook/cmake_prefix_path.sh
+source;share/ma1_mclsimpy/local_setup.bash
+source;share/ma1_mclsimpy/local_setup.dsv
+source;share/ma1_mclsimpy/local_setup.ps1
+source;share/ma1_mclsimpy/local_setup.sh
+source;share/ma1_mclsimpy/local_setup.zsh

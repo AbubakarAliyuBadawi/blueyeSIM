@@ -1,0 +1,26 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from vortex_msgs/action/HybridpathGuidance.action
+// generated code does not contain a copyright notice
+
+#include "vortex_msgs/msg/HybridpathReference.idl"
+#include "vortex_msgs/msg/Waypoints.idl"
+
+module vortex_msgs {
+  module action {
+    @verbatim (language="comment", text=
+      "Goal")
+    struct HybridpathGuidance_Goal {
+      vortex_msgs::msg::Waypoints waypoints;
+    };
+    @verbatim (language="comment", text=
+      "Result")
+    struct HybridpathGuidance_Result {
+      boolean success;
+    };
+    @verbatim (language="comment", text=
+      "Feedback")
+    struct HybridpathGuidance_Feedback {
+      vortex_msgs::msg::HybridpathReference feedback;
+    };
+  };
+};

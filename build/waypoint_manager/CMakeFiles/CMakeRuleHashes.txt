@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+472edf623bc53131803b9488b08c441f CMakeFiles/waypoint_manager_uninstall

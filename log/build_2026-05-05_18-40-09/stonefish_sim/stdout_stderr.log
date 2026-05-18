@@ -1,0 +1,156 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found stonefish_ros2: 1.3.0 (/home/badawi/Desktop/auto-pilot/install/stonefish_ros2/share/stonefish_ros2/cmake)
+-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/badawi/Desktop/auto-pilot/build/stonefish_sim
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/config/default_config.yaml
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/config/docking_config.yaml
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/config/pipeline_config.yaml
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/config/tacc_config.yaml
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/launch/freya_sim.launch.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/launch/orca_sim.launch.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/launch/simulation.launch.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/README.md
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/default.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/docking.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/freya_demo.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/freya_no_gpu.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/orca_demo.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/orca_freya_demo.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/orca_no_gpu.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/pipeline.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/structure.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/tacc.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/tests/default_gpu.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/scenarios/tests/default_no_gpu.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/README.md
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/DICT_4X4_1000_1f.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/DICT_4X4_1000_2f.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/DICT_4X4_1000_3f.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/DICT_4X4_1000_4f.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/aruco-19.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/aruco-28.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/aruco-7.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/aruco-96.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/aruco-marker-ID=33.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_0.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_1.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_10.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_11.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_12.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_13.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_14.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_15.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_16.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_17.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_18.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_19.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_2.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_20.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_3.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_4.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_5.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_6.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_7.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_8.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/aruco_tags/dict_5x5_50_9.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/cyberfish/cyberfish.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/cyberfish/cyberfish_phys.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/freya/body.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/freya/freya.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/freya/freya_mesh.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/freya/freya_mesh2.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/freya/freya_simple.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/freya/pontoon.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/freya/pontoon2.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/Buoy1.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/blueye.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/buoy1.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/docking_station.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/docking_station_mesh.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/docking_station_rig.mtl
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/docking_station_rig.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/docking_station_rig_collision_manual.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/docking_station_rig_gazebo_collision.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/docking_station_rig_lowpoly_collision.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/pipe1.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/pipe2.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/pipe2.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/pool.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/pool_room.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/seafloor.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/structure.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/structure_mesh.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/tacc_seafloor/rocks.png
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/tacc_seafloor/tacc_seafloor.mtl
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/tacc_seafloor/tacc_seafloor.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/valve_base.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/valve_base_mesh.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/valve_turnable.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/object_files/valve_turnable_mesh.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/bluerov2_propccw.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/gripper_arm.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/gripper_arm_mesh.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/gripper_finger.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/gripper_finger_mesh.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/gripper_shoulder.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/gripper_shoulder_mesh.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/orca2.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/orca_mesh.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/data/orca/orca_mesh2.obj
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/metadata/README.md
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/metadata/looks.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/metadata/materials.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/drones/README.md
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/drones/blueye.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/drones/cyberfish.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/drones/freya.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/drones/freya_no_visual.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/drones/gripper.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/drones/orca.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/drones/orca_no_visual.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/objects/README.md
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/objects/blueye.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/objects/default_seafloor.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/objects/dock.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/objects/docking_station_rig.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/objects/pipe.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/objects/pool.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/objects/structure.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/objects/tacc_seafloor.scn
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/ament_index/resource_index/package_run_dependencies/stonefish_sim
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/ament_index/resource_index/parent_prefix_path/stonefish_sim
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/environment/ament_prefix_path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/environment/ament_prefix_path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/environment/path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/environment/path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/local_setup.bash
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/local_setup.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/local_setup.zsh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/local_setup.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/package.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/ament_index/resource_index/packages/stonefish_sim
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/cmake/stonefish_simConfig.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/cmake/stonefish_simConfig-version.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/stonefish_sim/share/stonefish_sim/package.xml

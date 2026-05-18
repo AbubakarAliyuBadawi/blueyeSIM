@@ -1,0 +1,1 @@
+/home/badawi/Desktop/auto-pilot/build/waypoint_manager/ament_cmake_core/waypoint_managerConfig-version.cmake

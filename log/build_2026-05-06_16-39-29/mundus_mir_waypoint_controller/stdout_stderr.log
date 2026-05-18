@@ -1,0 +1,21 @@
+[35m[1mConsolidate compiler generated dependencies of target waypoint_controller[0m
+[100%] Built target waypoint_controller
+-- Install configuration: ""
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/launch
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/launch/mundus_mir_waypoint_controller.launch.py
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/lib/mundus_mir_waypoint_controller/waypoint_controller
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/ament_index/resource_index/package_run_dependencies/mundus_mir_waypoint_controller
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/ament_index/resource_index/parent_prefix_path/mundus_mir_waypoint_controller
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/environment/ament_prefix_path.sh
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/environment/path.sh
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/environment/path.dsv
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/local_setup.bash
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/local_setup.sh
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/local_setup.zsh
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/local_setup.dsv
+-- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/package.dsv
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/ament_index/resource_index/packages/mundus_mir_waypoint_controller
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/cmake/mundus_mir_waypoint_controllerConfig.cmake
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/cmake/mundus_mir_waypoint_controllerConfig-version.cmake
+-- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_waypoint_controller/share/mundus_mir_waypoint_controller/package.xml

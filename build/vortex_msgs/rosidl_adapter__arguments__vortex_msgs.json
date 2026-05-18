@@ -1,0 +1,32 @@
+{
+  "package_name": "vortex_msgs",
+  "non_idl_tuples": [
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/Clusters.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/ThrusterForces.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/Pwm.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/KMBinary.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/Landmark.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/LandmarkArray.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/OdometryArray.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/Parameter.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/ParameterArray.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/HybridpathReference.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/LOSGuidance.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/ReferenceFilter.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/DVLAltitude.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:msg/Waypoints.msg",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:srv/MissionParameters.srv",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:srv/Waypoint.srv",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/FilteredLandmarks.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/FindDock.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/GoToWaypoint.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/LocateDock.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/NavigateWaypoints.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/ReferenceFilterWaypoint.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/VtfGuidance.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/LOSGuidance.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/FilteredPose.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/HybridpathGuidance.action",
+    "/home/badawi/Desktop/auto-pilot/src/vortex-msgs:action/WaypointManager.action"
+  ]
+}

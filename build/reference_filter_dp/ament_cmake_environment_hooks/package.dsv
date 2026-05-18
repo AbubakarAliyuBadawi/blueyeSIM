@@ -1,0 +1,4 @@
+source;share/reference_filter_dp/local_setup.bash
+source;share/reference_filter_dp/local_setup.dsv
+source;share/reference_filter_dp/local_setup.sh
+source;share/reference_filter_dp/local_setup.zsh

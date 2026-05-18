@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/waypoint_manager/waypoint_manager_node" "TARGETS" "waypoint_manager_node" "DESTINATION" "lib/waypoint_manager")

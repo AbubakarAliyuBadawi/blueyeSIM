@@ -1,0 +1,39 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from vortex_msgs/action/FilteredLandmarks.action
+// generated code does not contain a copyright notice
+
+#include "vortex_msgs/msg/OdometryArray.idl"
+
+module vortex_msgs {
+  module action {
+    module FilteredLandmarks_Goal_Constants {
+      const float IGNORE_DISTANCE = 0.0;
+      const uint8 PROCESSING_NEW_GOAL = 4;
+      const uint8 GOAL_CANCELLED = 5;
+      const uint8 CONNECTION_ERROR = 6;
+      @verbatim (language="comment", text=
+        "Constants for landmark_type field")
+      const uint8 ALL = 0;
+      const uint8 BUOY = 1;
+      const uint8 BOAT = 2;
+      const uint8 WALL = 69;
+    };
+    struct FilteredLandmarks_Goal {
+      @verbatim (language="comment", text=
+        "Define the action request")
+      uint8 landmark_types;
+
+      float distance;
+    };
+    @verbatim (language="comment", text=
+      "Define the action result")
+    struct FilteredLandmarks_Result {
+      uint8 result;
+    };
+    @verbatim (language="comment", text=
+      "Define the action feedback")
+    struct FilteredLandmarks_Feedback {
+      vortex_msgs::msg::OdometryArray feedback;
+    };
+  };
+};

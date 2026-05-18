@@ -1,0 +1,2 @@
+source;share/los_guidance/environment/ament_prefix_path.sh
+source;share/los_guidance/environment/path.sh

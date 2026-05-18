@@ -1,0 +1,26 @@
+{
+  "package_name": "mundus_mir_msgs",
+  "non_idl_tuples": [
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/BatteryStatus.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/ReturnRecommendation.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/ActuatorInput.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/BlueyeCommand.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/ControlActions.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/ControllerState.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/DVL.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/EstimatorState.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/Reference.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/ResetPath.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:msg/SpeedRef.msg",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/AddWaypoint.srv",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/AddWaypointAlt.srv",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/InsertWaypoint.srv",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/InsertWaypointAlt.srv",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/ClearWaypoints.srv",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/GetWaypoints.srv",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/RemoveWaypoint.srv",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/GoToWaypoints.srv",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/RunWaypointController.srv",
+    "/home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs:srv/GetWaypointStatus.srv"
+  ]
+}

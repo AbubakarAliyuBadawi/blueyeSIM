@@ -1,0 +1,2 @@
+[console_scripts]
+auv-gui = auv_gui.auv_gui:main

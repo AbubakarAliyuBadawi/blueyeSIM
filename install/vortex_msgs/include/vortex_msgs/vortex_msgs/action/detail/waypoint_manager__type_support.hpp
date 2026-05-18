@@ -1,0 +1,1 @@
+/home/badawi/Desktop/auto-pilot/build/vortex_msgs/rosidl_generator_cpp/vortex_msgs/action/detail/waypoint_manager__type_support.hpp

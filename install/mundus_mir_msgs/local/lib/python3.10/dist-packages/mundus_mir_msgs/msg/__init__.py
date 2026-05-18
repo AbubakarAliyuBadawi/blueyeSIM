@@ -1,0 +1,11 @@
+from mundus_mir_msgs.msg._actuator_input import ActuatorInput  # noqa: F401
+from mundus_mir_msgs.msg._battery_status import BatteryStatus  # noqa: F401
+from mundus_mir_msgs.msg._blueye_command import BlueyeCommand  # noqa: F401
+from mundus_mir_msgs.msg._control_actions import ControlActions  # noqa: F401
+from mundus_mir_msgs.msg._controller_state import ControllerState  # noqa: F401
+from mundus_mir_msgs.msg._dvl import DVL  # noqa: F401
+from mundus_mir_msgs.msg._estimator_state import EstimatorState  # noqa: F401
+from mundus_mir_msgs.msg._reference import Reference  # noqa: F401
+from mundus_mir_msgs.msg._reset_path import ResetPath  # noqa: F401
+from mundus_mir_msgs.msg._return_recommendation import ReturnRecommendation  # noqa: F401
+from mundus_mir_msgs.msg._speed_ref import SpeedRef  # noqa: F401

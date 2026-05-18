@@ -1,0 +1,22 @@
+running develop
+running egg_info
+writing mundus_mir_stonefish_docking_controller.egg-info/PKG-INFO
+writing dependency_links to mundus_mir_stonefish_docking_controller.egg-info/dependency_links.txt
+writing entry points to mundus_mir_stonefish_docking_controller.egg-info/entry_points.txt
+writing requirements to mundus_mir_stonefish_docking_controller.egg-info/requires.txt
+writing top-level names to mundus_mir_stonefish_docking_controller.egg-info/top_level.txt
+reading manifest file 'mundus_mir_stonefish_docking_controller.egg-info/SOURCES.txt'
+writing manifest file 'mundus_mir_stonefish_docking_controller.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller/lib/python3.10/site-packages/mundus-mir-stonefish-docking-controller.egg-link (link to .)
+Installing stonefish_aruco_pose script to /home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller/lib/mundus_mir_stonefish_docking_controller
+Installing stonefish_docking_controller script to /home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller/lib/mundus_mir_stonefish_docking_controller
+Installing stonefish_sensor_republisher script to /home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller/lib/mundus_mir_stonefish_docking_controller
+
+Installed /home/badawi/Desktop/auto-pilot/build/mundus_mir_stonefish_docking_controller
+running symlink_data
+symbolically linking /home/badawi/Desktop/auto-pilot/build/mundus_mir_stonefish_docking_controller/resource/mundus_mir_stonefish_docking_controller -> /home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller/share/ament_index/resource_index/packages
+symbolically linking /home/badawi/Desktop/auto-pilot/build/mundus_mir_stonefish_docking_controller/package.xml -> /home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller/share/mundus_mir_stonefish_docking_controller
+symbolically linking /home/badawi/Desktop/auto-pilot/build/mundus_mir_stonefish_docking_controller/README.md -> /home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller/share/mundus_mir_stonefish_docking_controller
+symbolically linking /home/badawi/Desktop/auto-pilot/build/mundus_mir_stonefish_docking_controller/launch/stonefish_docking.launch.py -> /home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller/share/mundus_mir_stonefish_docking_controller/launch
+symbolically linking /home/badawi/Desktop/auto-pilot/build/mundus_mir_stonefish_docking_controller/config/stonefish_robot_localization.yaml -> /home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller/share/mundus_mir_stonefish_docking_controller/config

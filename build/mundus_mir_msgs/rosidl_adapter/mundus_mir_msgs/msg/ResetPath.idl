@@ -1,0 +1,12 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mundus_mir_msgs/msg/ResetPath.msg
+// generated code does not contain a copyright notice
+
+
+module mundus_mir_msgs {
+  module msg {
+    struct ResetPath {
+      boolean reset;
+    };
+  };
+};

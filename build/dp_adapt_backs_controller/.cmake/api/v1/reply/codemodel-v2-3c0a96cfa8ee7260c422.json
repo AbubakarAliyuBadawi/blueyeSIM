@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-c0f47f7570e9758118fd.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "dp_adapt_backs_controller",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "dp_adapt_backs_controller_component::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-dp_adapt_backs_controller_component-b1bd88c5ae1cffc5306b.json",
+					"name" : "dp_adapt_backs_controller_component",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "dp_adapt_backs_controller_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-dp_adapt_backs_controller_node-9e544ef4bffdcfd3114f.json",
+					"name" : "dp_adapt_backs_controller_node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "dp_adapt_backs_controller_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-dp_adapt_backs_controller_uninstall-faef2a9b1888b630c416.json",
+					"name" : "dp_adapt_backs_controller_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-2d632e78c0a4cd465dda.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/badawi/Desktop/auto-pilot/build/dp_adapt_backs_controller",
+		"source" : "/home/badawi/Desktop/auto-pilot/src/vortex-auv/control/dp_adapt_backs_controller"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

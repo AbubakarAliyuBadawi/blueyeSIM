@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/thrust_allocator_auv/thrust_allocator_auv_node" "TARGETS" "thrust_allocator_auv_node" "DESTINATION" "lib/thrust_allocator_auv")

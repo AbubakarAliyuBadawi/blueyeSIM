@@ -1,0 +1,1 @@
+/home/badawi/Desktop/auto-pilot/build/stonefish_ros2/rosidl_generator_py/stonefish_ros2/_stonefish_ros2_s.ep.rosidl_typesupport_c.c

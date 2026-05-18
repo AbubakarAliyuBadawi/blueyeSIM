@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/velocity_controller_4dof_ros2/velocity_controller_4dof" "TARGETS" "velocity_controller_4dof" "DESTINATION" "lib/velocity_controller_4dof_ros2")

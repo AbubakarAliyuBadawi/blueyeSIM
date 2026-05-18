@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-baba1b2843134c099578.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "joystick_interface_auv",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_joystick_interface_auv_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_joystick_interface_auv_egg-e201c76d3f7469fa993b.json",
+					"name" : "ament_cmake_python_build_joystick_interface_auv_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_symlink_joystick_interface_auv::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_symlink_joystick_interface_auv-eeadebdb729893e1e5b2.json",
+					"name" : "ament_cmake_python_symlink_joystick_interface_auv",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "joystick_interface_auv_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-joystick_interface_auv_uninstall-77281836136208efbc15.json",
+					"name" : "joystick_interface_auv_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-d0efc81ea57d877dd125.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/badawi/Desktop/auto-pilot/build/joystick_interface_auv",
+		"source" : "/home/badawi/Desktop/auto-pilot/src/vortex-auv/mission/joystick_interface_auv"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

@@ -1,0 +1,71 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mundus_mir_msgs/msg/ReturnRecommendation.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+
+module mundus_mir_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Timestamp for when this recommendation was calculated")
+    struct ReturnRecommendation {
+      builtin_interfaces::msg::Time stamp;
+
+      @verbatim (language="comment", text=
+        "Primary recommendation flag")
+      boolean should_return;
+
+      @verbatim (language="comment", text=
+        "Current state" "\n"
+        "Current battery percentage (0-100)")
+      double current_battery_level;
+
+      @verbatim (language="comment", text=
+        "Current distance to dock in meters")
+      double distance_to_dock;
+
+      @verbatim (language="comment", text=
+        "Current ROV speed in m/s")
+      double current_speed;
+
+      @verbatim (language="comment", text=
+        "Current battery consumption rate (%/second)")
+      double current_consumption_rate;
+
+      @verbatim (language="comment", text=
+        "Return journey estimates" "\n"
+        "Estimated battery percentage needed for return")
+      double estimated_return_energy;
+
+      @verbatim (language="comment", text=
+        "Estimated time to return in seconds")
+      double estimated_time_to_return;
+
+      @verbatim (language="comment", text=
+        "Minimum battery percentage needed (including safety margin)")
+      double minimum_battery_needed;
+
+      @verbatim (language="comment", text=
+        "Safety margins" "\n"
+        "Current safety margin as a percentage")
+      double safety_margin_percent;
+
+      @verbatim (language="comment", text=
+        "Minimum safe battery level to maintain")
+      double battery_safety_threshold;
+
+      @verbatim (language="comment", text=
+        "Additional info" "\n"
+        "Array of recent consumption rates for analysis")
+      sequence<double> consumption_rates;
+
+      @verbatim (language="comment", text=
+        "Array of recent speeds")
+      sequence<double> speeds;
+
+      @verbatim (language="comment", text=
+        "Array of timestamps for the consumption data")
+      sequence<double> timestamps;
+    };
+  };
+};

@@ -1,0 +1,74 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from vortex_msgs/msg/KMBinary.msg
+// generated code does not contain a copyright notice
+
+
+module vortex_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Epoch 1970-01-01 UTC time, ignoring leap seconds.")
+    struct KMBinary {
+      uint32 utc_seconds;
+
+      uint32 utc_nanoseconds;
+
+      @verbatim (language="comment", text=
+        "One bit per status info, 1= active, 0= inactive")
+      uint32 status;
+
+      double latitude;
+
+      double longitude;
+
+      float ellipsoid_height;
+
+      @verbatim (language="comment", text=
+        "Using NED coordinate system")
+      float roll;
+
+      float pitch;
+
+      float heading;
+
+      float heave;
+
+      float roll_rate;
+
+      float pitch_rate;
+
+      float yaw_rate;
+
+      float north_velocity;
+
+      float east_velocity;
+
+      float down_velocity;
+
+      float latitude_error;
+
+      float longitude_error;
+
+      float height_error;
+
+      float roll_error;
+
+      float pitch_error;
+
+      float heading_error;
+
+      float heave_error;
+
+      float north_acceleration;
+
+      float east_acceleration;
+
+      float down_acceleration;
+
+      uint32 delayed_heave_utc_seconds;
+
+      uint32 delayed_heave_utc_nanoseconds;
+
+      float delayed_heave;
+    };
+  };
+};

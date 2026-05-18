@@ -1,0 +1,9 @@
+/home/badawi/Desktop/auto-pilot/build/freya_visualization/CMakeFiles/uninstall.dir
+/home/badawi/Desktop/auto-pilot/build/freya_visualization/CMakeFiles/freya_visualization_uninstall.dir
+/home/badawi/Desktop/auto-pilot/build/freya_visualization/CMakeFiles/test.dir
+/home/badawi/Desktop/auto-pilot/build/freya_visualization/CMakeFiles/edit_cache.dir
+/home/badawi/Desktop/auto-pilot/build/freya_visualization/CMakeFiles/rebuild_cache.dir
+/home/badawi/Desktop/auto-pilot/build/freya_visualization/CMakeFiles/list_install_components.dir
+/home/badawi/Desktop/auto-pilot/build/freya_visualization/CMakeFiles/install.dir
+/home/badawi/Desktop/auto-pilot/build/freya_visualization/CMakeFiles/install/local.dir
+/home/badawi/Desktop/auto-pilot/build/freya_visualization/CMakeFiles/install/strip.dir

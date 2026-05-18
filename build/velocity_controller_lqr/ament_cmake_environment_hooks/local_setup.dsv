@@ -1,0 +1,3 @@
+source;share/velocity_controller_lqr/environment/ament_prefix_path.sh
+source;share/velocity_controller_lqr/environment/path.sh
+source;share/velocity_controller_lqr/environment/pythonpath.sh

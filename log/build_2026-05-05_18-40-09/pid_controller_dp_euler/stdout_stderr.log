@@ -1,0 +1,63 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found rclcpp: 16.0.17 (/opt/ros/humble/share/rclcpp/cmake)
+-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+-- Found FastRTPS: /opt/ros/humble/include  
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Found nav_msgs: 4.9.0 (/opt/ros/humble/share/nav_msgs/cmake)
+-- Found tf2: 0.25.18 (/opt/ros/humble/share/tf2/cmake)
+-- Found vortex_msgs: 0.0.1 (/home/badawi/Desktop/auto-pilot/install/vortex_msgs/share/vortex_msgs/cmake)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/badawi/Desktop/auto-pilot/build/pid_controller_dp_euler
+[ 20%] [32mBuilding CXX object CMakeFiles/pid_controller_node.dir/src/pid_controller.cpp.o[0m
+[ 40%] [32mBuilding CXX object CMakeFiles/pid_controller_node.dir/src/pid_controller_ros.cpp.o[0m
+[ 60%] [32mBuilding CXX object CMakeFiles/pid_controller_node.dir/src/pid_controller_node.cpp.o[0m
+[ 80%] [32mBuilding CXX object CMakeFiles/pid_controller_node.dir/src/pid_controller_utils.cpp.o[0m
+[100%] [32m[1mLinking CXX executable pid_controller_node[0m
+[100%] Built target pid_controller_node
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/lib/pid_controller_dp_euler/pid_controller_node
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler//config/pid_params.yaml
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler//launch/pid_controller_dp.launch.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/ament_index/resource_index/package_run_dependencies/pid_controller_dp_euler
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/ament_index/resource_index/parent_prefix_path/pid_controller_dp_euler
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/environment/ament_prefix_path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/environment/ament_prefix_path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/environment/path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/environment/path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/local_setup.bash
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/local_setup.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/local_setup.zsh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/local_setup.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/package.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/ament_index/resource_index/packages/pid_controller_dp_euler
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/cmake/pid_controller_dp_eulerConfig.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/cmake/pid_controller_dp_eulerConfig-version.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/pid_controller_dp_euler/share/pid_controller_dp_euler/package.xml

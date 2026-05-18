@@ -1,0 +1,57 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/badawi/Desktop/auto-pilot/build/ma1_mclsimpy
+Built target ament_cmake_python_symlink_ma1_mclsimpy
+running egg_info
+creating ma1_mclsimpy.egg-info
+writing ma1_mclsimpy.egg-info/PKG-INFO
+writing dependency_links to ma1_mclsimpy.egg-info/dependency_links.txt
+writing top-level names to ma1_mclsimpy.egg-info/top_level.txt
+writing manifest file 'ma1_mclsimpy.egg-info/SOURCES.txt'
+reading manifest file 'ma1_mclsimpy.egg-info/SOURCES.txt'
+writing manifest file 'ma1_mclsimpy.egg-info/SOURCES.txt'
+Built target ament_cmake_python_build_ma1_mclsimpy_egg
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/environment/pythonpath.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/environment/pythonpath.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/local/lib/python3.10/dist-packages/ma1_mclsimpy-0.0.0-py3.10.egg-info/PKG-INFO
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/local/lib/python3.10/dist-packages/ma1_mclsimpy-0.0.0-py3.10.egg-info/SOURCES.txt
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/local/lib/python3.10/dist-packages/ma1_mclsimpy-0.0.0-py3.10.egg-info/dependency_links.txt
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/local/lib/python3.10/dist-packages/ma1_mclsimpy-0.0.0-py3.10.egg-info/top_level.txt
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/local/lib/python3.10/dist-packages/ma1_mclsimpy/__init__.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/launch/ma1_mclsimpy.launch.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/config/sim_params.yaml
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/lib/ma1_mclsimpy/sim_with_waves.py
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ament_index/resource_index/package_run_dependencies/ma1_mclsimpy
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ament_index/resource_index/parent_prefix_path/ma1_mclsimpy
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/environment/ament_prefix_path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/environment/ament_prefix_path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/environment/path.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/environment/path.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/local_setup.bash
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/local_setup.sh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/local_setup.zsh
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/local_setup.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/package.dsv
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ament_index/resource_index/packages/ma1_mclsimpy
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/cmake/ma1_mclsimpyConfig.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/cmake/ma1_mclsimpyConfig-version.cmake
+-- Symlinking: /home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/share/ma1_mclsimpy/package.xml
+Listing '/home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/local/lib/python3.10/dist-packages/ma1_mclsimpy'...
+Compiling '/home/badawi/Desktop/auto-pilot/install/ma1_mclsimpy/local/lib/python3.10/dist-packages/ma1_mclsimpy/__init__.py'...

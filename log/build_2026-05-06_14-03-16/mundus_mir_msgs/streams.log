@@ -1,0 +1,845 @@
+[0.009s] Invoking command in '/home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake /home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs -DCMAKE_INSTALL_PREFIX=/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs
+[0.116s] -- The C compiler identification is GNU 11.4.0
+[0.211s] -- The CXX compiler identification is GNU 11.4.0
+[0.222s] -- Detecting C compiler ABI info
+[0.290s] -- Detecting C compiler ABI info - done
+[0.295s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.296s] -- Detecting C compile features
+[0.296s] -- Detecting C compile features - done
+[0.299s] -- Detecting CXX compiler ABI info
+[0.379s] -- Detecting CXX compiler ABI info - done
+[0.385s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.385s] -- Detecting CXX compile features
+[0.386s] -- Detecting CXX compile features - done
+[0.396s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.682s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.763s] -- Found std_msgs: 4.9.0 (/opt/ros/humble/share/std_msgs/cmake)
+[0.805s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.811s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.818s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.832s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.847s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.869s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.883s] -- Found geometry_msgs: 4.9.0 (/opt/ros/humble/share/geometry_msgs/cmake)
+[1.225s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[1.567s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.727s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.747s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[1.750s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[1.777s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[1.777s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.777s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[1.777s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[1.800s] -- Found PythonExtra: .so  
+[1.864s] -- Configuring done
+[1.911s] -- Generating done
+[1.921s] -- Build files have been written to: /home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs
+[1.928s] Invoked command in '/home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake /home/badawi/Desktop/auto-pilot/src/mundus_mir_msgs -DCMAKE_INSTALL_PREFIX=/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs
+[1.928s] Invoking command in '/home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake --build /home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs -- -j20 -l20
+[1.972s] [  0%] Generating C code for ROS interfaces
+[1.982s] [  0%] Generating C++ code for ROS interfaces
+[1.989s] [  0%] Built target ament_cmake_python_copy_mundus_mir_msgs
+[2.191s] running egg_info
+[2.202s] creating mundus_mir_msgs.egg-info
+[2.202s] writing mundus_mir_msgs.egg-info/PKG-INFO
+[2.202s] writing dependency_links to mundus_mir_msgs.egg-info/dependency_links.txt
+[2.202s] writing top-level names to mundus_mir_msgs.egg-info/top_level.txt
+[2.202s] writing manifest file 'mundus_mir_msgs.egg-info/SOURCES.txt'
+[2.235s] reading manifest file 'mundus_mir_msgs.egg-info/SOURCES.txt'
+[2.236s] writing manifest file 'mundus_mir_msgs.egg-info/SOURCES.txt'
+[2.256s] [  0%] Built target ament_cmake_python_build_mundus_mir_msgs_egg
+[3.177s] [  1%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/battery_status__functions.c.o
+[3.180s] [  2%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/actuator_input__functions.c.o
+[3.180s] [  2%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/return_recommendation__functions.c.o
+[3.182s] [  3%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/control_actions__functions.c.o
+[3.182s] [  3%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/controller_state__functions.c.o
+[3.182s] [  3%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/blueye_command__functions.c.o
+[3.183s] [  4%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/dvl__functions.c.o
+[3.184s] [  5%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/reference__functions.c.o
+[3.184s] [  5%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/estimator_state__functions.c.o
+[3.192s] [  5%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/reset_path__functions.c.o
+[3.192s] [  6%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/msg/detail/speed_ref__functions.c.o
+[3.199s] [  6%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/add_waypoint__functions.c.o
+[3.201s] [  7%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/add_waypoint_alt__functions.c.o
+[3.206s] [  7%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/insert_waypoint__functions.c.o
+[3.206s] [  8%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/insert_waypoint_alt__functions.c.o
+[3.207s] [  8%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/clear_waypoints__functions.c.o
+[3.210s] [  8%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/remove_waypoint__functions.c.o
+[3.211s] [  9%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/get_waypoints__functions.c.o
+[3.218s] [ 10%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/go_to_waypoints__functions.c.o
+[3.220s] [ 10%] Built target mundus_mir_msgs__cpp
+[3.233s] [ 11%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/run_waypoint_controller__functions.c.o
+[3.269s] [ 11%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_c.dir/rosidl_generator_c/mundus_mir_msgs/srv/detail/get_waypoint_status__functions.c.o
+[3.272s] [ 12%] Generating C++ type support dispatch for ROS interfaces
+[3.277s] [ 13%] Generating C++ type support for eProsima Fast-RTPS
+[3.280s] [ 14%] Generating C++ introspection for ROS interfaces
+[3.337s] [ 15%] Linking C shared library libmundus_mir_msgs__rosidl_generator_c.so
+[3.373s] [ 15%] Built target mundus_mir_msgs__rosidl_generator_c
+[3.382s] [ 16%] Generating C type support dispatch for ROS interfaces
+[3.386s] [ 18%] Generating C type support for eProsima Fast-RTPS
+[3.386s] [ 18%] Generating C introspection for ROS interfaces
+[4.117s] [ 20%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/control_actions__type_support.cpp.o
+[4.117s] [ 20%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/return_recommendation__type_support.cpp.o
+[4.117s] [ 20%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/battery_status__type_support.cpp.o
+[4.117s] [ 20%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/controller_state__type_support.cpp.o
+[4.117s] [ 20%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/dvl__type_support.cpp.o
+[4.117s] [ 20%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/actuator_input__type_support.cpp.o
+[4.117s] [ 20%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/reference__type_support.cpp.o
+[4.117s] [ 21%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/reset_path__type_support.cpp.o
+[4.118s] [ 22%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/add_waypoint_alt__type_support.cpp.o
+[4.121s] [ 22%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/speed_ref__type_support.cpp.o
+[4.121s] [ 23%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/insert_waypoint_alt__type_support.cpp.o
+[4.122s] [ 25%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/add_waypoint__type_support.cpp.o
+[4.122s] [ 25%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/blueye_command__type_support.cpp.o
+[4.122s] [ 26%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/msg/estimator_state__type_support.cpp.o
+[4.127s] [ 26%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/insert_waypoint__type_support.cpp.o
+[4.548s] [ 26%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/clear_waypoints__type_support.cpp.o
+[4.550s] [ 26%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/remove_waypoint__type_support.cpp.o
+[4.551s] [ 27%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/get_waypoints__type_support.cpp.o
+[4.557s] [ 28%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/go_to_waypoints__type_support.cpp.o
+[4.591s] [ 28%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/run_waypoint_controller__type_support.cpp.o
+[4.597s] [ 29%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mundus_mir_msgs/srv/get_waypoint_status__type_support.cpp.o
+[4.715s] [ 29%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/battery_status__type_support.cpp.o
+[4.722s] [ 30%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/return_recommendation__type_support.cpp.o
+[4.725s] [ 30%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/actuator_input__type_support.cpp.o
+[4.739s] [ 31%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/blueye_command__type_support.cpp.o
+[4.739s] [ 32%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/controller_state__type_support.cpp.o
+[4.743s] [ 32%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/dvl__type_support.cpp.o
+[4.746s] [ 32%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/control_actions__type_support.cpp.o
+[4.760s] [ 33%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/estimator_state__type_support.cpp.o
+[4.765s] [ 33%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/reference__type_support.cpp.o
+[4.765s] [ 34%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/reset_path__type_support.cpp.o
+[4.782s] [ 34%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/msg/speed_ref__type_support.cpp.o
+[4.790s] [ 35%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/add_waypoint__type_support.cpp.o
+[4.794s] [ 35%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/add_waypoint_alt__type_support.cpp.o
+[4.810s] [ 36%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/insert_waypoint__type_support.cpp.o
+[4.817s] [ 37%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/clear_waypoints__type_support.cpp.o
+[4.819s] [ 37%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/insert_waypoint_alt__type_support.cpp.o
+[4.848s] [ 38%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/get_waypoints__type_support.cpp.o
+[4.849s] [ 39%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/go_to_waypoints__type_support.cpp.o
+[4.849s] [ 40%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/get_waypoint_status__type_support.cpp.o
+[4.850s] [ 40%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/remove_waypoint__type_support.cpp.o
+[4.861s] [ 40%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mundus_mir_msgs/srv/run_waypoint_controller__type_support.cpp.o
+[4.879s] [ 41%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/battery_status__type_support.cpp.o
+[4.888s] [ 41%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/return_recommendation__type_support.cpp.o
+[4.899s] [ 42%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/actuator_input__type_support.cpp.o
+[4.906s] [ 42%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/blueye_command__type_support.cpp.o
+[4.906s] [ 43%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/control_actions__type_support.cpp.o
+[4.910s] [ 43%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/controller_state__type_support.cpp.o
+[4.927s] [ 44%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/dvl__type_support.cpp.o
+[4.927s] [ 44%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/estimator_state__type_support.cpp.o
+[4.927s] [ 44%] Linking CXX shared library libmundus_mir_msgs__rosidl_typesupport_c.so
+[4.943s] [ 45%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/reference__type_support.cpp.o
+[4.966s] [ 45%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/reset_path__type_support.cpp.o
+[4.972s] [ 46%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/msg/detail/speed_ref__type_support.cpp.o
+[4.975s] [ 46%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/add_waypoint__type_support.cpp.o
+[5.004s] [ 47%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/add_waypoint_alt__type_support.cpp.o
+[5.028s] [ 47%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/insert_waypoint__type_support.cpp.o
+[5.043s] [ 48%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/insert_waypoint_alt__type_support.cpp.o
+[5.073s] [ 48%] Built target mundus_mir_msgs__rosidl_typesupport_c
+[5.095s] [ 48%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/clear_waypoints__type_support.cpp.o
+[5.101s] [ 48%] Linking CXX shared library libmundus_mir_msgs__rosidl_typesupport_cpp.so
+[5.189s] [ 48%] Built target mundus_mir_msgs__rosidl_typesupport_cpp
+[5.209s] [ 49%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/get_waypoints__type_support.cpp.o
+[5.463s] [ 49%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/battery_status__type_support.cpp.o
+[5.469s] [ 50%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/return_recommendation__type_support.cpp.o
+[5.470s] [ 50%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/remove_waypoint__type_support.cpp.o
+[5.499s] [ 51%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/go_to_waypoints__type_support.cpp.o
+[5.566s] [ 51%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/run_waypoint_controller__type_support.cpp.o
+[5.578s] [ 51%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/actuator_input__type_support.cpp.o
+[5.591s] [ 52%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mundus_mir_msgs/srv/detail/get_waypoint_status__type_support.cpp.o
+[5.623s] [ 52%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/control_actions__type_support.cpp.o
+[5.628s] [ 53%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/blueye_command__type_support.cpp.o
+[5.635s] [ 54%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/controller_state__type_support.cpp.o
+[5.641s] [ 55%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/dvl__type_support.cpp.o
+[5.672s] [ 55%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/estimator_state__type_support.cpp.o
+[5.728s] [ 55%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/reset_path__type_support.cpp.o
+[5.734s] [ 56%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/reference__type_support.cpp.o
+[5.734s] [ 57%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/msg/detail/dds_fastrtps/speed_ref__type_support.cpp.o
+[5.811s] [ 57%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/add_waypoint__type_support.cpp.o
+[5.825s] [ 58%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/add_waypoint_alt__type_support.cpp.o
+[5.853s] [ 58%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/insert_waypoint__type_support.cpp.o
+[6.101s] [ 59%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/insert_waypoint_alt__type_support.cpp.o
+[6.107s] [ 59%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/clear_waypoints__type_support.cpp.o
+[6.135s] [ 59%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/battery_status__type_support.c.o
+[6.206s] [ 59%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/battery_status__type_support_c.cpp.o
+[6.219s] [ 60%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/get_waypoints__type_support.cpp.o
+[6.233s] [ 61%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/return_recommendation__type_support_c.cpp.o
+[6.239s] [ 62%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/return_recommendation__type_support.c.o
+[6.260s] [ 62%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/actuator_input__type_support_c.cpp.o
+[6.303s] [ 63%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/blueye_command__type_support_c.cpp.o
+[6.303s] [ 63%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/actuator_input__type_support.c.o
+[6.318s] [ 63%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/control_actions__type_support_c.cpp.o
+[6.338s] [ 63%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/remove_waypoint__type_support.cpp.o
+[6.350s] [ 64%] Linking CXX shared library libmundus_mir_msgs__rosidl_typesupport_introspection_cpp.so
+[6.372s] [ 65%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/go_to_waypoints__type_support.cpp.o
+[6.373s] [ 66%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/blueye_command__type_support.c.o
+[6.385s] [ 66%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/run_waypoint_controller__type_support.cpp.o
+[6.394s] [ 67%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/control_actions__type_support.c.o
+[6.396s] [ 68%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/controller_state__type_support_c.cpp.o
+[6.418s] [ 69%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mundus_mir_msgs/srv/detail/dds_fastrtps/get_waypoint_status__type_support.cpp.o
+[6.437s] [ 69%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/dvl__type_support_c.cpp.o
+[6.464s] [ 69%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/controller_state__type_support.c.o
+[6.491s] [ 70%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/dvl__type_support.c.o
+[6.530s] [ 70%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/estimator_state__type_support.c.o
+[6.543s] [ 70%] Built target mundus_mir_msgs__rosidl_typesupport_introspection_cpp
+[6.551s] [ 71%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/estimator_state__type_support_c.cpp.o
+[6.551s] [ 71%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/reference__type_support_c.cpp.o
+[6.569s] [ 72%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/reset_path__type_support_c.cpp.o
+[6.585s] [ 73%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/reference__type_support.c.o
+[6.605s] [ 73%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/reset_path__type_support.c.o
+[6.635s] [ 74%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/msg/detail/speed_ref__type_support_c.cpp.o
+[6.689s] [ 75%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/msg/detail/speed_ref__type_support.c.o
+[6.708s] [ 75%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/add_waypoint__type_support.c.o
+[6.712s] [ 75%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/add_waypoint__type_support_c.cpp.o
+[6.732s] [ 76%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/add_waypoint_alt__type_support_c.cpp.o
+[6.759s] [ 76%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/insert_waypoint__type_support_c.cpp.o
+[6.767s] [ 77%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/insert_waypoint_alt__type_support_c.cpp.o
+[6.771s] [ 78%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/add_waypoint_alt__type_support.c.o
+[6.790s] [ 78%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/clear_waypoints__type_support_c.cpp.o
+[6.847s] [ 78%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/insert_waypoint__type_support.c.o
+[6.856s] [ 79%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/get_waypoints__type_support_c.cpp.o
+[6.896s] [ 79%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/clear_waypoints__type_support.c.o
+[6.898s] [ 80%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/insert_waypoint_alt__type_support.c.o
+[6.911s] [ 81%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/get_waypoints__type_support.c.o
+[6.964s] [ 81%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/remove_waypoint__type_support.c.o
+[6.969s] [ 81%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/run_waypoint_controller__type_support.c.o
+[6.974s] [ 82%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/go_to_waypoints__type_support.c.o
+[6.978s] [ 82%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/remove_waypoint__type_support_c.cpp.o
+[6.990s] [ 83%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mundus_mir_msgs/srv/detail/get_waypoint_status__type_support.c.o
+[6.999s] [ 84%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/go_to_waypoints__type_support_c.cpp.o
+[7.028s] [ 84%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/run_waypoint_controller__type_support_c.cpp.o
+[7.036s] [ 85%] Building CXX object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mundus_mir_msgs/srv/detail/get_waypoint_status__type_support_c.cpp.o
+[7.056s] [ 85%] Linking C shared library libmundus_mir_msgs__rosidl_typesupport_introspection_c.so
+[7.106s] [ 85%] Linking CXX shared library libmundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.so
+[7.124s] [ 85%] Built target mundus_mir_msgs__rosidl_typesupport_introspection_c
+[7.214s] [ 85%] Built target mundus_mir_msgs__rosidl_typesupport_fastrtps_cpp
+[7.455s] [ 85%] Linking CXX shared library libmundus_mir_msgs__rosidl_typesupport_fastrtps_c.so
+[7.518s] [ 85%] Built target mundus_mir_msgs__rosidl_typesupport_fastrtps_c
+[7.540s] [ 85%] Built target mundus_mir_msgs
+[7.561s] [ 86%] Generating Python code for ROS interfaces
+[9.565s] [ 86%] Built target mundus_mir_msgs__py
+[9.590s] [ 87%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_controller_state_s.c.o
+[9.590s] [ 87%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_control_actions_s.c.o
+[9.590s] [ 88%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_blueye_command_s.c.o
+[9.590s] [ 88%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_dvl_s.c.o
+[9.590s] [ 89%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_return_recommendation_s.c.o
+[9.590s] [ 89%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_reference_s.c.o
+[9.590s] [ 89%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_battery_status_s.c.o
+[9.590s] [ 90%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_estimator_state_s.c.o
+[9.591s] [ 90%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_actuator_input_s.c.o
+[9.591s] [ 90%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_add_waypoint_alt_s.c.o
+[9.591s] [ 91%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_insert_waypoint_s.c.o
+[9.591s] [ 92%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_insert_waypoint_alt_s.c.o
+[9.591s] [ 92%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_add_waypoint_s.c.o
+[9.591s] [ 93%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_clear_waypoints_s.c.o
+[9.592s] [ 94%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_reset_path_s.c.o
+[9.592s] [ 94%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/msg/_speed_ref_s.c.o
+[9.597s] [ 95%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_remove_waypoint_s.c.o
+[9.597s] [ 95%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_get_waypoints_s.c.o
+[9.599s] [ 96%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_go_to_waypoints_s.c.o
+[9.609s] [ 96%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_run_waypoint_controller_s.c.o
+[9.774s] [ 97%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_generator_py.dir/rosidl_generator_py/mundus_mir_msgs/srv/_get_waypoint_status_s.c.o
+[9.856s] [ 97%] Linking C shared library rosidl_generator_py/mundus_mir_msgs/libmundus_mir_msgs__rosidl_generator_py.so
+[9.893s] [ 97%] Built target mundus_mir_msgs__rosidl_generator_py
+[9.909s] [ 98%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/mundus_mir_msgs/_mundus_mir_msgs_s.ep.rosidl_typesupport_introspection_c.c.o
+[9.911s] [ 99%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/mundus_mir_msgs/_mundus_mir_msgs_s.ep.rosidl_typesupport_c.c.o
+[9.911s] [100%] Building C object CMakeFiles/mundus_mir_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/mundus_mir_msgs/_mundus_mir_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o
+[10.054s] [100%] Linking C shared library rosidl_generator_py/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[10.059s] [100%] Linking C shared library rosidl_generator_py/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[10.072s] [100%] Linking C shared library rosidl_generator_py/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[10.094s] [100%] Built target mundus_mir_msgs__rosidl_typesupport_fastrtps_c__pyext
+[10.095s] [100%] Built target mundus_mir_msgs__rosidl_typesupport_introspection_c__pyext
+[10.105s] [100%] Built target mundus_mir_msgs__rosidl_typesupport_c__pyext
+[10.114s] Invoked command in '/home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake --build /home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs -- -j20 -l20
+[10.122s] Invoking command in '/home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake --install /home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs
+[10.128s] -- Install configuration: ""
+[10.129s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/ament_index/resource_index/rosidl_interfaces/mundus_mir_msgs
+[10.129s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs
+[10.129s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv
+[10.129s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/go_to_waypoints.h
+[10.130s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/insert_waypoint.h
+[10.130s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/run_waypoint_controller.h
+[10.130s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/add_waypoint_alt.h
+[10.130s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/remove_waypoint.h
+[10.131s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/get_waypoint_status.h
+[10.131s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/insert_waypoint_alt.h
+[10.131s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/clear_waypoints.h
+[10.131s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/get_waypoints.h
+[10.132s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail
+[10.132s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__functions.h
+[10.132s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__functions.c
+[10.132s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__functions.c
+[10.132s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__functions.h
+[10.132s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__struct.h
+[10.132s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__struct.h
+[10.132s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__functions.c
+[10.133s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__functions.h
+[10.133s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__functions.h
+[10.133s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__functions.h
+[10.133s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__type_support.h
+[10.133s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__type_support.h
+[10.133s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__type_support.h
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__struct.h
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__functions.c
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__struct.h
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__type_support.h
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__functions.c
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__functions.h
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__struct.h
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__struct.h
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__functions.c
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__functions.h
+[10.134s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__struct.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__functions.c
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__functions.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__type_support.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__type_support.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__type_support.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__functions.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__functions.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__type_support.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__type_support.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__struct.h
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__functions.c
+[10.135s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__type_support.h
+[10.136s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__functions.c
+[10.136s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__struct.h
+[10.136s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__struct.h
+[10.136s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__functions.c
+[10.136s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/add_waypoint.h
+[10.136s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg
+[10.136s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/reference.h
+[10.136s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/blueye_command.h
+[10.137s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/battery_status.h
+[10.137s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/rosidl_generator_c__visibility_control.h
+[10.137s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/actuator_input.h
+[10.137s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/control_actions.h
+[10.137s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/dvl.h
+[10.138s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/speed_ref.h
+[10.138s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/estimator_state.h
+[10.138s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/controller_state.h
+[10.138s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/reset_path.h
+[10.138s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/return_recommendation.h
+[10.138s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail
+[10.138s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__functions.h
+[10.138s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__type_support.h
+[10.138s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__type_support.h
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__functions.c
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__functions.c
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__type_support.h
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__functions.c
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__functions.h
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__functions.h
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__type_support.h
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__functions.c
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__functions.h
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__functions.c
+[10.139s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__struct.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__struct.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__struct.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__functions.c
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__type_support.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__type_support.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__functions.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__struct.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__functions.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__struct.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__functions.h
+[10.140s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__functions.c
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__struct.h
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__functions.c
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__functions.h
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__struct.h
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__struct.h
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__functions.c
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__functions.h
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__functions.c
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__type_support.h
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__functions.c
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__type_support.h
+[10.141s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__type_support.h
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__struct.h
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__functions.h
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__struct.h
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__functions.h
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__type_support.h
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__type_support.h
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__struct.h
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/environment/library_path.sh
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/environment/library_path.dsv
+[10.142s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_generator_c.so
+[10.142s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_generator_c.so" to ""
+[10.142s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs
+[10.143s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv
+[10.143s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail
+[10.143s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__rosidl_typesupport_fastrtps_c.h
+[10.143s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__rosidl_typesupport_fastrtps_c.h
+[10.143s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__rosidl_typesupport_fastrtps_c.h
+[10.143s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__rosidl_typesupport_fastrtps_c.h
+[10.143s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__rosidl_typesupport_fastrtps_c.h
+[10.143s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__rosidl_typesupport_fastrtps_c.h
+[10.143s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[10.144s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__rosidl_typesupport_fastrtps_c.h
+[10.144s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_fastrtps_c.so
+[10.144s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[10.145s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs
+[10.145s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/add_waypoint.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/insert_waypoint_alt.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/clear_waypoints.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/get_waypoint_status.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/go_to_waypoints.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/add_waypoint_alt.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/remove_waypoint.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/get_waypoints.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/run_waypoint_controller.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/insert_waypoint.hpp
+[10.145s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__type_support.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__traits.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__builder.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__builder.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__type_support.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__traits.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__type_support.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__builder.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__struct.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__traits.hpp
+[10.145s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__struct.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__traits.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__struct.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__type_support.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__struct.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__struct.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__struct.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__type_support.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__type_support.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__struct.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__traits.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__struct.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__traits.hpp
+[10.146s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__traits.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__builder.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__builder.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__struct.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__traits.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__builder.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__type_support.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__type_support.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__struct.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__traits.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__builder.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__traits.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__type_support.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__builder.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__type_support.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__builder.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__builder.hpp
+[10.147s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/reset_path.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/blueye_command.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/reference.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/return_recommendation.hpp
+[10.147s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/dvl.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/control_actions.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/controller_state.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/battery_status.hpp
+[10.148s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__traits.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__builder.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__traits.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__struct.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__traits.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__type_support.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__type_support.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__traits.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__type_support.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__struct.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__traits.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__struct.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__traits.hpp
+[10.148s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__type_support.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__struct.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__traits.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__struct.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__builder.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__struct.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__type_support.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__struct.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__type_support.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__type_support.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__builder.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__struct.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__builder.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__struct.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__builder.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__builder.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__builder.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__builder.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__traits.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__traits.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__traits.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__type_support.hpp
+[10.149s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__builder.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__builder.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__struct.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__type_support.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__struct.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__type_support.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__builder.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__traits.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__type_support.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/actuator_input.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/speed_ref.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/estimator_state.hpp
+[10.150s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs
+[10.150s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv
+[10.150s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__rosidl_typesupport_fastrtps_cpp.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__rosidl_typesupport_fastrtps_cpp.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__rosidl_typesupport_fastrtps_cpp.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/dds_fastrtps
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__rosidl_typesupport_fastrtps_cpp.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__rosidl_typesupport_fastrtps_cpp.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__rosidl_typesupport_fastrtps_cpp.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__rosidl_typesupport_fastrtps_cpp.hpp
+[10.150s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__rosidl_typesupport_fastrtps_cpp.hpp
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__rosidl_typesupport_fastrtps_cpp.hpp
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__rosidl_typesupport_fastrtps_cpp.hpp
+[10.151s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[10.151s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__rosidl_typesupport_fastrtps_cpp.hpp
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__rosidl_typesupport_fastrtps_cpp.hpp
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dds_fastrtps
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__rosidl_typesupport_fastrtps_cpp.hpp
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__rosidl_typesupport_fastrtps_cpp.hpp
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__rosidl_typesupport_fastrtps_cpp.hpp
+[10.151s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__rosidl_typesupport_fastrtps_cpp.hpp
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__rosidl_typesupport_fastrtps_cpp.hpp
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__rosidl_typesupport_fastrtps_cpp.hpp
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__rosidl_typesupport_fastrtps_cpp.hpp
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__rosidl_typesupport_fastrtps_cpp.hpp
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__rosidl_typesupport_fastrtps_cpp.hpp
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.so
+[10.152s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[10.152s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs
+[10.152s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv
+[10.152s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__rosidl_typesupport_introspection_c.h
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__rosidl_typesupport_introspection_c.h
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__rosidl_typesupport_introspection_c.h
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__rosidl_typesupport_introspection_c.h
+[10.152s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__type_support.c
+[10.153s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg
+[10.153s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__type_support.c
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__rosidl_typesupport_introspection_c.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[10.153s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_introspection_c.so
+[10.153s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_introspection_c.so" to ""
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_c.so
+[10.154s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_c.so" to ""
+[10.154s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs
+[10.154s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv
+[10.154s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/go_to_waypoints__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoint_status__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/insert_waypoint_alt__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/remove_waypoint__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/run_waypoint_controller__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/get_waypoints__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/clear_waypoints__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/srv/detail/add_waypoint_alt__type_support.cpp
+[10.154s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg
+[10.154s] -- Up-to-date: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/battery_status__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/speed_ref__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/controller_state__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reset_path__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__type_support.cpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__rosidl_typesupport_introspection_cpp.hpp
+[10.154s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/dvl__type_support.cpp
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/blueye_command__type_support.cpp
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/control_actions__rosidl_typesupport_introspection_cpp.hpp
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/actuator_input__type_support.cpp
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/estimator_state__type_support.cpp
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/reference__rosidl_typesupport_introspection_cpp.hpp
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/include/mundus_mir_msgs/mundus_mir_msgs/msg/detail/return_recommendation__rosidl_typesupport_introspection_cpp.hpp
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_introspection_cpp.so
+[10.155s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_cpp.so
+[10.155s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_typesupport_cpp.so" to ""
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/environment/pythonpath.sh
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/environment/pythonpath.dsv
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs-0.0.0-py3.10.egg-info
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs-0.0.0-py3.10.egg-info/PKG-INFO
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs-0.0.0-py3.10.egg-info/dependency_links.txt
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs-0.0.0-py3.10.egg-info/SOURCES.txt
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs-0.0.0-py3.10.egg-info/top_level.txt
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/_mundus_mir_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/libmundus_mir_msgs__rosidl_generator_py.so
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/_mundus_mir_msgs_s.ep.rosidl_typesupport_c.c
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/_mundus_mir_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_insert_waypoint_alt_s.c
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_clear_waypoints.py
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_add_waypoint_alt_s.c
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_get_waypoint_status.py
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_add_waypoint.py
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_insert_waypoint.py
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_clear_waypoints_s.c
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_go_to_waypoints.py
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_insert_waypoint_s.c
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_go_to_waypoints_s.c
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_get_waypoints.py
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_run_waypoint_controller.py
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_add_waypoint_s.c
+[10.155s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_get_waypoint_status_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/__init__.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_remove_waypoint.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_get_waypoints_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_run_waypoint_controller_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_insert_waypoint_alt.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_add_waypoint_alt.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_remove_waypoint_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/__init__.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_reset_path_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_controller_state_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_estimator_state.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_control_actions.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_speed_ref_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_reset_path.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_blueye_command.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_reference.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_actuator_input_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_dvl.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_control_actions_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_battery_status.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_actuator_input.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_dvl_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_battery_status_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_return_recommendation_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_speed_ref.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/__init__.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_controller_state.py
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_estimator_state_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_reference_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_blueye_command_s.c
+[10.156s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_return_recommendation.py
+[10.210s] Listing '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs'...
+[10.210s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/__init__.py'...
+[10.210s] Listing '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/__init__.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_actuator_input.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_battery_status.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_blueye_command.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_control_actions.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_controller_state.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_dvl.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_estimator_state.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_reference.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_reset_path.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_return_recommendation.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/msg/_speed_ref.py'...
+[10.211s] Listing '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/__init__.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_add_waypoint.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_add_waypoint_alt.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_clear_waypoints.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_get_waypoint_status.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_get_waypoints.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_go_to_waypoints.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_insert_waypoint.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_insert_waypoint_alt.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_remove_waypoint.py'...
+[10.211s] Compiling '/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/srv/_run_waypoint_controller.py'...
+[10.214s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[10.214s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+[10.214s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[10.214s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+[10.215s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[10.215s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/local/lib/python3.10/dist-packages/mundus_mir_msgs/mundus_mir_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+[10.215s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_generator_py.so
+[10.215s] -- Set runtime path of "/home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/lib/libmundus_mir_msgs__rosidl_generator_py.so" to ""
+[10.215s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/BatteryStatus.idl
+[10.215s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ReturnRecommendation.idl
+[10.215s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ActuatorInput.idl
+[10.215s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/BlueyeCommand.idl
+[10.215s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ControlActions.idl
+[10.215s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ControllerState.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/DVL.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/EstimatorState.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/Reference.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ResetPath.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/SpeedRef.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/AddWaypoint.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/AddWaypointAlt.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/InsertWaypoint.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/InsertWaypointAlt.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/ClearWaypoints.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GetWaypoints.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/RemoveWaypoint.idl
+[10.216s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GoToWaypoints.idl
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/RunWaypointController.idl
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GetWaypointStatus.idl
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/BatteryStatus.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ReturnRecommendation.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ActuatorInput.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/BlueyeCommand.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ControlActions.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ControllerState.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/DVL.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/EstimatorState.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/Reference.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/ResetPath.msg
+[10.217s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/msg/SpeedRef.msg
+[10.218s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/AddWaypoint.srv
+[10.218s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/AddWaypoint_Request.msg
+[10.218s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/AddWaypoint_Response.msg
+[10.218s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/AddWaypointAlt.srv
+[10.218s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/AddWaypointAlt_Request.msg
+[10.218s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/AddWaypointAlt_Response.msg
+[10.218s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/InsertWaypoint.srv
+[10.218s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/InsertWaypoint_Request.msg
+[10.218s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/InsertWaypoint_Response.msg
+[10.219s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/InsertWaypointAlt.srv
+[10.219s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/InsertWaypointAlt_Request.msg
+[10.219s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/InsertWaypointAlt_Response.msg
+[10.219s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/ClearWaypoints.srv
+[10.219s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/ClearWaypoints_Request.msg
+[10.219s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/ClearWaypoints_Response.msg
+[10.219s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GetWaypoints.srv
+[10.219s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GetWaypoints_Request.msg
+[10.219s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GetWaypoints_Response.msg
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/RemoveWaypoint.srv
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/RemoveWaypoint_Request.msg
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/RemoveWaypoint_Response.msg
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GoToWaypoints.srv
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GoToWaypoints_Request.msg
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GoToWaypoints_Response.msg
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/RunWaypointController.srv
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/RunWaypointController_Request.msg
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/RunWaypointController_Response.msg
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GetWaypointStatus.srv
+[10.220s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GetWaypointStatus_Request.msg
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/srv/GetWaypointStatus_Response.msg
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/ament_index/resource_index/package_run_dependencies/mundus_mir_msgs
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/ament_index/resource_index/parent_prefix_path/mundus_mir_msgs
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/environment/ament_prefix_path.sh
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/environment/ament_prefix_path.dsv
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/environment/path.sh
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/environment/path.dsv
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/local_setup.bash
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/local_setup.sh
+[10.221s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/local_setup.zsh
+[10.222s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/local_setup.dsv
+[10.222s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/package.dsv
+[10.222s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/ament_index/resource_index/packages/mundus_mir_msgs
+[10.223s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/export_mundus_mir_msgs__rosidl_generator_cExport.cmake
+[10.223s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/export_mundus_mir_msgs__rosidl_generator_cExport-noconfig.cmake
+[10.223s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/export_mundus_mir_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[10.223s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/export_mundus_mir_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[10.223s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/export_mundus_mir_msgs__rosidl_generator_cppExport.cmake
+[10.223s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/export_mundus_mir_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[10.223s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/export_mundus_mir_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[10.223s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgs__rosidl_typesupport_introspection_cExport.cmake
+[10.223s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgs__rosidl_typesupport_cExport.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgs__rosidl_typesupport_cppExport.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/export_mundus_mir_msgs__rosidl_generator_pyExport.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/export_mundus_mir_msgs__rosidl_generator_pyExport-noconfig.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/rosidl_cmake-extras.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[10.224s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[10.225s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgsConfig.cmake
+[10.225s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/cmake/mundus_mir_msgsConfig-version.cmake
+[10.225s] -- Installing: /home/badawi/Desktop/auto-pilot/install/mundus_mir_msgs/share/mundus_mir_msgs/package.xml
+[10.226s] Invoked command in '/home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/badawi/Desktop/auto-pilot/install/auv_gui:/home/badawi/Desktop/auto-pilot/install/mundus_mir_stonefish_docking_controller:/opt/ros/humble /usr/bin/cmake --install /home/badawi/Desktop/auto-pilot/build/mundus_mir_msgs

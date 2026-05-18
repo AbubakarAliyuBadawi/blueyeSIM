@@ -1,0 +1,8 @@
+setup.py
+joystick_interface_auv/__init__.py
+joystick_interface_auv/joystick_interface_auv_node.py
+joystick_interface_auv/joystick_utils.py
+joystick_interface_auv.egg-info/PKG-INFO
+joystick_interface_auv.egg-info/SOURCES.txt
+joystick_interface_auv.egg-info/dependency_links.txt
+joystick_interface_auv.egg-info/top_level.txt

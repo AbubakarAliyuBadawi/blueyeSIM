@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/badawi/Desktop/auto-pilot/build/pose_action_server/pose_action_server_node" "TARGETS" "pose_action_server_node" "DESTINATION" "lib/pose_action_server")

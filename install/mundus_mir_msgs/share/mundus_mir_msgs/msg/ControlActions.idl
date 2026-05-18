@@ -1,0 +1,26 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from mundus_mir_msgs/msg/ControlActions.msg
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/Vector3.idl"
+#include "std_msgs/msg/Header.idl"
+
+module mundus_mir_msgs {
+  module msg {
+    struct ControlActions {
+      std_msgs::msg::Header header;
+
+      geometry_msgs::msg::Vector3 prop_action_linear;
+
+      geometry_msgs::msg::Vector3 deriv_action_linear;
+
+      geometry_msgs::msg::Vector3 integral_action_linear;
+
+      double prop_action_angular;
+
+      double deriv_action_angular;
+
+      double integral_action_angular;
+    };
+  };
+};
