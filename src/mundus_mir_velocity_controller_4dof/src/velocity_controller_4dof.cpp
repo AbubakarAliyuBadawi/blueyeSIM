@@ -131,7 +131,7 @@ const nav_msgs::msg::Odometry::SharedPtr msg) {
     // variables.
     auto vel_x   = msg->twist.twist.linear.x;
     auto vel_y   = msg->twist.twist.linear.y;
-    auto vel_z   = msg->twist.twist.linear.z;
+    auto vel_z   =-msg->twist.twist.linear.z;
     auto vel_psi = msg->twist.twist.angular.z;
 
     current_values_ << vel_x, vel_y, vel_z, vel_psi;

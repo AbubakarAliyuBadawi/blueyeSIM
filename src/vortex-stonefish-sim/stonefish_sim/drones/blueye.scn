@@ -14,9 +14,9 @@
       <material name="Neutral"/>
       <look name="BlueyeBlue"/>
       <mass value="18.42"/>
-      <inertia xyz="10000 10000 100"/>
-      <!-- <hydrodynamics viscous_drag="0.10 0.18 0.18 0.0 0.0 5.5" quadratic_drag="0.3 0.8 0.5 0.0 0.0 5.3"/> -->
-      <hydrodynamics viscous_drag="0.10 0.18 0.18" quadratic_drag="0.3 0.8 0.5"/>
+      <inertia xyz="10000 10000 3"/>
+      <hydrodynamics viscous_drag="0.10 0.18 0.18 0.0 0.0 5.5" quadratic_drag="0.3 0.8 0.5 0.0 0.0 100.0"/>
+      <!-- <hydrodynamics viscous_drag="0.10 0.18 0.18" quadratic_drag="0.3 0.8 0.5"/> -->
       <cg xyz="0.0 0.0 0.06" rpy="0.0 0.0 0.0"/>
     </base_link>
 
