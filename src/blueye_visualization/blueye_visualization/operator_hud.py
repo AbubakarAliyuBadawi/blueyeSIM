@@ -6,15 +6,18 @@ Live camera feed + joystick overlay + thruster status + pose display.
 
 Topics consumed:
   /blueye/cam/image_color   sensor_msgs/Image
+  /blueye/fls/display       sensor_msgs/Image
   /joy                      sensor_msgs/Joy
   /blueye/thrusters         std_msgs/Float64MultiArray
   /blueye/odom              nav_msgs/Odometry
+  /blueye/usbl/beacon_info  stonefish_ros2/BeaconInfo
 """
 
 import os
 import sys
 import math
 import threading
+import time
 
 # PyQt5 MUST be imported before cv2.
 # cv2 ships its own bundled Qt libs; if cv2 loads first it registers conflicting
@@ -29,10 +32,11 @@ else:
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget,
     QVBoxLayout, QHBoxLayout, QFrame, QSizePolicy, QLabel,
+    QTabWidget,
 )
-from PyQt5.QtCore import Qt, pyqtSignal, QObject, QCoreApplication
+from PyQt5.QtCore import Qt, pyqtSignal, QObject, QCoreApplication, QTimer, QPoint
 from PyQt5.QtGui import (
-    QImage, QPixmap, QPainter, QColor, QPen, QFont,
+    QImage, QPixmap, QPainter, QColor, QPen, QFont, QPolygon,
 )
 
 # cv2 and ROS imports come AFTER PyQt5 is loaded
@@ -46,15 +50,18 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from sensor_msgs.msg import Image, Joy
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Float64MultiArray
+from stonefish_ros2.msg import BeaconInfo
 
 
 # ── Thread-safe Qt signals ────────────────────────────────────────────────────
 
 class _Signals(QObject):
     camera_ready   = pyqtSignal(object)   # numpy BGR array
+    sonar_ready    = pyqtSignal(object)   # numpy BGR array
     joy_ready      = pyqtSignal(object)   # sensor_msgs/Joy
     thrust_ready   = pyqtSignal(object)   # list[float]
     odom_ready     = pyqtSignal(object)   # nav_msgs/Odometry
+    usbl_ready     = pyqtSignal(object)   # stonefish_ros2/BeaconInfo
 
 
 # ── Camera panel ──────────────────────────────────────────────────────────────
@@ -88,6 +95,17 @@ class CameraPanel(QLabel):
         self.setStyleSheet(f"background:{self._NO_SIGNAL_COLOR};")
         self.setText("")
         self.setPixmap(pix)
+
+
+# ── Sonar panel ───────────────────────────────────────────────────────────────
+
+class SonarPanel(CameraPanel):
+    _NO_SIGNAL_COLOR = "#101018"
+    _NO_SIGNAL_TEXT  = "NO SONAR SIGNAL"
+
+    def __init__(self):
+        super().__init__()
+        self.setMinimumSize(360, 260)
 
 
 # ── Joystick panel ────────────────────────────────────────────────────────────
@@ -443,6 +461,257 @@ class PosePanel(QWidget):
             p.drawText(half, ty + i * lh, W - half - 4, lh, Qt.AlignRight, val)
 
 
+# ── USBL panel ────────────────────────────────────────────────────────────────
+
+class USBLPanel(QWidget):
+    """
+    World-frame USBL docking map.
+
+    The dock beacon is kept fixed in the map.  The Blueye pose comes from odom,
+    while the beacon estimate is computed from odom + USBL relative_position.
+    """
+
+    _BG      = QColor("#11111b")
+    _GRID    = QColor("#313244")
+    _AXIS_X  = QColor("#89b4fa")
+    _AXIS_Y  = QColor("#f38ba8")
+    _AXIS_Z  = QColor("#a6e3a1")
+    _TEXT    = QColor("#cdd6f4")
+    _MUTED   = QColor("#6c7086")
+    _ROV     = QColor("#89dceb")
+    _BEACON  = QColor("#fab387")
+    _PING    = QColor(250, 179, 135, 90)
+    _GOOD    = QColor("#a6e3a1")
+    _FAIR    = QColor("#f9e2af")
+    _POOR    = QColor("#f38ba8")
+
+    def __init__(self):
+        super().__init__()
+        self._msg = None
+        self._last_usbl_wall = None
+        self._blueye = None
+        self._beacon_world = None
+        self._phase = 0
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self._timer = QTimer(self)
+        self._timer.timeout.connect(self._tick)
+        self._timer.start(80)
+
+    def ingest(self, msg):
+        self._msg = msg
+        self._last_usbl_wall = time.monotonic()
+        self._update_beacon_world()
+        self._phase = 0
+        self.update()
+
+    def ingest_odom(self, msg):
+        pos = msg.pose.pose.position
+        q = msg.pose.pose.orientation
+        siny = 2.0 * (q.w * q.z + q.x * q.y)
+        cosy = 1.0 - 2.0 * (q.y * q.y + q.z * q.z)
+        yaw = math.atan2(siny, cosy)
+        self._blueye = (pos.x, pos.y, pos.z, yaw)
+        self._update_beacon_world()
+        self.update()
+
+    def _update_beacon_world(self):
+        if self._msg is None or self._blueye is None:
+            return
+        bx, by, bz, yaw = self._blueye
+        rel = self._msg.relative_position
+        cy = math.cos(yaw)
+        sy = math.sin(yaw)
+        wx = bx + rel.x * cy - rel.y * sy
+        wy = by + rel.x * sy + rel.y * cy
+        wz = bz + rel.z
+        self._beacon_world = (wx, wy, wz)
+
+    def _tick(self):
+        self._phase = (self._phase + 1) % 30
+        self.update()
+
+    def paintEvent(self, _):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing)
+        W, H = self.width(), self.height()
+        p.fillRect(0, 0, W, H, self._BG)
+
+        p.setPen(self._TEXT)
+        p.setFont(QFont("Monospace", 12, QFont.Bold))
+        p.drawText(0, 10, W, 24, Qt.AlignCenter, "USBL DOCKING MAP")
+
+        if self._msg is None or self._blueye is None:
+            p.setPen(self._MUTED)
+            p.setFont(QFont("Monospace", 14, QFont.Bold))
+            p.drawText(0, 0, W, H, Qt.AlignCenter, "WAITING FOR USBL + ODOM")
+            return
+
+        blueye = self._blueye
+        beacon = self._beacon_world
+        if beacon is None:
+            return
+
+        scale = self._scale_for(blueye, beacon)
+        center = beacon
+        cx, cy = W // 2, H // 2 + 30
+        rx, ry = self._world_to_screen(blueye[0], blueye[1], center, cx, cy, scale)
+        bx, by = self._world_to_screen(beacon[0], beacon[1], center, cx, cy, scale)
+
+        self._draw_grid(p, W, H, cx, cy, scale)
+        self._draw_beacon(p, bx, by, beacon[2])
+        self._draw_rov(p, rx, ry, blueye[3])
+        self._draw_ping(p, rx, ry, bx, by)
+        self._draw_readout(p, W, H, blueye, beacon)
+
+    def _scale_for(self, blueye, beacon):
+        dx = blueye[0] - beacon[0]
+        dy = blueye[1] - beacon[1]
+        span = max(2.0, math.hypot(dx, dy)) + 1.2
+        usable = max(120, min(self.width(), self.height()) * 0.34)
+        return usable / span
+
+    def _world_to_screen(self, wx, wy, center, cx, cy, scale):
+        sx = cx + int((wy - center[1]) * scale)
+        sy = cy - int((wx - center[0]) * scale)
+        return sx, sy
+
+    def _draw_grid(self, p, W, H, cx, cy, scale):
+        p.setPen(QPen(self._GRID, 1))
+        step = max(20, int(scale))
+        for gx in range(cx % step, W, step):
+            p.drawLine(gx, 44, gx, H - 86)
+        for gy in range(44 + ((cy - 44) % step), H - 86, step):
+            p.drawLine(24, gy, W - 24, gy)
+
+        p.setPen(QPen(self._AXIS_X, 2))
+        p.drawLine(cx, cy, cx, 48)
+        p.setPen(QPen(self._AXIS_Y, 2))
+        p.drawLine(24, cy, W - 24, cy)
+
+        p.setFont(QFont("Monospace", 8, QFont.Bold))
+        p.setPen(self._AXIS_X)
+        p.drawText(cx + 6, 50, 90, 16, Qt.AlignLeft, "+X WORLD")
+        p.setPen(self._AXIS_Y)
+        p.drawText(W - 104, cy + 6, 96, 16, Qt.AlignRight, "+Y WORLD")
+
+    def _draw_rov(self, p, cx, cy, yaw):
+        fwd_x = math.sin(yaw)
+        fwd_y = -math.cos(yaw)
+        right_x = math.cos(yaw)
+        right_y = math.sin(yaw)
+
+        def pt(forward, right):
+            return QPoint(
+                int(cx + fwd_x * forward + right_x * right),
+                int(cy + fwd_y * forward + right_y * right),
+            )
+
+        p.setBrush(self._ROV)
+        p.setPen(QPen(QColor("#cdd6f4"), 2))
+        p.drawPolygon(QPolygon([
+            pt(32, 0),
+            pt(10, -18),
+            pt(-28, -15),
+            pt(-28, 15),
+            pt(10, 18),
+        ]))
+        p.setBrush(QColor("#cdd6f4"))
+        p.setPen(Qt.NoPen)
+        p.drawPolygon(QPolygon([
+            pt(44, 0),
+            pt(26, -8),
+            pt(26, 8),
+        ]))
+        p.setPen(self._TEXT)
+        p.setFont(QFont("Monospace", 8, QFont.Bold))
+        p.drawText(cx - 40, cy + 34, 80, 16, Qt.AlignCenter, "BLUEYE")
+
+    def _draw_beacon(self, p, bx, by, world_z):
+        p.setBrush(self._BEACON)
+        p.setPen(QPen(self._AXIS_Z, 3))
+        p.drawEllipse(bx - 13, by - 13, 26, 26)
+        p.setPen(self._TEXT)
+        p.setFont(QFont("Monospace", 8, QFont.Bold))
+        p.drawText(bx - 46, by + 14, 92, 16, Qt.AlignCenter, "DOCK BEACON")
+
+        p.setPen(QPen(self._AXIS_Z, 2))
+        p.drawLine(bx + 18, by, bx + 18, by - int(world_z * 20))
+        p.setFont(QFont("Monospace", 7))
+        p.drawText(bx + 24, by - int(world_z * 20) - 8, 84, 14,
+                   Qt.AlignLeft, f"world z {world_z:+.2f}")
+
+    def _draw_ping(self, p, cx, cy, bx, by):
+        p.setPen(QPen(self._BEACON, 2))
+        p.drawLine(cx, cy, bx, by)
+
+        t = self._phase / 30.0
+        px = cx + int((bx - cx) * t)
+        py = cy + int((by - cy) * t)
+        radius = 8 + int(16 * t)
+        p.setBrush(Qt.NoBrush)
+        p.setPen(QPen(self._PING, 3))
+        p.drawEllipse(px - radius, py - radius, radius * 2, radius * 2)
+        p.setBrush(self._PING)
+        p.setPen(Qt.NoPen)
+        p.drawEllipse(px - 4, py - 4, 8, 8)
+
+    def _draw_readout(self, p, W, H, blueye, beacon):
+        rel = self._msg.relative_position
+        rng = float(self._msg.range)
+        az = math.degrees(float(self._msg.azimuth))
+        el = math.degrees(float(self._msg.elevation))
+        depth = float(self._msg.local_depth)
+        age = 999.0 if self._last_usbl_wall is None else time.monotonic() - self._last_usbl_wall
+        status, color, quality = self._signal_state(age, rng)
+
+        rows = [
+            ("STATUS", status),
+            ("QUALITY", quality),
+            ("AGE",   f"{age:.1f} s"),
+            ("RANGE", f"{rng:.2f} m"),
+            ("AZIM",  f"{az:+.1f} deg"),
+            ("ELEV",  f"{el:+.1f} deg"),
+            ("REL X", f"{rel.x:+.2f} m"),
+            ("REL Y", f"{rel.y:+.2f} m"),
+            ("REL Z", f"{rel.z:+.2f} m"),
+            ("ROV X", f"{blueye[0]:+.2f} m"),
+            ("ROV Y", f"{blueye[1]:+.2f} m"),
+            ("DOCK X", f"{beacon[0]:+.2f} m"),
+            ("DOCK Y", f"{beacon[1]:+.2f} m"),
+            ("DEPTH",  f"{depth:.2f} m"),
+        ]
+
+        panel_w = 230
+        x0, y0 = W - panel_w - 16, 52
+        p.setBrush(QColor(30, 30, 46, 220))
+        p.setPen(QPen(QColor("#45475a"), 1))
+        p.drawRoundedRect(x0, y0, panel_w, 28 + len(rows) * 20, 6, 6)
+
+        p.setFont(QFont("Monospace", 9, QFont.Bold))
+        p.setPen(self._TEXT)
+        p.drawText(x0 + 10, y0 + 8, panel_w - 20, 16, Qt.AlignCenter, f"BEACON {self._msg.beacon_id}")
+
+        p.setBrush(color)
+        p.setPen(Qt.NoPen)
+        p.drawRoundedRect(x0 + 12, y0 + 28, panel_w - 24, 8, 4, 4)
+
+        p.setFont(QFont("Monospace", 9))
+        for i, (lbl, val) in enumerate(rows):
+            yy = y0 + 42 + i * 20
+            p.setPen(self._MUTED)
+            p.drawText(x0 + 12, yy, 76, 16, Qt.AlignLeft, lbl)
+            p.setPen(color if lbl in ("STATUS", "QUALITY") else self._TEXT)
+            p.drawText(x0 + 88, yy, panel_w - 100, 16, Qt.AlignRight, val)
+
+    def _signal_state(self, age, rng):
+        if age > 3.0:
+            return "LOST", self._POOR, "NO LOCK"
+        if age < 1.2 and rng < 15.0:
+            return "LOCKED", self._GOOD, "GOOD"
+        if age < 2.0 and rng < 50.0:
+            return "LOCKED", self._FAIR, "FAIR"
+        return "WEAK", self._POOR, "POOR"
+
 # ── Main window ───────────────────────────────────────────────────────────────
 
 class OperatorWindow(QMainWindow):
@@ -459,9 +728,31 @@ class OperatorWindow(QMainWindow):
         root.setContentsMargins(4, 4, 4, 4)
         root.setSpacing(4)
 
-        # ── camera (top) ────────────────────────────────────────────────────
+        tabs = QTabWidget()
+        tabs.setStyleSheet(
+            "QTabWidget::pane { border:1px solid #313244; background:#181825; }"
+            "QTabBar::tab { background:#313244; color:#cdd6f4; padding:8px 14px; "
+            "font-family:Monospace; font-weight:bold; }"
+            "QTabBar::tab:selected { background:#45475a; color:#ffffff; }"
+        )
+        root.addWidget(tabs)
+
+        overview = QWidget()
+        overview_layout = QVBoxLayout(overview)
+        overview_layout.setContentsMargins(0, 0, 0, 0)
+        overview_layout.setSpacing(4)
+
+        # ── camera + sonar (top) ────────────────────────────────────────────
         self.cam = CameraPanel()
-        root.addWidget(self.cam, stretch=7)
+        self.sonar_panel = SonarPanel()
+
+        top = QWidget()
+        tl = QHBoxLayout(top)
+        tl.setContentsMargins(0, 0, 0, 0)
+        tl.setSpacing(4)
+        tl.addWidget(self.cam, stretch=3)
+        tl.addWidget(self.sonar_panel, stretch=2)
+        overview_layout.addWidget(top, stretch=7)
 
         # ── bottom three panels ─────────────────────────────────────────────
         bottom = QWidget()
@@ -485,13 +776,20 @@ class OperatorWindow(QMainWindow):
             fl.addWidget(widget)
             bl.addWidget(frame)
 
-        root.addWidget(bottom, stretch=3)
+        overview_layout.addWidget(bottom, stretch=3)
+
+        self.usbl_panel = USBLPanel()
+        tabs.addTab(overview, "Overview")
+        tabs.addTab(self.usbl_panel, "USBL")
 
         # ── wire signals ────────────────────────────────────────────────────
         signals.camera_ready.connect(self.cam.ingest)
+        signals.sonar_ready.connect(self.sonar_panel.ingest)
         signals.joy_ready.connect(self.joy_panel.ingest)
         signals.thrust_ready.connect(self.thruster_panel.ingest)
         signals.odom_ready.connect(self.pose_panel.ingest)
+        signals.odom_ready.connect(self.usbl_panel.ingest_odom)
+        signals.usbl_ready.connect(self.usbl_panel.ingest)
 
 
 # ── ROS2 node ─────────────────────────────────────────────────────────────────
@@ -512,11 +810,15 @@ class OperatorHUDNode(Node):
         self.create_subscription(
             Image, "/blueye/cam/image_color", self._on_image, best_effort)
         self.create_subscription(
+            Image, "/blueye/fls/display", self._on_sonar, best_effort)
+        self.create_subscription(
             Joy, "/joy", self._on_joy, 10)
         self.create_subscription(
             Float64MultiArray, "/blueye/thrusters", self._on_thrusters, 10)
         self.create_subscription(
             Odometry, "/blueye/odom", self._on_odom, best_effort)
+        self.create_subscription(
+            BeaconInfo, "/blueye/usbl/beacon_info", self._on_usbl, 10)
 
     def _on_image(self, msg):
         try:
@@ -524,6 +826,13 @@ class OperatorHUDNode(Node):
             self._signals.camera_ready.emit(frame)
         except Exception as exc:
             self.get_logger().warn(f"Image error: {exc}", throttle_duration_sec=5)
+
+    def _on_sonar(self, msg):
+        try:
+            frame = self._bridge.imgmsg_to_cv2(msg, "bgr8")
+            self._signals.sonar_ready.emit(frame)
+        except Exception as exc:
+            self.get_logger().warn(f"Sonar error: {exc}", throttle_duration_sec=5)
 
     def _on_joy(self, msg):
         self._signals.joy_ready.emit(msg)
@@ -533,6 +842,9 @@ class OperatorHUDNode(Node):
 
     def _on_odom(self, msg):
         self._signals.odom_ready.emit(msg)
+
+    def _on_usbl(self, msg):
+        self._signals.usbl_ready.emit(msg)
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
