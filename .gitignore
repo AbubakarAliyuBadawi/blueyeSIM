@@ -4,3 +4,7 @@ log/
 *.pyc
 __pycache__/
 .vscode/
+*.obj
+craighouse-pier-jura/source/model/model.obj
+src/vortex-stonefish-sim/stonefish_sim/data/object_files/craighouse_pier.obj
+src/vortex-stonefish-sim/stonefish_sim/data/object_files/underwater_terreain.obj
