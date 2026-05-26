@@ -1,0 +1,7 @@
+newmtl pier_visual
+Ka 0.45 0.38 0.28
+Kd 0.45 0.38 0.28
+Ks 0.03 0.03 0.03
+d 1.0
+Ns 8.0
+illum 2

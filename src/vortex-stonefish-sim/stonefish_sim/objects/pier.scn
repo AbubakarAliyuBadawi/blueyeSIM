@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <static name="pier" type="model">
+    <physical>
+      <mesh filename="object_files/pier_lowpoly.obj" scale="1.0"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </physical>
+    <visual>
+      <mesh filename="object_files/craighouse_pier_decimated.obj" scale="1.0"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <material name="Neutral"/>
+    <look name="pier"/>
+    <world_transform xyz="$(param pier_position)" rpy="$(param pier_orientation)"/>
+  </static>
+
+</scenario>

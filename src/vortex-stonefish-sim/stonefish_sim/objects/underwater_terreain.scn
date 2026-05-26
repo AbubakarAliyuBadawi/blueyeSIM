@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <static name="underwater_terreain" type="model">
+    <!-- Temporary tiny physical mesh so the terrain is visible but does not trap the ROV. -->
+    <physical>
+      <mesh filename="object_files/pipe2.obj" scale="0.001"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </physical>
+    <visual>
+      <mesh filename="object_files/underwater_terreain.obj" scale="1.0"/>
+      <origin rpy="1.5708 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <material name="Neutral"/>
+    <look name="Neutral"/>
+    <world_transform xyz="$(param underwater_terreain_position)" rpy="$(param underwater_terreain_orientation)"/>
+  </static>
+
+</scenario>

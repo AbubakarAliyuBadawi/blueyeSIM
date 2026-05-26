@@ -41,5 +41,6 @@
             <look name="Aruco5x5_18" gray="1.0" roughness="0.2" texture="aruco_tags/dict_5x5_50_18.png"/>
             <look name="Aruco5x5_19" gray="1.0" roughness="0.2" texture="aruco_tags/dict_5x5_50_19.png"/>
             <look name="Aruco5x5_20" gray="1.0" roughness="0.2" texture="aruco_tags/dict_5x5_50_20.png"/>
+            <look name="pier" rgb="0.45 0.32 0.18" roughness="0.85" metalness="0.0"/>
         </looks>
     </scenario>

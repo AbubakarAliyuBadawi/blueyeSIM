@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <static name="pier_pillers" type="model">
+    <physical>
+      <mesh filename="object_files/pier_pillers.obj" scale="1.0"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </physical>
+    <visual>
+      <mesh filename="object_files/pier_pillers.obj" scale="1.0"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <material name="Rock"/>
+    <look name="Gray"/>
+    <world_transform xyz="$(param pier_pillers_position)" rpy="$(param pier_pillers_orientation)"/>
+  </static>
+
+</scenario>

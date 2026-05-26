@@ -1,0 +1,261 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <dynamic name="docking_station_compound" physics="submerged" type="compound">
+
+    <external_part name="plate1" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate1.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate1.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate2" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate2.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate2.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate3" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate3.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate3.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate4" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate4.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate4.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate5" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate5.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate5.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate6" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate6.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate6.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate7" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate7.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate7.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate8" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate8.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate8.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate9" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate9.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate9.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate10" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate10.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate10.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate11" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate11.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate11.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate12" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate12.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate12.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate13" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate13.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate13.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate14" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate14.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate14.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate15" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate15.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate15.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate16" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate16.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate16.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate17" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate17.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate17.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <external_part name="plate18" type="model" physics="submerged" buoyant="false">
+      <physical>
+        <mesh filename="object_files/docking_station_compound/dock_plate18.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="object_files/docking_station_compound/dock_plate18.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Dock"/>
+      <look name="SafetyYellow"/>
+      <compound_transform xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </external_part>
+
+    <world_transform xyz="$(param docking_rig_position)" rpy="$(param docking_rig_orientation)"/>
+  </dynamic>
+
+</scenario>

@@ -25,6 +25,7 @@ gpu_scenarios = [
 no_gpu_scenarios = [
     "orca_no_gpu",
     "freya_no_gpu",
+    "blueye_no_gpu",
 ]
 
 def load_scenario_config(scenario_val):

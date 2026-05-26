@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <static name="oil_platform" type="model">
+    <physical>
+      <mesh filename="object_files/oil_platform.obj" scale="1.0"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </physical>
+    <visual>
+      <mesh filename="object_files/oil_platform.obj" scale="1.0"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <material name="Steel"/>
+    <look name="Gray"/>
+    <world_transform xyz="$(param oil_platform_position)" rpy="$(param oil_platform_orientation)"/>
+  </static>
+
+</scenario>

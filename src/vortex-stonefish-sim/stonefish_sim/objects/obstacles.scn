@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <!-- Real rock mesh -->
+  <static name="RockMesh" type="model">
+    <physical>
+      <mesh filename="object_files/rock.obj" scale="1.0"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </physical>
+    <visual>
+      <mesh filename="object_files/rock.obj" scale="1.0"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <material name="Rock"/>
+    <look name="Gray"/>
+    <world_transform xyz="$(param rock_position)" rpy="$(param rock_orientation)"/>
+  </static>
+
+</scenario>

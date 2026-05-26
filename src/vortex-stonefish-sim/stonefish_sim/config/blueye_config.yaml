@@ -1,6 +1,28 @@
-blueye_position: "0.0 0.0 1.0"
-blueye_orientation: "0.0 0.0 0.0"
-pipeline_position: "1.85 0.0 3.5"
+# blueye position for pipeline test
+blueye_position: "1.14 2.07 2.71"
+# blueye position for docking test
+# blueye_position: "7.0 -20.0 2.7"
+
+blueye_orientation: "0.0 0.0 3.1416"
+blueye_orientation: "0.0 0.0 3.1416"
+
+pipeline_position: "1.0 0.5 3.5"
 pipeline_orientation: "0.0 0.0 0.0"
-docking_rig_position: "10.0 -25.0 3.95"
+
+docking_rig_position: "8.0 -22.0 3.9"
 docking_rig_orientation: "0.0 0.0 3.14"
+
+pier_position: "0.0 -7.0 2.9"
+pier_orientation: "0.0 0.0 0.0"
+
+underwater_terreain_position: "0.0 0.0 3.0"
+underwater_terreain_orientation: "0.0 0.0 0.0"
+
+pier_pillers_position: "2.0 -12.0 2.8"
+pier_pillers_orientation: "1.5708 3.1416 0.0"
+
+oil_platform_position: "20.0 -10.0 0.0"
+oil_platform_orientation: "1.5708 0.0 0.0"
+
+rock_position: "0.0 -20.0 3.0"
+rock_orientation: "1.5708 3.1416 1.5708"

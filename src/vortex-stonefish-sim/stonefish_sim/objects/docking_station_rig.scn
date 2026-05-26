@@ -2,9 +2,9 @@
 <scenario>
 
   <robot name="Docking Station Rig" fixed="true" self_collisions="false">
-    <base_link name="rig_base" type="model" physics="submerged">
+    <base_link name="rig_base" type="model">
       <physical>
-        <mesh filename="object_files/docking_station_rig_collision_manual.obj" scale="1.0"/>
+        <mesh filename="object_files/blueye_temp_mesh_new.obj" scale="1.0"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
       </physical>
       <visual>

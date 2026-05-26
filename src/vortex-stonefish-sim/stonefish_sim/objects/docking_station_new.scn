@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <static name="docking_station_new" type="model">
+    <physical>
+      <mesh filename="object_files/docking_mesh_physics_low_3.obj" scale="1.0"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </physical>
+    <material name="Neutral"/>
+    <look name="Yellow"/>
+    <world_transform xyz="$(param docking_rig_position)" rpy="$(param docking_rig_orientation)"/>
+  </static>
+
+</scenario>
