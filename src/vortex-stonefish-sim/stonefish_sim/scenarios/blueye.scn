@@ -31,9 +31,9 @@
   <!-- <include file="$(find stonefish_sim)/objects/underwater_terreain.scn"/> -->
   <include file="$(find stonefish_sim)/objects/docking_station_rig.scn"/>
   <!-- <include file="$(find stonefish_sim)/objects/docking_station_compound.scn"/> -->
-  <include file="$(find stonefish_sim)/objects/docking_station_new.scn"/>
+  <!-- <include file="$(find stonefish_sim)/objects/docking_station_new.scn"/> -->
   <!-- <include file="$(find stonefish_sim)/objects/pier.scn"/> -->
-  <include file="$(find stonefish_sim)/objects/obstacles.scn"/>
+  <!-- <include file="$(find stonefish_sim)/objects/obstacles.scn"/> -->
   <include file="$(find stonefish_sim)/objects/pier_pillers.scn"/>
   <!-- <include file="$(find stonefish_sim)/objects/oil_platform.scn"/> -->
 
