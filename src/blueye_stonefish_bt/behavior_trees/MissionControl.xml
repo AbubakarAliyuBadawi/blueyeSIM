@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4" main_tree_to_execute="BlueyeAutonomyControl">
+  <include path="UnDocking.xml"/>
+  <include path="Transit_1.xml"/>
+  <include path="Transit_2.xml"/>
+  <include path="PipeLineInspection.xml"/>
+  <include path="WreckageInspection.xml"/>
+  <include path="Homing.xml"/>
+  <include path="Docking.xml"/>
+
+  <BehaviorTree ID="BlueyeAutonomyControl">
+    <Sequence name="initialize_and_monitor">
+      <SetBlackboard value="false" output_key="emergency_triggered"/>
+
+      <ReactiveSequence name="monitor_and_execute">
+        <ReactiveSequence name="system_monitors">
+
+          <Fallback name="battery_check">
+            <Sequence name="battery_low_return">
+              <CheckBatteryLevel/>
+              <SetBlackboard output_key="emergency_triggered" value="true"/>
+              <SetBlackboard output_key="failure_reason" value="Battery level critical"/>
+            </Sequence>
+            <AlwaysSuccess/>
+          </Fallback>
+
+          <ReactiveFallback name="sonar_check_fallback">
+            <CheckSonarStatus name="check_sonar" timeout_seconds="5.0"/>
+            <Sequence name="sonar_failure_sequence">
+              <SetBlackboard value="Sonar failure detected" output_key="failure_reason"/>
+              <SetBlackboard value="true" output_key="emergency_triggered"/>
+            </Sequence>
+          </ReactiveFallback>
+
+          <ReactiveFallback name="camera_check_fallback">
+            <CheckCameraStatus name="check_camera" timeout_seconds="10.0"/>
+            <Sequence name="camera_failure_sequence">
+              <SetBlackboard value="Camera failure detected" output_key="failure_reason"/>
+              <SetBlackboard value="true" output_key="emergency_triggered"/>
+            </Sequence>
+          </ReactiveFallback>
+
+          <ReactiveFallback name="watchdog_check_fallback">
+            <SystemWatchdog name="system_watchdog" max_failures="5"/>
+            <Sequence name="watchdog_failure_sequence">
+              <SetBlackboard value="System watchdog failure" output_key="failure_reason"/>
+              <SetBlackboard value="true" output_key="emergency_triggered"/>
+            </Sequence>
+          </ReactiveFallback>
+
+        </ReactiveSequence>
+
+        <Fallback name="mission_or_emergency">
+          <Sequence name="handle_emergency">
+            <CheckBlackboard key="emergency_triggered" expected_value="true"/>
+            <SubTree ID="Homing"/>
+            <PublishState state="4"/>
+            <SubTree ID="Docking"/>
+            <PublishState state="5"/>
+          </Sequence>
+
+          <Decorator ID="AbortOnCondition" condition="emergency_triggered">
+            <Sequence name="complete_mission">
+              <PublishState state="1"/>
+              <SubTree ID="UnDocking"/>
+
+              <PublishState state="2"/>
+              <SubTree ID="Transit_1"/>
+
+              <PublishState state="3"/>
+              <SubTree ID="PipeLineInspection"/>
+
+              <PublishState state="4"/>
+              <SubTree ID="Homing"/>
+
+              <PublishState state="5"/>
+              <SubTree ID="Docking"/>
+            </Sequence>
+          </Decorator>
+        </Fallback>
+      </ReactiveSequence>
+    </Sequence>
+  </BehaviorTree>
+
+  <TreeNodesModel>
+    <Condition ID="CheckBlackboard">
+      <input_port name="key"/>
+      <input_port name="expected_value"/>
+    </Condition>
+    <Condition ID="CheckSonarStatus">
+      <input_port name="timeout_seconds"/>
+    </Condition>
+    <Condition ID="CheckCameraStatus">
+      <input_port name="timeout_seconds"/>
+    </Condition>
+    <Condition ID="SystemWatchdog">
+      <input_port name="max_failures"/>
+      <output_port name="failing_topics"/>
+    </Condition>
+    <Action ID="PublishState">
+      <input_port name="state"/>
+    </Action>
+    <Decorator ID="AbortOnCondition">
+      <input_port name="condition"/>
+    </Decorator>
+    <SubTree ID="UnDocking"/>
+    <SubTree ID="Transit_1"/>
+    <SubTree ID="PipeLineInspection"/>
+    <SubTree ID="Homing"/>
+    <SubTree ID="Docking"/>
+  </TreeNodesModel>
+</root>

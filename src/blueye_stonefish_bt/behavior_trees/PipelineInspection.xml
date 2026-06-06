@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Pipeline inspection waypoints (Stonefish world frame, NED).
+     pipeline_position = (1.0, 0.5, 3.5) from blueye_config.yaml
+     marker z in pipe frame = -0.15  →  world z = 3.35
+     inspection_z_offset = -0.6    →  target z = 2.75  (0.6 m above markers)
+
+     Marker world positions (pipeline_position + marker_local):
+       aruco_01: (1.0,  0.5,  3.35)  inspect at z=2.75
+       aruco_02: (1.0, -1.0,  3.35)  inspect at z=2.75
+       aruco_03: (2.0, -1.5,  3.35)  inspect at z=2.75
+       aruco_04: (1.0, -7.0,  3.35)  inspect at z=2.75
+       aruco_05: (1.0,-12.5,  3.35)  inspect at z=2.75
+       aruco_06: (-2.0,-10.0, 3.35)  inspect at z=2.75  -->
+<root BTCPP_format="4" main_tree_to_execute="PipeLineInspection">
+  <BehaviorTree ID="PipeLineInspection">
+    <!-- Order: dock-proximal markers first, ending at aruco_01 nearest the pipeline origin.
+         Distances from docking rig (8.0, -21.0):
+           aruco_05  y=-12.5  ≈ 11.0 m  (closest)
+           aruco_06  y=-10.0  ≈ 14.9 m
+           aruco_04  y=-7.0   ≈ 16.6 m
+           aruco_03  y=-1.5   ≈ 22.3 m
+           aruco_02  y=-1.0   ≈ 22.6 m
+           aruco_01  y=0.5    ≈ 23.8 m  (farthest) -->
+    <Sequence name="inspection_sequence">
+
+      <NavigateToWaypoint name="nav_aruco_05"
+                          x="1.0" y="-12.5" z="2.75"
+                          velocity="0.25" fixed_heading="false" heading="0.0"/>
+      <StationKeeping name="inspect_aruco_05"
+                      x="1.0" y="-12.5" z="2.75"
+                      heading="0.0" duration="20"/>
+
+      <NavigateToWaypoint name="nav_aruco_06"
+                          x="-2.0" y="-10.0" z="2.75"
+                          velocity="0.25" fixed_heading="false" heading="0.0"/>
+      <StationKeeping name="inspect_aruco_06"
+                      x="-2.0" y="-10.0" z="2.75"
+                      heading="0.0" duration="20"/>
+
+      <NavigateToWaypoint name="nav_aruco_04"
+                          x="1.0" y="-7.0" z="2.75"
+                          velocity="0.25" fixed_heading="false" heading="0.0"/>
+      <StationKeeping name="inspect_aruco_04"
+                      x="1.0" y="-7.0" z="2.75"
+                      heading="0.0" duration="20"/>
+
+      <NavigateToWaypoint name="nav_aruco_03"
+                          x="2.0" y="-1.5" z="2.75"
+                          velocity="0.2" fixed_heading="false" heading="0.0"/>
+      <StationKeeping name="inspect_aruco_03"
+                      x="2.0" y="-1.5" z="2.75"
+                      heading="0.0" duration="20"/>
+
+      <NavigateToWaypoint name="nav_aruco_02"
+                          x="1.0" y="-1.0" z="2.75"
+                          velocity="0.2" fixed_heading="false" heading="0.0"/>
+      <StationKeeping name="inspect_aruco_02"
+                      x="1.0" y="-1.0" z="2.75"
+                      heading="0.0" duration="20"/>
+
+      <NavigateToWaypoint name="nav_aruco_01"
+                          x="1.0" y="0.5" z="2.75"
+                          velocity="0.2" fixed_heading="false" heading="0.0"/>
+      <StationKeeping name="inspect_aruco_01"
+                      x="1.0" y="0.5" z="2.75"
+                      heading="0.0" duration="20"/>
+
+    </Sequence>
+  </BehaviorTree>
+</root>

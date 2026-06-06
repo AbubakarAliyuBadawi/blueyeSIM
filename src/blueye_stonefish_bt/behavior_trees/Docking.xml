@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Calls /blueye/start_docking (std_srvs/SetBool) then waits for the
+     ArUco-based docking controller to complete.
+     Requires stonefish_docking.launch.py to be running before this fires. -->
+<root BTCPP_format="4" main_tree_to_execute="Docking">
+  <BehaviorTree ID="Docking">
+    <Sequence name="docking_sequence">
+      <LaunchDockingProcedure name="trigger_docking"/>
+      <!-- Wait for the docking controller to complete its approach and lock -->
+      <Wait name="wait_for_docking" duration="120"/>
+      <SetBlackboard output_key="status_message" value="ROV docked successfully"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

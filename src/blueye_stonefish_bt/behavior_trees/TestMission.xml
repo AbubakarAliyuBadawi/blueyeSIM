@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Full mission test — inspection shortened to first 2 markers only.
+     Use this to verify the complete undocking→transit→inspect→homing→docking
+     flow without spending time on all 6 markers.
+
+     Mission states on /mission_state:
+       1 = UnDocking
+       2 = Transit
+       3 = Pipeline Inspection (aruco_05 + aruco_06 only)
+       4 = Homing  (from aruco_06 → midpoint → dock approach)
+       5 = Docking  -->
+<root BTCPP_format="4" main_tree_to_execute="TestMission">
+  <BehaviorTree ID="TestMission">
+    <Sequence name="mission">
+
+      <!-- ── 1. UNDOCKING ─────────────────────────────────────────── -->
+      <PublishState state="1"/>
+      <NavigateToWaypoint name="exit_dock"
+                          x="6.50" y="-20.67" z="2.28"
+                          velocity="0.15" fixed_heading="true" heading="-1.5708"/>
+
+      <!-- ── 2. TRANSIT TO PIPELINE ──────────────────────────────── -->
+      <PublishState state="2"/>
+      <NavigateToWaypoint name="transit_to_pipeline"
+                          x="1.0" y="-12.5" z="2.75"
+                          velocity="0.4" fixed_heading="false" heading="0.0"/>
+
+      <!-- ── 3. PIPELINE INSPECTION (aruco_05 + aruco_06 only) ───── -->
+      <PublishState state="3"/>
+
+      <NavigateToWaypoint name="nav_aruco_05"
+                          x="1.0" y="-12.5" z="2.75"
+                          velocity="0.25" fixed_heading="false" heading="0.0"/>
+      <StationKeeping name="inspect_aruco_05"
+                      x="1.0" y="-12.5" z="2.75"
+                      heading="0.0" duration="10"/>
+
+      <NavigateToWaypoint name="nav_aruco_06"
+                          x="-2.0" y="-10.0" z="2.75"
+                          velocity="0.25" fixed_heading="false" heading="0.0"/>
+      <StationKeeping name="inspect_aruco_06"
+                      x="-2.0" y="-10.0" z="2.75"
+                      heading="0.0" duration="10"/>
+
+      <!-- ── 4. HOMING (from aruco_06 → midpoint → dock approach) ── -->
+      <PublishState state="4"/>
+      <NavigateToWaypoint name="homing_midpoint"
+                          x="2.0" y="-15.0" z="2.5"
+                          velocity="0.4" fixed_heading="false" heading="0.0"/>
+      <NavigateToWaypoint name="dock_approach"
+                          x="6.50" y="-20.67" z="2.28"
+                          velocity="0.2" fixed_heading="true" heading="-1.5708"/>
+
+      <!-- ── 5. DOCKING ───────────────────────────────────────────── -->
+      <PublishState state="5"/>
+      <LaunchDockingProcedure name="trigger_docking"/>
+      <Wait name="wait_for_docking" duration="120"/>
+
+    </Sequence>
+  </BehaviorTree>
+</root>

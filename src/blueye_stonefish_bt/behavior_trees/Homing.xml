@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Homing: from PipelineInspection end (aruco_01 at 1.0, 0.5, 2.75)
+     back to the docking station.
+     Midpoint:     halfway between aruco_01 and the dock approach (4.0, -10.0, 2.5)
+     Dock approach: mirror of the undocking exit point (6.50, -20.67, 2.28)
+                    heading=-1.57 matches the docked orientation. -->
+<root BTCPP_format="4" main_tree_to_execute="Homing">
+  <BehaviorTree ID="Homing">
+    <Sequence name="homing_sequence">
+      <NavigateToWaypoint name="homing_midpoint"
+                          x="4.0" y="-10.0" z="2.5"
+                          velocity="0.4" fixed_heading="false" heading="0.0"/>
+      <NavigateToWaypoint name="dock_approach"
+                          x="6.50" y="-20.67" z="2.28"
+                          velocity="0.2" fixed_heading="true" heading="-1.57"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

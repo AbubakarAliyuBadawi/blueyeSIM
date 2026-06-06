@@ -1,0 +1,49 @@
+/**:
+  ros__parameters:
+    use_sim_time: False
+
+    frequency: 20.0
+    sensor_timeout: 0.2
+    two_d_mode: false
+    transform_time_offset: 0.0
+    transform_timeout: 0.0
+    print_diagnostics: true
+    debug: false
+    publish_acceleration: false
+    publish_tf: true
+
+    map_frame: map
+    odom_frame: pipeline_board
+    base_link_frame: base_link
+    world_frame: pipeline_board
+
+    pose0: /blueye/pipeline_pose_estimated_stamped
+    pose0_config: [true, true, true,
+                   false, false, true,
+                   false, false, false,
+                   false, false, false,
+                   false, false, false]
+    pose0_differential: false
+    pose0_relative: false
+    pose0_queue_size: 5
+    pose0_rejection_threshold: 5.0
+
+    twist0: /blueye/dvl_enu
+    twist0_config: [false, false, false,
+                    false, false, false,
+                    true, true, true,
+                    false, false, false,
+                    false, false, false]
+    twist0_queue_size: 8
+    twist0_rejection_threshold: 3.0
+
+    imu0: /blueye/imu_enu
+    imu0_config: [false, false, false,
+                  false, false, false,
+                  false, false, false,
+                  true, true, true,
+                  true, true, true]
+    imu0_differential: false
+    imu0_relative: false
+    imu0_queue_size: 10
+    imu0_remove_gravitational_acceleration: false

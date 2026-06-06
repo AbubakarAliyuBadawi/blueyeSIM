@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Wreckage inspection near the rock (0.0, -18.0, 3.0 from blueye_config). -->
+<root BTCPP_format="4" main_tree_to_execute="WreckageInspection">
+  <BehaviorTree ID="WreckageInspection">
+    <Sequence name="wreckage_sequence">
+      <NavigateToWaypoint name="nav_wreckage"
+                          x="0.0" y="-18.0" z="2.5"
+                          velocity="0.2" fixed_heading="false" heading="0.0"/>
+      <StationKeeping name="inspect_wreckage"
+                      x="0.0" y="-18.0" z="2.5"
+                      heading="0.0" duration="20"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

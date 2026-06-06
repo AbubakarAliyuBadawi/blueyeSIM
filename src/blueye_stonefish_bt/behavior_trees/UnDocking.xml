@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Stonefish coordinates (NED, z positive downward).
+     Docking rig: x=8.0  y=-21.0  z=3.9
+     UnDocking: rise up then move forward clear of the dock. -->
+<root BTCPP_format="4" main_tree_to_execute="UnDocking">
+  <BehaviorTree ID="UnDocking">
+    <Sequence name="undocking_sequence">
+      <!-- Surge backward out of the dock with heading locked -->
+      <NavigateToWaypoint name="exit_dock"
+                          x="6.50" y="-20.67" z="2.28"
+                          velocity="0.15" fixed_heading="true" heading="-1.5708"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

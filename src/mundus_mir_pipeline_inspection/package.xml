@@ -11,6 +11,9 @@
 
   <exec_depend>rclpy</exec_depend>
   <exec_depend>mundus_mir_msgs</exec_depend>
+  <exec_depend>mundus_mir_vehicle_interfaces</exec_depend>
+  <exec_depend>mundus_mir_waypoint_controller</exec_depend>
+  <exec_depend>velocity_controller_4dof_ros2</exec_depend>
 
   <export>
     <build_type>ament_python</build_type>

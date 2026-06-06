@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Transit from pipeline area toward wreckage/rock area.
+     Rock position from blueye_config: (0.0, -18.0, 3.0). -->
+<root BTCPP_format="4" main_tree_to_execute="Transit_2">
+  <BehaviorTree ID="Transit_2">
+    <Sequence name="transit_sequence">
+      <NavigateToWaypoint name="pipeline_exit"
+                          x="0.0" y="-15.0" z="2.5"
+                          velocity="0.4" fixed_heading="false" heading="0.0"/>
+      <NavigateToWaypoint name="wreckage_approach"
+                          x="0.0" y="-18.0" z="2.5"
+                          velocity="0.3" fixed_heading="false" heading="0.0"/>
+    </Sequence>
+  </BehaviorTree>
+</root>
