@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Minimal docking test: navigate to dock approach then trigger docking.
+     Requires stonefish_docking.launch.py to be running first. -->
+<root BTCPP_format="4" main_tree_to_execute="DockingTest">
+  <BehaviorTree ID="DockingTest">
+    <Sequence name="docking_test">
+
+      <!-- Navigate to dock approach position -->
+      <PublishState state="4"/>
+      <NavigateToWaypoint name="dock_approach"
+                          x="6.50" y="-20.67" z="2.28"
+                          velocity="0.2" fixed_heading="true" heading="-1.5708"/>
+
+      <!-- Trigger docking controller -->
+      <PublishState state="5"/>
+      <LaunchDockingProcedure name="trigger_docking"/>
+      <Wait name="wait_for_docking" duration="120"/>
+
+    </Sequence>
+  </BehaviorTree>
+</root>

@@ -1,61 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Full mission test — inspection shortened to first 2 markers only.
-     Use this to verify the complete undocking→transit→inspect→homing→docking
-     flow without spending time on all 6 markers.
+<!-- Full mission test with takeover guard.
+     If the Bayesian Network urgency >= threshold:
+       1. Drone holds station
+       2. Operator popup appears in the HUD
+       3a. ACCEPT  → joystick control until operator hands back
+       3b. REJECT  → emergency Transit_2 + Docking sequence
 
      Mission states on /mission_state:
        1 = UnDocking
        2 = Transit
-       3 = Pipeline Inspection (aruco_05 + aruco_06 only)
-       4 = Homing  (from aruco_06 → midpoint → dock approach)
-       5 = Docking  -->
+       3 = Pipeline Inspection
+       4 = Homing
+       5 = Docking
+       6 = Takeover (station keeping / joystick) -->
 <root BTCPP_format="4" main_tree_to_execute="TestMission">
   <BehaviorTree ID="TestMission">
-    <Sequence name="mission">
+    <Fallback name="mission_with_takeover_guard">
 
-      <!-- ── 1. UNDOCKING ─────────────────────────────────────────── -->
-      <PublishState state="1"/>
-      <NavigateToWaypoint name="exit_dock"
-                          x="6.50" y="-20.67" z="2.28"
-                          velocity="0.15" fixed_heading="true" heading="-1.5708"/>
+      <!-- ── NORMAL MISSION (interrupted if takeover is requested) ──────── -->
+      <ReactiveSequence name="guarded_mission">
+        <CheckTakeoverRequest/>
+        <Sequence name="mission">
 
-      <!-- ── 2. TRANSIT TO PIPELINE ──────────────────────────────── -->
-      <PublishState state="2"/>
-      <NavigateToWaypoint name="transit_to_pipeline"
+          <!-- 1. UNDOCKING -->
+          <PublishState state="1"/>
+          <NavigateToWaypoint name="exit_dock"
+                              x="6.50" y="-20.67" z="2.28"
+                              velocity="0.15" fixed_heading="true" heading="-1.5708"/>
+
+          <!-- 2. TRANSIT TO PIPELINE -->
+          <PublishState state="2"/>
+          <NavigateToWaypoint name="transit_to_pipeline"
+                              x="1.0" y="-12.5" z="2.75"
+                              velocity="0.4" fixed_heading="false" heading="0.0"/>
+
+          <!-- 3. PIPELINE INSPECTION -->
+          <PublishState state="3"/>
+          <NavigateToWaypoint name="nav_aruco_05"
+                              x="1.0" y="-12.5" z="2.75"
+                              velocity="0.25" fixed_heading="false" heading="0.0"/>
+          <StationKeeping name="inspect_aruco_05"
                           x="1.0" y="-12.5" z="2.75"
-                          velocity="0.4" fixed_heading="false" heading="0.0"/>
+                          heading="0.0" duration="10"/>
 
-      <!-- ── 3. PIPELINE INSPECTION (aruco_05 + aruco_06 only) ───── -->
-      <PublishState state="3"/>
-
-      <NavigateToWaypoint name="nav_aruco_05"
-                          x="1.0" y="-12.5" z="2.75"
-                          velocity="0.25" fixed_heading="false" heading="0.0"/>
-      <StationKeeping name="inspect_aruco_05"
-                      x="1.0" y="-12.5" z="2.75"
-                      heading="0.0" duration="10"/>
-
-      <NavigateToWaypoint name="nav_aruco_06"
+          <NavigateToWaypoint name="nav_aruco_06"
+                              x="-2.0" y="-10.0" z="2.75"
+                              velocity="0.25" fixed_heading="false" heading="0.0"/>
+          <StationKeeping name="inspect_aruco_06"
                           x="-2.0" y="-10.0" z="2.75"
-                          velocity="0.25" fixed_heading="false" heading="0.0"/>
-      <StationKeeping name="inspect_aruco_06"
-                      x="-2.0" y="-10.0" z="2.75"
-                      heading="0.0" duration="10"/>
+                          heading="0.0" duration="10"/>
 
-      <!-- ── 4. HOMING (from aruco_06 → midpoint → dock approach) ── -->
-      <PublishState state="4"/>
-      <NavigateToWaypoint name="homing_midpoint"
-                          x="2.0" y="-15.0" z="2.5"
-                          velocity="0.4" fixed_heading="false" heading="0.0"/>
-      <NavigateToWaypoint name="dock_approach"
-                          x="6.50" y="-20.67" z="2.28"
-                          velocity="0.2" fixed_heading="true" heading="-1.5708"/>
+          <!-- 4. HOMING -->
+          <PublishState state="4"/>
+          <NavigateToWaypoint name="homing_midpoint"
+                              x="2.0" y="-15.0" z="2.5"
+                              velocity="0.4" fixed_heading="false" heading="0.0"/>
+          <NavigateToWaypoint name="dock_approach"
+                              x="6.50" y="-20.67" z="2.28"
+                              velocity="0.2" fixed_heading="true" heading="-1.5708"/>
 
-      <!-- ── 5. DOCKING ───────────────────────────────────────────── -->
-      <PublishState state="5"/>
-      <LaunchDockingProcedure name="trigger_docking"/>
-      <Wait name="wait_for_docking" duration="120"/>
+          <!-- 5. DOCKING -->
+          <PublishState state="5"/>
+          <LaunchDockingProcedure name="trigger_docking"/>
+          <Wait name="wait_for_docking" duration="120"/>
 
-    </Sequence>
+        </Sequence>
+      </ReactiveSequence>
+
+      <!-- ── TAKEOVER HANDLER (runs when CheckTakeoverRequest fails) ────── -->
+      <Sequence name="takeover_handler">
+
+        <!-- Hold position while operator decides -->
+        <PublishState state="6"/>
+        <StationKeeping name="takeover_station_keeping" duration="300"/>
+
+        <Fallback name="human_decision_branch">
+
+          <!-- Accepted: hand control to joystick, wait for handback -->
+          <Sequence name="joystick_takeover">
+            <WaitForHumanDecision/>
+            <EnableJoystick/>
+            <WaitForHandback/>
+          </Sequence>
+
+          <!-- Rejected: emergency return to dock -->
+          <Sequence name="emergency_return">
+            <PublishState state="4"/>
+            <NavigateToWaypoint name="emergency_midpoint"
+                                x="2.0" y="-15.0" z="2.5"
+                                velocity="0.4" fixed_heading="false" heading="0.0"/>
+            <NavigateToWaypoint name="emergency_dock_approach"
+                                x="6.50" y="-20.67" z="2.28"
+                                velocity="0.2" fixed_heading="true" heading="-1.5708"/>
+            <PublishState state="5"/>
+            <LaunchDockingProcedure name="emergency_docking"/>
+            <Wait name="wait_emergency_docking" duration="120"/>
+          </Sequence>
+
+        </Fallback>
+      </Sequence>
+
+    </Fallback>
   </BehaviorTree>
 </root>

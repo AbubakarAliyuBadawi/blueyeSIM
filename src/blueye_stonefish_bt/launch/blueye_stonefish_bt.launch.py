@@ -79,11 +79,50 @@ def generate_launch_description():
         }],
     )
 
+    joy_node = Node(
+        package="joy",
+        executable="joy_node",
+        name="joy_node",
+        output="screen",
+        parameters=[{
+            "autorepeat_rate": 20.0,
+            "deadzone": 0.08,
+        }],
+    )
+
+    joystick_controller = Node(
+        package="mundus_mir_blueye_joystick_cpp",
+        executable="joystick_controller",
+        name="joystick_controller",
+        output="screen",
+        parameters=[{
+            "quadratic_mapping": False,
+            "max_thrust_surge": 10.0,
+            "max_thrust_sway": 10.0,
+            "max_thrust_heave": 6.0,
+            "max_thrust_yaw": 8.0,
+            "cmd_topic": "/blueye/cmd_force",
+            "velocity_control": True,
+            "max_velocity_x": 0.5,
+            "max_velocity_y": 0.5,
+            "max_velocity_z": 0.5,
+            "max_angular_velocity_yaw": 1.0,
+            "velocity_topic": "/blueye/ref_vel",
+            "joystick_deadband": 0.08,
+            "right_joystick_x_axis": 3,
+            "right_joystick_y_axis": 4,
+            "left_joystick_x_axis": 0,
+            "left_joystick_y_axis": 1,
+        }],
+    )
+
     return LaunchDescription([
         bt_file_arg,
         odometry_topic_arg,
         waypoint_controller,
         velocity_controller,
         thruster_allocator,
+        joy_node,
+        joystick_controller,
         bt_node,
     ])

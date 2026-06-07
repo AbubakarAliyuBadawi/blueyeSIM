@@ -8,8 +8,12 @@
 #include "blueye_stonefish_bt/conditions/sonar_condition.hpp"
 #include "blueye_stonefish_bt/conditions/system_watchdog.hpp"
 #include "blueye_stonefish_bt/conditions/blackboard_condition.hpp"
+#include "blueye_stonefish_bt/conditions/check_takeover_request.hpp"
 #include "blueye_stonefish_bt/actions/altitude_control_action.hpp"
 #include "blueye_stonefish_bt/actions/publish_state.hpp"
+#include "blueye_stonefish_bt/actions/wait_for_human_decision.hpp"
+#include "blueye_stonefish_bt/actions/enable_joystick.hpp"
+#include "blueye_stonefish_bt/actions/wait_for_handback.hpp"
 #include "blueye_stonefish_bt/decorators/abort_on_condition_decorator.hpp"
 
 #include <rclcpp/rclcpp.hpp>
@@ -81,6 +85,10 @@ int main(int argc, char** argv) {
         [](const std::string& n, const BT::NodeConfig& c) { return std::make_unique<AltitudeControlAction>(n, c); });
     factory.registerBuilder<PublishState>("PublishState",
         [](const std::string& n, const BT::NodeConfig& c) { return std::make_unique<PublishState>(n, c); });
+    factory.registerNodeType<CheckTakeoverRequest>("CheckTakeoverRequest");
+    factory.registerNodeType<WaitForHumanDecision>("WaitForHumanDecision");
+    factory.registerNodeType<EnableJoystick>("EnableJoystick");
+    factory.registerNodeType<WaitForHandback>("WaitForHandback");
 
     try {
         std::string mission_file;

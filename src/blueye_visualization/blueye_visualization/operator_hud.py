@@ -32,7 +32,7 @@ else:
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget,
     QVBoxLayout, QHBoxLayout, QFrame, QSizePolicy, QLabel,
-    QTabWidget,
+    QTabWidget, QDialog, QPushButton, QDialogButtonBox,
 )
 from PyQt5.QtCore import Qt, pyqtSignal, QObject, QCoreApplication, QTimer, QPoint
 from PyQt5.QtGui import (
@@ -49,19 +49,21 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 
 from sensor_msgs.msg import Image, Joy
 from nav_msgs.msg import Odometry
-from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import Bool, Float32, Float64, Float64MultiArray
 from stonefish_ros2.msg import BeaconInfo
 
 
 # ── Thread-safe Qt signals ────────────────────────────────────────────────────
 
 class _Signals(QObject):
-    camera_ready   = pyqtSignal(object)   # numpy BGR array
-    sonar_ready    = pyqtSignal(object)   # numpy BGR array
-    joy_ready      = pyqtSignal(object)   # sensor_msgs/Joy
-    thrust_ready   = pyqtSignal(object)   # list[float]
-    odom_ready     = pyqtSignal(object)   # nav_msgs/Odometry
-    usbl_ready     = pyqtSignal(object)   # stonefish_ros2/BeaconInfo
+    camera_ready      = pyqtSignal(object)   # numpy BGR array
+    sonar_ready       = pyqtSignal(object)   # numpy BGR array
+    joy_ready         = pyqtSignal(object)   # sensor_msgs/Joy
+    thrust_ready      = pyqtSignal(object)   # list[float]
+    odom_ready        = pyqtSignal(object)   # nav_msgs/Odometry
+    usbl_ready        = pyqtSignal(object)   # stonefish_ros2/BeaconInfo
+    takeover_update   = pyqtSignal(float, float)   # urgency, threshold
+    show_popup        = pyqtSignal()
 
 
 # ── Camera panel ──────────────────────────────────────────────────────────────
@@ -712,12 +714,124 @@ class USBLPanel(QWidget):
             return "LOCKED", self._FAIR, "FAIR"
         return "WEAK", self._POOR, "POOR"
 
+# ── Takeover banner ───────────────────────────────────────────────────────────
+
+class TakeoverBanner(QWidget):
+    """Thin urgency bar shown at the top of the Overview tab."""
+
+    _BG_SAFE    = QColor("#1e1e2e")
+    _BG_ALERT   = QColor("#2a1a1a")
+    _SAFE       = QColor("#a6e3a1")
+    _WARN       = QColor("#f9e2af")
+    _DANGER     = QColor("#f38ba8")
+    _TEXT       = QColor("#cdd6f4")
+    _MUTED      = QColor("#6c7086")
+
+    def __init__(self):
+        super().__init__()
+        self._urgency   = 0.0
+        self._threshold = 0.65
+        self.setFixedHeight(32)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+    def update_values(self, urgency: float, threshold: float):
+        self._urgency   = max(0.0, min(1.0, urgency))
+        self._threshold = max(0.01, threshold)
+        self.update()
+
+    def paintEvent(self, _):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing)
+        W, H = self.width(), self.height()
+
+        triggered = self._urgency >= self._threshold
+        p.fillRect(0, 0, W, H, self._BG_ALERT if triggered else self._BG_SAFE)
+
+        bar_w = int(self._urgency * (W - 140))
+        color = self._DANGER if triggered else (self._WARN if self._urgency > self._threshold * 0.6 else self._SAFE)
+        p.fillRect(100, 6, bar_w, H - 12, color)
+
+        p.setPen(QPen(QColor("#45475a"), 1))
+        p.drawRect(100, 6, W - 140, H - 12)
+
+        thr_x = 100 + int(self._threshold * (W - 140))
+        p.setPen(QPen(QColor("#f38ba8"), 2))
+        p.drawLine(thr_x, 4, thr_x, H - 4)
+
+        p.setPen(self._TEXT if triggered else self._MUTED)
+        p.setFont(QFont("Monospace", 8, QFont.Bold))
+        label = "⚠ TAKEOVER REQUESTED" if triggered else "TAKEOVER RISK"
+        p.drawText(4, 0, 96, H, Qt.AlignVCenter | Qt.AlignLeft, label)
+
+        p.setPen(self._TEXT)
+        p.setFont(QFont("Monospace", 8))
+        p.drawText(W - 36, 0, 36, H, Qt.AlignVCenter | Qt.AlignRight,
+                   f"{self._urgency:.2f}")
+
+
+# ── Takeover popup dialog ─────────────────────────────────────────────────────
+
+class TakeoverDialog(QDialog):
+    """Modal dialog asking the operator to accept or reject a takeover request."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Takeover Request")
+        self.setModal(True)
+        self.setFixedSize(420, 200)
+        self.setStyleSheet(
+            "background:#1e1e2e; color:#cdd6f4; font-family:Monospace;"
+        )
+
+        layout = QVBoxLayout(self)
+        layout.setSpacing(16)
+        layout.setContentsMargins(20, 20, 20, 20)
+
+        title = QLabel("⚠  TAKEOVER REQUESTED")
+        title.setAlignment(Qt.AlignCenter)
+        title.setStyleSheet("font-size:16px; font-weight:bold; color:#f38ba8;")
+        layout.addWidget(title)
+
+        msg = QLabel(
+            "The Bayesian Network suggests human intervention is needed.\n"
+            "Accept to take manual joystick control.\n"
+            "Reject to trigger the emergency return-to-dock sequence."
+        )
+        msg.setAlignment(Qt.AlignCenter)
+        msg.setWordWrap(True)
+        msg.setStyleSheet("font-size:11px; color:#cdd6f4;")
+        layout.addWidget(msg)
+
+        btn_layout = QHBoxLayout()
+        self.accept_btn = QPushButton("ACCEPT TAKEOVER")
+        self.accept_btn.setStyleSheet(
+            "background:#a6e3a1; color:#1e1e2e; font-weight:bold; "
+            "padding:8px; border-radius:4px;"
+        )
+        self.reject_btn = QPushButton("REJECT  (Emergency Dock)")
+        self.reject_btn.setStyleSheet(
+            "background:#f38ba8; color:#1e1e2e; font-weight:bold; "
+            "padding:8px; border-radius:4px;"
+        )
+        btn_layout.addWidget(self.accept_btn)
+        btn_layout.addWidget(self.reject_btn)
+        layout.addLayout(btn_layout)
+
+        self.accept_btn.clicked.connect(self.accept)
+        self.reject_btn.clicked.connect(self.reject)
+
+    def result_accepted(self) -> bool:
+        return self.result() == QDialog.Accepted
+
+
 # ── Main window ───────────────────────────────────────────────────────────────
 
 class OperatorWindow(QMainWindow):
 
-    def __init__(self, signals: _Signals):
+    def __init__(self, signals: _Signals, ros_node):
         super().__init__()
+        self._ros_node      = ros_node
+        self._in_takeover   = False
         self.setWindowTitle("Blueye X3  —  Operator Interface")
         self.setStyleSheet("background:#181825;")
         self.resize(1280, 820)
@@ -727,6 +841,10 @@ class OperatorWindow(QMainWindow):
         root = QVBoxLayout(root_w)
         root.setContentsMargins(4, 4, 4, 4)
         root.setSpacing(4)
+
+        # ── takeover banner (always visible at top) ─────────────────────────
+        self.takeover_banner = TakeoverBanner()
+        root.addWidget(self.takeover_banner)
 
         tabs = QTabWidget()
         tabs.setStyleSheet(
@@ -778,6 +896,17 @@ class OperatorWindow(QMainWindow):
 
         overview_layout.addWidget(bottom, stretch=3)
 
+        # ── handback button (hidden until joystick takeover is active) ──────
+        self.handback_btn = QPushButton("HAND BACK CONTROL TO MISSION")
+        self.handback_btn.setFixedHeight(40)
+        self.handback_btn.setStyleSheet(
+            "background:#89b4fa; color:#1e1e2e; font-family:Monospace; "
+            "font-size:13px; font-weight:bold; border-radius:4px;"
+        )
+        self.handback_btn.hide()
+        self.handback_btn.clicked.connect(self._on_handback)
+        overview_layout.addWidget(self.handback_btn)
+
         self.usbl_panel = USBLPanel()
         tabs.addTab(overview, "Overview")
         tabs.addTab(self.usbl_panel, "USBL")
@@ -790,6 +919,27 @@ class OperatorWindow(QMainWindow):
         signals.odom_ready.connect(self.pose_panel.ingest)
         signals.odom_ready.connect(self.usbl_panel.ingest_odom)
         signals.usbl_ready.connect(self.usbl_panel.ingest)
+        signals.takeover_update.connect(self._on_takeover_update)
+        signals.show_popup.connect(self._on_show_popup)
+
+    def _on_takeover_update(self, urgency: float, threshold: float):
+        self.takeover_banner.update_values(urgency, threshold)
+
+    def _on_show_popup(self):
+        if self._in_takeover:
+            return
+        dlg = TakeoverDialog(self)
+        dlg.exec_()
+        decision = dlg.result_accepted()
+        self._ros_node.publish_human_decision(decision)
+        if decision:
+            self._in_takeover = True
+            self.handback_btn.show()
+
+    def _on_handback(self):
+        self._ros_node.publish_handback()
+        self._in_takeover = False
+        self.handback_btn.hide()
 
 
 # ── ROS2 node ─────────────────────────────────────────────────────────────────
@@ -798,8 +948,11 @@ class OperatorHUDNode(Node):
 
     def __init__(self, signals: _Signals):
         super().__init__("operator_hud")
-        self._signals = signals
-        self._bridge  = CvBridge()
+        self._signals   = signals
+        self._bridge    = CvBridge()
+        self._urgency   = 0.0
+        self._threshold = 0.65
+        self._popup_sent = False
 
         best_effort = QoSProfile(
             reliability=ReliabilityPolicy.BEST_EFFORT,
@@ -819,6 +972,15 @@ class OperatorHUDNode(Node):
             Odometry, "/blueye/odom", self._on_odom, best_effort)
         self.create_subscription(
             BeaconInfo, "/blueye/usbl/beacon_info", self._on_usbl, 10)
+        self.create_subscription(
+            Float64, "/blueye/takeover_request/urgency", self._on_urgency, 10)
+        self.create_subscription(
+            Float32, "/blueye/takeover_request/threshold", self._on_threshold, 10)
+
+        self._decision_pub = self.create_publisher(
+            Bool, "/blueye/takeover_request/human_decision", 10)
+        self._handback_pub = self.create_publisher(
+            Bool, "/blueye/takeover_request/handback", 10)
 
     def _on_image(self, msg):
         try:
@@ -846,6 +1008,28 @@ class OperatorHUDNode(Node):
     def _on_usbl(self, msg):
         self._signals.usbl_ready.emit(msg)
 
+    def _on_urgency(self, msg):
+        self._urgency = msg.data
+        self._signals.takeover_update.emit(self._urgency, self._threshold)
+        if self._urgency >= self._threshold and not self._popup_sent:
+            self._popup_sent = True
+            self._signals.show_popup.emit()
+        elif self._urgency < self._threshold * 0.8:
+            self._popup_sent = False
+
+    def _on_threshold(self, msg):
+        self._threshold = msg.data
+
+    def publish_human_decision(self, accepted: bool):
+        out = Bool()
+        out.data = accepted
+        self._decision_pub.publish(out)
+
+    def publish_handback(self):
+        out = Bool()
+        out.data = True
+        self._handback_pub.publish(out)
+
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 
@@ -861,7 +1045,7 @@ def main(args=None):
 
     signals = _Signals()
     node    = OperatorHUDNode(signals)
-    window  = OperatorWindow(signals)
+    window  = OperatorWindow(signals, node)
     window.show()
 
     ros_thread = threading.Thread(target=rclpy.spin, args=(node,), daemon=True)

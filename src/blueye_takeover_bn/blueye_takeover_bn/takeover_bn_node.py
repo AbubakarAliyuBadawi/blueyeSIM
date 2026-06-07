@@ -14,7 +14,7 @@ from mundus_mir_msgs.msg import BatteryStatus
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from std_msgs.msg import Float32, String
+from std_msgs.msg import Float32, Float64, String
 from stonefish_ros2.msg import DVL
 
 
@@ -125,6 +125,7 @@ class TakeoverBayesianNetwork(Node):
         self.max_prob_pub = self.create_publisher(Float32, "/blueye/takeover_request/max_probability", 10)
         self.threshold_pub = self.create_publisher(Float32, "/blueye/takeover_request/threshold", 10)
         self.evidence_pub = self.create_publisher(String, "/blueye/takeover_request/evidence", 10)
+        self.urgency_pub = self.create_publisher(Float64, "/blueye/takeover_request/urgency", 10)
 
     def _setup_subscribers(self):
         self.create_subscription(String, self.get_parameter("mission_phase_topic").value, self._mission_phase_cb, 10)
@@ -435,6 +436,12 @@ class TakeoverBayesianNetwork(Node):
         self._publish_float(self.takeover_pub, probabilities.get("TakeoverRequested", 0.0))
         self._publish_float(self.max_prob_pub, probability)
         self._publish_float(self.threshold_pub, float(self.get_parameter("takeover_threshold").value))
+
+        urgency = (0.5 * probabilities.get("IncreasedAttentionRequired", 0.0)
+                   + 1.0 * probabilities.get("TakeoverRequested", 0.0))
+        urgency_msg = Float64()
+        urgency_msg.data = float(urgency)
+        self.urgency_pub.publish(urgency_msg)
         self._publish_string(
             self.evidence_pub,
             json.dumps(

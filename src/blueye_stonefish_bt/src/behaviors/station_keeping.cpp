@@ -1,35 +1,49 @@
 // src/behaviors/station_keeping.cpp
 #include "blueye_stonefish_bt/behaviors/station_keeping.hpp"
 #include <chrono>
+#include <cmath>
+#include <limits>
 
 using namespace std::chrono_literals;
 
 StationKeeping::StationKeeping(const std::string& name, const BT::NodeConfiguration& config)
     : BT::StatefulActionNode(name, config)
 {
-    // Initialize service clients
     clear_client_ = g_node->create_client<mundus_mir_msgs::srv::ClearWaypoints>("/blueye/clear_waypoints");
     add_client_ = g_node->create_client<mundus_mir_msgs::srv::AddWaypoint>("/blueye/add_waypoint");
     run_client_ = g_node->create_client<mundus_mir_msgs::srv::RunWaypointController>("/blueye/run_waypoint_controller");
     go_client_ = g_node->create_client<mundus_mir_msgs::srv::GoToWaypoints>("/blueye/go_to_waypoints");
     status_client_ = g_node->create_client<mundus_mir_msgs::srv::GetWaypointStatus>("/blueye/get_waypoint_status");
+    odom_sub_ = g_node->create_subscription<nav_msgs::msg::Odometry>(
+        "/blueye/odom", 10,
+        [this](const nav_msgs::msg::Odometry::SharedPtr msg) {
+            current_x_ = msg->pose.pose.position.x;
+            current_y_ = msg->pose.pose.position.y;
+            current_z_ = msg->pose.pose.position.z;
+            const auto& q = msg->pose.pose.orientation;
+            current_yaw_ = std::atan2(
+                2.0 * (q.w * q.z + q.x * q.y),
+                1.0 - 2.0 * (q.y * q.y + q.z * q.z));
+        });
 }
 
 BT::NodeStatus StationKeeping::onStart() {
     // Get duration and heading parameters
     auto duration = getInput<int>("duration");
-    auto heading = getInput<double>("heading");
-    
-    // Get optional altitude mode parameters
+    if (!duration) {
+        RCLCPP_ERROR(g_node->get_logger(), "Failed to get duration parameter for station keeping");
+        return BT::NodeStatus::FAILURE;
+    }
+
+    auto heading_input = getInput<double>("heading");
+    double heading_val = (heading_input && !std::isnan(heading_input.value()))
+                         ? heading_input.value()
+                         : current_yaw_;
+
     bool altitude_mode = false;
     double target_altitude = 2.0;
     getInput("altitude_mode", altitude_mode);
     getInput("target_altitude", target_altitude);
-    
-    if (!duration || !heading) {
-        RCLCPP_ERROR(g_node->get_logger(), "Failed to get duration or heading parameter for station keeping");
-        return BT::NodeStatus::FAILURE;
-    }
     
     // Clear any existing waypoints
     if (!clearWaypoints()) {
@@ -44,7 +58,7 @@ BT::NodeStatus StationKeeping::onStart() {
     }
     
     // Add waypoint with the specified position, heading, and altitude mode if enabled
-    if (!addWaypoint(heading.value(), altitude_mode, target_altitude)) {
+    if (!addWaypoint(heading_val, altitude_mode, target_altitude)) {
         RCLCPP_ERROR(g_node->get_logger(), "Failed to add waypoint");
         startWaypointController(false);
         return BT::NodeStatus::FAILURE;
@@ -59,8 +73,8 @@ BT::NodeStatus StationKeeping::onStart() {
     
     // Record start time for duration tracking
     start_time_ = std::chrono::steady_clock::now();
-    RCLCPP_INFO(g_node->get_logger(), "Starting station keeping for %d seconds with heading %.2f°", 
-                duration.value(), heading.value());
+    RCLCPP_INFO(g_node->get_logger(), "Starting station keeping for %d seconds with heading %.2f rad",
+                duration.value(), heading_val);
     
     if (altitude_mode) {
         RCLCPP_INFO(g_node->get_logger(), "Note: Altitude mode is not supported in this version. Using fixed z value.");
@@ -161,29 +175,12 @@ bool StationKeeping::addWaypoint(double heading, bool altitude_mode, double targ
                       request->x, request->y, request->z, heading);
         }
     } else {
-        // Get status to see current position (for logging)
-        auto status_request = std::make_shared<mundus_mir_msgs::srv::GetWaypointStatus::Request>();
-        auto status_future = status_client_->async_send_request(status_request);
-        
-        if (rclcpp::spin_until_future_complete(g_node, status_future, 2s) == rclcpp::FutureReturnCode::SUCCESS) {
-            auto result = status_future.get();
-            RCLCPP_INFO(g_node->get_logger(), "Current status: %s", result->status_code.c_str());
-        }
-        
-        // Use 0,0,0 which the controller interprets as "current position"
-        request->x = 0.0;
-        request->y = 0.0;
-        request->z = 0.0;
-        
-        if (altitude_mode) {
-            RCLCPP_INFO(g_node->get_logger(), 
-                      "Setting station keeping at current position with heading: %.2f° (altitude mode requested but not supported)", 
-                      heading);
-        } else {
-            RCLCPP_INFO(g_node->get_logger(), 
-                      "Setting station keeping at current position with heading: %.2f°", 
-                      heading);
-        }
+        request->x = current_x_;
+        request->y = current_y_;
+        request->z = current_z_;
+        RCLCPP_INFO(g_node->get_logger(),
+                    "Station keeping at current position (x: %.2f, y: %.2f, z: %.2f, heading: %.2f°)",
+                    request->x, request->y, request->z, heading);
     }
     
     request->desired_velocity = 0.2;  // Low velocity for station keeping
