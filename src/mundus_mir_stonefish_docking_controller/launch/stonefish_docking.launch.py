@@ -55,7 +55,7 @@ def generate_launch_description():
                 "fy": 1662.8,
                 "cx": 960.0,
                 "cy": 540.0,
-                "min_markers_for_detection": 2,
+                "min_markers_for_detection": 3,
             }
         ],
     )
@@ -106,58 +106,6 @@ def generate_launch_description():
         ],
     )
 
-    velocity_controller = Node(
-        package="velocity_controller_4dof_ros2",
-        executable="velocity_controller_4dof",
-        name="velocity_controller",
-        output="screen",
-        parameters=[
-            {
-                "use_sim_time": False,
-                "heading_hold_enabled": False,
-                "topic_subscriber_odometry": "/blueye/odom",
-                "topic_subscriber_desired": "/blueye/ref_vel",
-                "topic_publisher": "/blueye/cmd_force",
-                "controller_frequency_hz": 50,
-                "rt_surge_kp": 18.0,
-                "rt_surge_ki": 0.0,
-                "rt_surge_kd": 4.0,
-                "rt_surge_satUpper": 18.0,
-                "rt_surge_satLower": -18.0,
-                "rt_sway_kp": 18.0,
-                "rt_sway_ki": 0.0,
-                "rt_sway_kd": 5.0,
-                "rt_sway_satUpper": 18.0,
-                "rt_sway_satLower": -18.0,
-                "rt_depth_kp": 14.0,
-                "rt_depth_ki": 0.0,
-                "rt_depth_kd": 4.0,
-                "rt_depth_satUpper": 12.0,
-                "rt_depth_satLower": -12.0,
-                "rt_yaw_kp": 10.0,
-                "rt_yaw_ki": 0.0,
-                "rt_yaw_kd": 3.0,
-                "rt_yaw_satUpper": 10.0,
-                "rt_yaw_satLower": -10.0,
-            }
-        ],
-    )
-
-    thruster_allocator = Node(
-        package="mundus_mir_vehicle_interfaces",
-        executable="blueye_simulator_interface",
-        name="stonefish_blueye_thruster_allocator",
-        output="screen",
-        parameters=[
-            {
-                "use_sim_time": False,
-                "cmd_force_topic": "/blueye/cmd_force",
-                "thrusters_topic": "/blueye/thrusters",
-                "max_thruster_setpoint": 35.0,
-            }
-        ],
-    )
-
     return LaunchDescription(
         [
             params_file_arg,
@@ -168,7 +116,5 @@ def generate_launch_description():
             sensor_republisher,
             ekf_node,
             docking_controller,
-            velocity_controller,
-            thruster_allocator,
         ]
     )

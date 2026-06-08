@@ -25,5 +25,19 @@ def generate_launch_description():
                     }
                 ],
             ),
+            Node(
+                package="blueye_takeover_bn",
+                executable="camera_rate_monitor",
+                name="camera_rate_monitor",
+                output="screen",
+                parameters=[{
+                    "camera_topic": "/blueye/cam/image_color",
+                    "camera_quality_topic": "/blueye/camera_quality",
+                    "publish_rate_hz": 1.0,
+                    "excellent_threshold_hz": 8.0,
+                    "good_threshold_hz": 5.0,
+                    "poor_threshold_hz": 1.0,
+                }],
+            ),
         ]
     )

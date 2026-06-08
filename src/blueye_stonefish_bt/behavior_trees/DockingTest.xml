@@ -8,8 +8,13 @@
       <!-- Navigate to dock approach position -->
       <PublishState state="4"/>
       <NavigateToWaypoint name="dock_approach"
-                          x="6.50" y="-20.67" z="2.28"
+                          x="6.7" y="-17.67" z="2.7"
                           velocity="0.2" fixed_heading="true" heading="-1.5708"/>
+
+      <!-- Hold position to let EKF initialize before docking -->
+      <StationKeeping name="ekf_init_hold"
+                      x="6.7" y="-17.67" z="2.7"
+                      heading="-1.5708" duration="50"/>
 
       <!-- Trigger docking controller -->
       <PublishState state="5"/>

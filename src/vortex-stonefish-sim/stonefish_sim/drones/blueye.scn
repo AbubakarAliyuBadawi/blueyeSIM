@@ -113,12 +113,14 @@
         <ros_publisher topic="/blueye/odom"/>
       </sensor>
 
+      <!-- camera_down disabled to reduce GPU load and improve front camera stream rate
       <sensor name="camera_down" type="camera" rate="10.0">
         <link name="Base"/>
         <origin rpy="1.5708 0.0 1.5708" xyz="0.18 0.0 0.2"/>
         <specs resolution_x="1920" resolution_y="1080" horizontal_fov="60.0"/>
         <ros_publisher topic="/blueye/cam_down"/>
       </sensor>
+      -->
 
       <sensor name="DVL" rate="10.0" type="dvl">
         <specs beam_angle="30.0" beam_positive_z="true"/>
@@ -130,13 +132,13 @@
         <link name="Base"/>
         <ros_publisher topic="/blueye/dvl/sim"/>
       </sensor>
-
+<!-- 
       <light name="Spot2">
         <specs radius="0.03" cone_angle="35.0" illuminance="5000.0"/>
         <color temperature="5600.0"/>
         <origin xyz="0.088 -0.005 0.13" rpy="1.5708 0.0 1.5708"/>
         <link name="Base"/>
-      </light>
+      </light> -->
 
       <sensor name="FLS" type="fls">
         <specs beams="512" bins="256" horizontal_fov="90.0" vertical_fov="60.0"/>

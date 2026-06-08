@@ -72,7 +72,7 @@
 
         <!-- Hold position while operator decides -->
         <PublishState state="6"/>
-        <StationKeeping name="takeover_station_keeping" duration="300"/>
+        <StationKeeping name="takeover_station_keeping" duration="30"/>
 
         <Fallback name="human_decision_branch">
 

@@ -25,6 +25,7 @@ setup(
     entry_points={
         "console_scripts": [
             "takeover_bn = blueye_takeover_bn.takeover_bn_node:main",
+            "camera_rate_monitor = blueye_takeover_bn.camera_rate_monitor:main",
         ],
     },
 )

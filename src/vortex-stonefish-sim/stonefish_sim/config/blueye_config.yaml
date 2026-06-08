@@ -1,11 +1,11 @@
 # blueye position for pipeline test
-# blueye_position: "1.14 1.0 1.0"
+# blueye_position: "7.0 -10.14 2.48"
 
 # blueye position for docking test
-blueye_position: "7.0 -15.0 2.7"
+blueye_position: "7.0 -12.0 2.7"
 
 # blueye docked
-# blueye_position: "6.51 -20.59 2.48"
+# blueye_position: "6.51 -17.59 2.48"
 
 blueye_orientation: "0.0 0.0 3.1416"
 blueye_orientation: "0.0 0.0 3.1416"

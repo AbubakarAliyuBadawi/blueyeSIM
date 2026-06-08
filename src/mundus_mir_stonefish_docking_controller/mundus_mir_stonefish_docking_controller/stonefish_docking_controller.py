@@ -201,7 +201,6 @@ class StonefishDockingController(Node):
     def command_callback(self):
         if not self.docking_armed:
             self.publish_status("waiting_for_start")
-            self.publish_stop()
             return
         if not self.valid_odometry:
             self.publish_status("waiting_for_pose")

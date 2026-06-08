@@ -26,7 +26,7 @@
   <include file="$(find stonefish_sim)/metadata/materials.scn"/>
   <include file="$(find stonefish_sim)/metadata/looks.scn"/>
   <include file="$(find stonefish_sim)/drones/blueye.scn"/>
-  <include file="$(find stonefish_sim)/objects/pipe.scn"/>
+  <!-- <include file="$(find stonefish_sim)/objects/pipe.scn"/> -->
   <include file="$(find stonefish_sim)/objects/default_seafloor.scn"/>
   <!-- <include file="$(find stonefish_sim)/objects/underwater_terreain.scn"/> -->
   <include file="$(find stonefish_sim)/objects/docking_station_rig.scn"/>
@@ -34,7 +34,7 @@
   <!-- <include file="$(find stonefish_sim)/objects/docking_station_new.scn"/> -->
   <!-- <include file="$(find stonefish_sim)/objects/pier.scn"/> -->
   <!-- <include file="$(find stonefish_sim)/objects/obstacles.scn"/> -->
-  <include file="$(find stonefish_sim)/objects/pier_pillers.scn"/>
+  <!-- <include file="$(find stonefish_sim)/objects/pier_pillers.scn"/> -->
   <!-- <include file="$(find stonefish_sim)/objects/oil_platform.scn"/> -->
 
 </scenario>
