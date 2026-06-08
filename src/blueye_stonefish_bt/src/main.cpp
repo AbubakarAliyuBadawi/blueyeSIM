@@ -105,13 +105,14 @@ int main(int argc, char** argv) {
         RCLCPP_INFO(g_node->get_logger(), "Groot2 monitor on port 6677");
 
         while (rclcpp::ok() && g_program_running) {
-            auto status = tree.tickWhileRunning(std::chrono::milliseconds(1));
+            auto status = tree.tickOnce();
             rclcpp::spin_some(g_node);
             if (BT::isStatusCompleted(status)) {
                 RCLCPP_INFO(g_node->get_logger(), "Mission finished: %s",
                             status == BT::NodeStatus::SUCCESS ? "SUCCESS" : "FAILURE");
                 break;
             }
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
 
         tree.haltTree();
