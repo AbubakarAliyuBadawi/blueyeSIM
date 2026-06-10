@@ -42,6 +42,7 @@ class CameraQualityMonitor(Node):
         self.bridge = CvBridge()
         self.last_receive_time = None
         self.shutdown_requested = False
+        self._last_quality = None
         self.quality_pub = self.create_publisher(String, quality_topic, 10)
         self.latency_pub = self.create_publisher(Float32, latency_topic, 10)
         self.frame_gap_pub = self.create_publisher(Float32, frame_gap_topic, 10)
@@ -115,10 +116,12 @@ class CameraQualityMonitor(Node):
         quality = self._downgrade_for_timing(quality, latency_s, frame_gap_s)
         self._publish_quality(quality, latency_s, frame_gap_s)
 
-        self.get_logger().info(
-            f"Camera {quality}: sharpness={sharpness:.1f}, "
-            f"brightness={brightness:.1f}, latency={latency_s:.3f}s, frame_gap={frame_gap_s:.3f}s"
-        )
+        if quality != self._last_quality:
+            self._last_quality = quality
+            self.get_logger().info(
+                f"Camera {quality}: sharpness={sharpness:.1f}, "
+                f"brightness={brightness:.1f}, latency={latency_s:.3f}s, frame_gap={frame_gap_s:.3f}s"
+            )
 
     def _image_latency_s(self, msg: Image) -> float:
         stamp = rclpy.time.Time.from_msg(msg.header.stamp)

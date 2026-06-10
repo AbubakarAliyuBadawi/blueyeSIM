@@ -26,7 +26,24 @@ public:
     static BT::PortsList providedPorts() { return {}; }
 
     BT::NodeStatus tick() override {
+        constexpr double rearm_ratio = 0.8;
+
+        if (!takeover_armed_) {
+            if (urgency_ < threshold_ * rearm_ratio) {
+                takeover_armed_ = true;
+                RCLCPP_INFO(g_node->get_logger(),
+                    "Takeover re-armed: urgency=%.2f < %.2f * threshold=%.2f",
+                    urgency_, rearm_ratio, threshold_);
+            } else {
+                RCLCPP_INFO_THROTTLE(g_node->get_logger(), *g_node->get_clock(), 5000,
+                    "Takeover inhibited until urgency clears: urgency=%.2f, rearm below %.2f",
+                    urgency_, threshold_ * rearm_ratio);
+                return BT::NodeStatus::SUCCESS;
+            }
+        }
+
         if (urgency_ >= threshold_) {
+            takeover_armed_ = false;
             RCLCPP_WARN_THROTTLE(g_node->get_logger(), *g_node->get_clock(), 2000,
                 "Takeover requested: urgency=%.2f >= threshold=%.2f", urgency_, threshold_);
             return BT::NodeStatus::FAILURE;
@@ -37,6 +54,7 @@ public:
 private:
     double urgency_;
     double threshold_;
+    inline static bool takeover_armed_ = true;
     rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr urgency_sub_;
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr threshold_sub_;
 };

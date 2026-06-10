@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Resumable takeover test.
      ACCEPT + handback retries the interrupted phase.
-     After handback, takeover_inhibit is set so the same high BN urgency does
-     not immediately interrupt the resumed phase again.
+     CheckTakeoverRequest uses hysteresis: after a takeover it ignores new
+     requests until urgency drops below 80% of the threshold.
 
      This file is meant to test accept/handback resume behavior separately from
      the emergency reject path in TestMission.xml. -->
 <root BTCPP_format="4" main_tree_to_execute="TestMissionResume">
   <BehaviorTree ID="TestMissionResume">
     <Sequence name="resumable_mission">
-      <SetBlackboard output_key="takeover_inhibit" value="false"/>
-
       <RetryNode name="retry_undocking_after_handback" num_attempts="-1">
         <Fallback name="undocking_or_takeover">
           <ReactiveSequence name="guarded_undocking">
-            <Fallback name="takeover_allowed_undocking">
-              <CheckBlackboard key="takeover_inhibit" expected_value="true"/>
-              <CheckTakeoverRequest/>
-            </Fallback>
+            <CheckTakeoverRequest/>
             <Sequence name="undocking_phase">
               <PublishState state="1"/>
               <NavigateToWaypoint name="exit_dock"
@@ -32,7 +27,6 @@
             <WaitForHumanDecision/>
             <EnableJoystick/>
             <WaitForHandback/>
-            <SetBlackboard output_key="takeover_inhibit" value="true"/>
             <AlwaysFail/>
           </Sequence>
         </Fallback>
@@ -41,10 +35,7 @@
       <RetryNode name="retry_transit_after_handback" num_attempts="-1">
         <Fallback name="transit_or_takeover">
           <ReactiveSequence name="guarded_transit">
-            <Fallback name="takeover_allowed_transit">
-              <CheckBlackboard key="takeover_inhibit" expected_value="true"/>
-              <CheckTakeoverRequest/>
-            </Fallback>
+            <CheckTakeoverRequest/>
             <Sequence name="transit_phase">
               <PublishState state="2"/>
               <NavigateToWaypoint name="transit_to_pipeline"
@@ -59,7 +50,6 @@
             <WaitForHumanDecision/>
             <EnableJoystick/>
             <WaitForHandback/>
-            <SetBlackboard output_key="takeover_inhibit" value="true"/>
             <AlwaysFail/>
           </Sequence>
         </Fallback>
@@ -68,10 +58,7 @@
       <RetryNode name="retry_inspection_05_after_handback" num_attempts="-1">
         <Fallback name="inspection_05_or_takeover">
           <ReactiveSequence name="guarded_inspection_05">
-            <Fallback name="takeover_allowed_inspection_05">
-              <CheckBlackboard key="takeover_inhibit" expected_value="true"/>
-              <CheckTakeoverRequest/>
-            </Fallback>
+            <CheckTakeoverRequest/>
             <Sequence name="inspection_05_phase">
               <PublishState state="3"/>
               <NavigateToWaypoint name="nav_aruco_05"
@@ -89,7 +76,6 @@
             <WaitForHumanDecision/>
             <EnableJoystick/>
             <WaitForHandback/>
-            <SetBlackboard output_key="takeover_inhibit" value="true"/>
             <AlwaysFail/>
           </Sequence>
         </Fallback>
@@ -98,10 +84,7 @@
       <RetryNode name="retry_inspection_06_after_handback" num_attempts="-1">
         <Fallback name="inspection_06_or_takeover">
           <ReactiveSequence name="guarded_inspection_06">
-            <Fallback name="takeover_allowed_inspection_06">
-              <CheckBlackboard key="takeover_inhibit" expected_value="true"/>
-              <CheckTakeoverRequest/>
-            </Fallback>
+            <CheckTakeoverRequest/>
             <Sequence name="inspection_06_phase">
               <PublishState state="3"/>
               <NavigateToWaypoint name="nav_aruco_06"
@@ -119,7 +102,6 @@
             <WaitForHumanDecision/>
             <EnableJoystick/>
             <WaitForHandback/>
-            <SetBlackboard output_key="takeover_inhibit" value="true"/>
             <AlwaysFail/>
           </Sequence>
         </Fallback>
@@ -128,10 +110,7 @@
       <RetryNode name="retry_homing_after_handback" num_attempts="-1">
         <Fallback name="homing_or_takeover">
           <ReactiveSequence name="guarded_homing">
-            <Fallback name="takeover_allowed_homing">
-              <CheckBlackboard key="takeover_inhibit" expected_value="true"/>
-              <CheckTakeoverRequest/>
-            </Fallback>
+            <CheckTakeoverRequest/>
             <Sequence name="homing_phase">
               <PublishState state="4"/>
               <NavigateToWaypoint name="homing_midpoint"
@@ -149,7 +128,6 @@
             <WaitForHumanDecision/>
             <EnableJoystick/>
             <WaitForHandback/>
-            <SetBlackboard output_key="takeover_inhibit" value="true"/>
             <AlwaysFail/>
           </Sequence>
         </Fallback>

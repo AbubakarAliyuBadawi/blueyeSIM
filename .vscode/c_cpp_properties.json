@@ -10,6 +10,8 @@
         "/home/badawi/Desktop/auto-pilot/install/vortex_msgs/include/**",
         "/opt/ros/humble/include/**",
         "/home/badawi/Desktop/auto-pilot/src/vortex-auv/motion/thrust_allocator_auv/include/**",
+        "/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/include/**",
+        "/home/badawi/Desktop/auto-pilot/src/blueye_stonefish_bt/include/**",
         "/usr/include/**"
       ],
       "name": "ROS",
