@@ -227,7 +227,7 @@ def create_mission(logger):
     # Step 2: Set pipeline inspection depth (0.0 meters - surface)
     pipeline_depth_set_point = bp.DepthSetPoint(
         # ADD DEPTH TO PIPELINE WAYPOINTS
-        depth=1.0, 
+        depth=1.1, 
         speed_to_depth=0.5,
         depth_zero_reference=DepthZeroReference.DEPTH_ZERO_REFERENCE_SURFACE
     )
@@ -426,7 +426,7 @@ def run_mission_with_instant_resume(drone, mission, max_duration, logger, max_re
                 elapsed = time.time() - start_time
                 if elapsed > max_duration:
                     logger.warning(f"Mission timeout after {elapsed:.1f} seconds")
-                    drone.mission.stop()
+                    drone.mission.abort()
                     return False
                 
                 # Get current mission status
@@ -468,9 +468,8 @@ def run_mission_with_instant_resume(drone, mission, max_duration, logger, max_re
             
     except Exception as e:
         logger.error(f"Error during mission execution: {str(e)}")
-        # Try to stop the mission if there's an error
         try:
-            drone.mission.stop()
+            drone.mission.abort()
         except:
             pass
         return False
@@ -483,15 +482,17 @@ def disconnect_drone(drone, logger):
     
     logger.info("Disconnecting from drone")
     try:
-        # Stop mission if still running
+        # Abort mission if still running
         try:
             status = drone.mission.get_status()
-            if status and status.state and status.state.name == "MISSION_STATE_RUNNING":
-                logger.info("Stopping active mission")
-                drone.mission.stop()
+            if status and status.state and status.state.name in (
+                "MISSION_STATE_RUNNING", "MISSION_STATE_READY"
+            ):
+                logger.info("Aborting active mission")
+                drone.mission.abort()
                 time.sleep(1)
         except Exception as e:
-            logger.warning(f"Error checking mission status: {str(e)}")
+            logger.warning(f"Error aborting mission: {str(e)}")
         
         # Disconnect
         drone.disconnect()

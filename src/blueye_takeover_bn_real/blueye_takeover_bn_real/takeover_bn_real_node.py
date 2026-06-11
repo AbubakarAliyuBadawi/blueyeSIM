@@ -11,7 +11,7 @@ import rclpy
 from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import Pose, PoseStamped
 from rclpy.node import Node
-from std_msgs.msg import Float32, Int32, String
+from std_msgs.msg import Float32, Float64, Int32, String
 
 
 pysmile.License(
@@ -124,6 +124,7 @@ class RealTakeoverBayesianNetwork(Node):
         self.takeover_pub = self.create_publisher(Float32, "/blueye/takeover_request/takeover_requested_prob", 10)
         self.max_prob_pub = self.create_publisher(Float32, "/blueye/takeover_request/max_probability", 10)
         self.threshold_pub = self.create_publisher(Float32, "/blueye/takeover_request/threshold", 10)
+        self.urgency_pub = self.create_publisher(Float64, "/blueye/takeover_request/urgency", 10)
         self.evidence_pub = self.create_publisher(String, "/blueye/takeover_request/evidence", 10)
 
     def _setup_subscribers(self):
@@ -275,8 +276,13 @@ class RealTakeoverBayesianNetwork(Node):
 
         self._publish_string(self.state_pub, state)
         self._publish_float(self.no_takeover_pub, probabilities.get("NoTakeoverRequired", 0.0))
-        self._publish_float(self.attention_pub, probabilities.get("IncreasedAttentionRequired", 0.0))
-        self._publish_float(self.takeover_pub, probabilities.get("TakeoverRequested", 0.0))
+        attention = probabilities.get("IncreasedAttentionRequired", 0.0)
+        takeover = probabilities.get("TakeoverRequested", 0.0)
+        self._publish_float(self.attention_pub, attention)
+        self._publish_float(self.takeover_pub, takeover)
+        urgency_msg = Float64()
+        urgency_msg.data = 0.5 * attention + 1.0 * takeover
+        self.urgency_pub.publish(urgency_msg)
         self._publish_float(self.max_prob_pub, probability)
         self._publish_float(self.threshold_pub, float(self.get_parameter("takeover_threshold").value))
         self._publish_string(

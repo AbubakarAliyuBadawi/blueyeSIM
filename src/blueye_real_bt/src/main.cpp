@@ -18,6 +18,10 @@
 #include "blueye_real_bt/behaviors/activate_auto_modes.hpp"
 #include "blueye_real_bt/conditions/CheckBlackboardBool.hpp"
 #include "blueye_real_bt/behaviors/launch_undocking_real.hpp"
+#include "blueye_real_bt/conditions/check_takeover_request.hpp"
+#include "blueye_real_bt/actions/wait_for_human_decision.hpp"
+#include "blueye_real_bt/actions/enable_joystick_real.hpp"
+#include "blueye_real_bt/actions/wait_for_handback_real.hpp"
 
 // Global node for service clients
 rclcpp::Node::SharedPtr g_node;
@@ -123,7 +127,32 @@ int main(int argc, char **argv) {
         [](const std::string& name, const BT::NodeConfig& config) {
             return std::make_unique<LaunchUndockingProcedure>(name, config);
         });
-        
+
+    // Register takeover nodes
+    factory.registerBuilder<CheckTakeoverRequest>(
+        "CheckTakeoverRequest",
+        [](const std::string& name, const BT::NodeConfig& config) {
+            return std::make_unique<CheckTakeoverRequest>(name, config);
+        });
+
+    factory.registerBuilder<WaitForHumanDecision>(
+        "WaitForHumanDecision",
+        [](const std::string& name, const BT::NodeConfig& config) {
+            return std::make_unique<WaitForHumanDecision>(name, config);
+        });
+
+    factory.registerBuilder<EnableJoystick>(
+        "EnableJoystick",
+        [](const std::string& name, const BT::NodeConfig& config) {
+            return std::make_unique<EnableJoystick>(name, config);
+        });
+
+    factory.registerBuilder<WaitForHandback>(
+        "WaitForHandback",
+        [](const std::string& name, const BT::NodeConfig& config) {
+            return std::make_unique<WaitForHandback>(name, config);
+        });
+
 try {
         std::string mission_file;
         if (!g_node->get_parameter("behavior_tree_path", mission_file)) {
@@ -145,13 +174,14 @@ try {
         auto status = BT::NodeStatus::RUNNING;
 
         while (rclcpp::ok() && g_program_running) {
-            status = tree.tickWhileRunning(sleep_ms);
+            status = tree.tickOnce();
             rclcpp::spin_some(g_node);
-            
+            std::this_thread::sleep_for(sleep_ms);
+
             if (BT::isStatusCompleted(status)) {
-                RCLCPP_INFO(g_node->get_logger(), "Tree finished with status: %s", 
+                RCLCPP_INFO(g_node->get_logger(), "Tree finished with status: %s",
                            status == BT::NodeStatus::SUCCESS ? "SUCCESS" : "FAILURE");
-                break;  // Exit the loop if the tree has finished
+                break;
             }
         }
 

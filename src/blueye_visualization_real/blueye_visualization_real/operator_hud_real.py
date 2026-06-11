@@ -56,7 +56,8 @@ from rclpy.qos import HistoryPolicy, QoSProfile, ReliabilityPolicy
 
 from geometry_msgs.msg import Pose, PoseStamped, WrenchStamped
 from sensor_msgs.msg import Image, Joy
-from std_msgs.msg import Bool, Float32
+from std_msgs.msg import Bool, Float32, Float64
+from std_srvs.srv import SetBool
 
 
 # ── Thread-safe Qt signals ────────────────────────────────────────────────────
@@ -115,6 +116,9 @@ class SonarPanel(CameraPanel):
     def __init__(self):
         super().__init__()
         self.setMinimumSize(280, 200)
+        # Preferred width prevents layout from resizing the panel when sonar
+        # data arrives with different dimensions. Expanding height fills strip.
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
 
 
 # ── Joystick panel ────────────────────────────────────────────────────────────
@@ -440,7 +444,7 @@ class BatteryPanel(QWidget):
         self._soc      = max(0.0, min(100.0, soc_pct))
         self._runtime  = runtime_s
         self._current  = current_a
-        self._charging = charging_current_a > 0.1
+        self._charging = current_a > 0.1
         self.update()
 
     def paintEvent(self, _):
@@ -473,7 +477,7 @@ class BatteryPanel(QWidget):
             p.setPen(Qt.NoPen)
             p.drawRoundedRect(bar_x + 1, bar_y + 1, fill_w - 2, bar_h - 2, 3, 3)
 
-        p.setPen(QColor("#1e1e2e") if self._soc > 15 else QColor("#cdd6f4"))
+        p.setPen(QColor("#cdd6f4"))
         p.setFont(QFont("Monospace", 10, QFont.Bold))
         p.drawText(bar_x, bar_y, bar_w, bar_h, Qt.AlignCenter,
                    f"{self._soc:.1f}%")
@@ -504,6 +508,66 @@ class BatteryPanel(QWidget):
             p.drawText(margin, ty + i * lh, half - margin, lh, Qt.AlignLeft, lbl)
             p.setPen(self._VAL)
             p.drawText(half, ty + i * lh, half - margin, lh, Qt.AlignRight, val)
+
+
+# ── Auto-modes panel ─────────────────────────────────────────────────────────
+
+class AutoModesPanel(QWidget):
+    """Toggle buttons for depth hold and heading hold."""
+
+    _BG      = QColor("#1e1e2e")
+    _ON      = QColor("#a6e3a1")   # green  — active
+    _OFF     = QColor("#313244")   # dark   — inactive
+    _ON_TXT  = QColor("#1e1e2e")
+    _OFF_TXT = QColor("#cdd6f4")
+
+    depth_toggled   = None   # set after construction to avoid signal on class body
+    heading_toggled = None
+
+    def __init__(self):
+        super().__init__()
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.setFixedHeight(58)
+
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(4, 4, 4, 4)
+        outer.setSpacing(3)
+
+        lbl = QLabel("AUTO MODES")
+        lbl.setAlignment(Qt.AlignCenter)
+        lbl.setStyleSheet(
+            "color:#6c7086; font-family:Monospace; font-size:8px; font-weight:bold; "
+            "border:none; background:transparent;"
+        )
+        outer.addWidget(lbl)
+
+        row = QHBoxLayout()
+        row.setSpacing(4)
+
+        self.depth_btn   = self._make_btn("DEPTH HOLD")
+        self.heading_btn = self._make_btn("HEADING HOLD")
+        row.addWidget(self.depth_btn)
+        row.addWidget(self.heading_btn)
+        outer.addLayout(row)
+
+    def _make_btn(self, text: str) -> QPushButton:
+        btn = QPushButton(text)
+        btn.setCheckable(True)
+        btn.setFixedHeight(24)
+        btn.setFont(QFont("Monospace", 8, QFont.Bold))
+        self._apply_style(btn)
+        btn.toggled.connect(lambda _: self._apply_style(btn))
+        return btn
+
+    def _apply_style(self, btn: QPushButton):
+        on = btn.isChecked()
+        bg  = self._ON.name()  if on else self._OFF.name()
+        txt = self._ON_TXT.name() if on else self._OFF_TXT.name()
+        btn.setStyleSheet(
+            f"QPushButton {{ background:{bg}; color:{txt}; "
+            f"font-family:Monospace; font-size:8px; font-weight:bold; "
+            f"border:1px solid #45475a; border-radius:3px; padding:2px 4px; }}"
+        )
 
 
 # ── Takeover banner ───────────────────────────────────────────────────────────
@@ -681,10 +745,17 @@ class OperatorWindow(QMainWindow):
         rc         = QVBoxLayout(right_col)
         rc.setContentsMargins(0, 0, 0, 0)
         rc.setSpacing(4)
-        self.battery_panel = BatteryPanel()
-        self.pose_panel    = PosePanel()
-        rc.addWidget(self._frame(self.battery_panel), stretch=2)
-        rc.addWidget(self._frame(self.pose_panel),    stretch=3)
+        self.battery_panel    = BatteryPanel()
+        self.auto_modes_panel = AutoModesPanel()
+        self.pose_panel       = PosePanel()
+        rc.addWidget(self._frame(self.battery_panel),    stretch=2)
+        rc.addWidget(self._frame(self.auto_modes_panel), stretch=0)
+        rc.addWidget(self._frame(self.pose_panel),       stretch=3)
+
+        self.auto_modes_panel.depth_btn.toggled.connect(
+            lambda on: self._ros_node.call_depth_hold(on))
+        self.auto_modes_panel.heading_btn.toggled.connect(
+            lambda on: self._ros_node.call_heading_hold(on))
         tl.addWidget(right_col, stretch=2)
 
         ov.addWidget(top, stretch=7)
@@ -816,8 +887,7 @@ class OperatorHUDNode(Node):
         super().__init__("blueye_real_operator_hud")
         self._signals    = signals
         self._bridge     = CvBridge()
-        self._takeover_prob = 0.0
-        self._attention_prob = 0.0
+        self._urgency    = 0.0
         self._threshold  = 0.65
         self._popup_sent = False
         self._shutdown   = False
@@ -851,17 +921,12 @@ class OperatorHUDNode(Node):
             PoseStamped, "/blueye/pose", self._on_pose, best_effort)
         self.create_subscription(Pose, "/blueye/battery", self._on_battery, 10)
         self.create_subscription(
-            Float32,
-            "/blueye/takeover_request/takeover_requested_prob",
-            self._on_takeover_prob, 10,
-        )
-        self.create_subscription(
-            Float32,
-            "/blueye/takeover_request/attention_required_prob",
-            self._on_attention_prob, 10,
-        )
+            Float64, "/blueye/takeover_request/urgency", self._on_urgency, 10)
         self.create_subscription(
             Float32, "/blueye/takeover_request/threshold", self._on_threshold, 10)
+
+        self._depth_client   = self.create_client(SetBool, "/blueye/depth_hold")
+        self._heading_client = self.create_client(SetBool, "/blueye/heading_hold")
 
         self._decision_pub = self.create_publisher(
             Bool, "/blueye/takeover_request/human_decision", 10)
@@ -943,21 +1008,13 @@ class OperatorHUDNode(Node):
             float(msg.position.x),       # charging_current
         )
 
-    def _on_takeover_prob(self, msg: Float32):
-        self._takeover_prob = float(msg.data)
-        self._emit_urgency()
-
-    def _on_attention_prob(self, msg: Float32):
-        self._attention_prob = float(msg.data)
-        self._emit_urgency()
-
-    def _emit_urgency(self):
-        urgency = 0.5 * self._attention_prob + 1.0 * self._takeover_prob
-        self._signals.takeover_update.emit(urgency, self._threshold)
-        if urgency >= self._threshold and not self._popup_sent:
+    def _on_urgency(self, msg: Float64):
+        self._urgency = float(msg.data)
+        self._signals.takeover_update.emit(self._urgency, self._threshold)
+        if self._urgency >= self._threshold and not self._popup_sent:
             self._popup_sent = True
             self._signals.show_popup.emit()
-        elif urgency < self._threshold * 0.8:
+        elif self._urgency < self._threshold * 0.8:
             self._popup_sent = False
 
     def _on_threshold(self, msg: Float32):
@@ -972,6 +1029,22 @@ class OperatorHUDNode(Node):
         out = Bool()
         out.data = True
         self._handback_pub.publish(out)
+
+    def call_depth_hold(self, enable: bool):
+        if not self._depth_client.wait_for_service(timeout_sec=0.3):
+            self.get_logger().warning("depth_hold service not available")
+            return
+        req = SetBool.Request()
+        req.data = enable
+        self._depth_client.call_async(req)
+
+    def call_heading_hold(self, enable: bool):
+        if not self._heading_client.wait_for_service(timeout_sec=0.3):
+            self.get_logger().warning("heading_hold service not available")
+            return
+        req = SetBool.Request()
+        req.data = enable
+        self._heading_client.call_async(req)
 
     def shutdown(self):
         self._shutdown = True

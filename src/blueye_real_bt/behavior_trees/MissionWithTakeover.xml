@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mission with single takeover guard across the entire mission.
+     Mirrors TestMission.xml from the sim.
+
+     Flow:
+       Normal  — CheckTakeoverRequest passes → mission runs to completion.
+       Takeover triggered:
+         ACCEPT  — operator takes joystick, hands back → tree ends (restart from dock).
+         REJECT  — drone autonomously navigates to surface waypoint and docks.
+
+     No battery check: the Bayesian Network accounts for battery level as one
+     of its inputs and will raise urgency when battery is critical. -->
+<root BTCPP_format="4"
+      main_tree_to_execute="MissionWithTakeover">
+  <BehaviorTree ID="MissionWithTakeover">
+
+    <Fallback name="mission_with_takeover_guard">
+
+      <!-- ── NORMAL MISSION (interrupted if urgency >= threshold) ─────────── -->
+      <ReactiveSequence name="guarded_mission">
+        <CheckTakeoverRequest/>
+
+        <Sequence name="mission">
+
+          <!-- Phase 1: Undocking -->
+          <LaunchUndockingProcedure name="undocking_procedure"
+                                    script_path="/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/bash_scripts/launch_undocking_real.sh"
+                                    drone_ip="192.168.1.101"
+                                    reverse_duration="10"
+                                    reverse_power="0.4"/>
+
+          <!-- Phase 2: Stabilise then run mission -->
+          <ActivateAutoModes name="post_undocking_stabilization"
+                             depth_hold="true"
+                             heading_hold="true"
+                             hold_duration="5"/>
+          <LaunchMissionProcedure name="pipeline_inspection_mission"
+                                  script_path="/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/bash_scripts/launch_mission.sh"
+                                  drone_ip="192.168.1.101"
+                                  max_retries="10"/>
+
+          <!-- Phase 3: Docking -->
+          <LaunchDockingProcedure name="launch_integrated_docking"/>
+
+        </Sequence>
+      </ReactiveSequence>
+
+      <!-- ── TAKEOVER HANDLER (runs when CheckTakeoverRequest fails) ──────── -->
+      <Sequence name="takeover_handler">
+
+        <PublishState state="6"/>
+
+        <!-- Hold position while operator decides -->
+        <ActivateAutoModes name="station_keep_during_takeover"
+                           depth_hold="true"
+                           heading_hold="true"
+                           hold_duration="3"/>
+
+        <Fallback name="human_decision_branch">
+
+          <!-- ACCEPT: give joystick control, wait for handback, re-enable auto -->
+          <Sequence name="joystick_takeover">
+            <WaitForHumanDecision/>
+            <EnableJoystick/>
+            <WaitForHandback/>
+            <ActivateAutoModes name="reenable_after_handback"
+                               depth_hold="true"
+                               heading_hold="true"
+                               hold_duration="0"/>
+          </Sequence>
+
+          <!-- REJECT: autonomous emergency return to dock -->
+          <Sequence name="emergency_return">
+            <PublishState state="4"/>
+            <GoToWaypoint name="emergency_surface_waypoint"
+                          waypoint_lat="63.4406996"
+                          waypoint_lon="10.3489307"
+                          depth="1.5"
+                          drone_ip="192.168.1.101"/>
+            <PublishState state="5"/>
+            <LaunchDockingProcedure name="emergency_docking"/>
+          </Sequence>
+
+        </Fallback>
+      </Sequence>
+
+    </Fallback>
+  </BehaviorTree>
+
+  <!-- Node model (Groot2 metadata) -->
+  <TreeNodesModel>
+    <Action ID="ActivateAutoModes">
+      <input_port name="depth_hold"    default="true" type="Bool">Enable depth hold</input_port>
+      <input_port name="heading_hold"  default="true" type="Bool">Enable heading hold</input_port>
+      <input_port name="hold_duration" default="10"   type="Int">Hold duration in seconds</input_port>
+    </Action>
+    <Condition ID="CheckTakeoverRequest"/>
+    <Action ID="EnableJoystick"/>
+    <Action ID="GoToWaypoint">
+      <input_port name="waypoint_lat" type="Double">Target latitude</input_port>
+      <input_port name="waypoint_lon" type="Double">Target longitude</input_port>
+      <input_port name="depth"        default="1.0"           type="Double">Target depth in metres</input_port>
+      <input_port name="drone_ip"     default="192.168.1.101" type="String">Drone IP</input_port>
+    </Action>
+    <Action ID="LaunchDockingProcedure" editable="true"/>
+    <Action ID="LaunchMissionProcedure">
+      <input_port name="script_path" type="String">Path to mission script</input_port>
+      <input_port name="drone_ip"    type="String">Drone IP</input_port>
+      <input_port name="max_retries" default="5" type="Int">Max retry attempts</input_port>
+    </Action>
+    <Action ID="LaunchUndockingProcedure">
+      <input_port name="script_path"      default="/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/bash_scripts/launch_undocking_real.sh" type="String">Path to undocking script</input_port>
+      <input_port name="drone_ip"         default="192.168.1.101" type="String">Drone IP</input_port>
+      <input_port name="reverse_duration" default="10"  type="Int">Reverse duration in seconds</input_port>
+      <input_port name="reverse_power"    default="0.4" type="Float">Reverse power (0.1–1.0)</input_port>
+    </Action>
+    <Action ID="PublishState">
+      <input_port name="state" type="Int">Mission state integer to publish</input_port>
+    </Action>
+    <Action ID="WaitForHandback"/>
+    <Action ID="WaitForHumanDecision"/>
+  </TreeNodesModel>
+
+</root>
