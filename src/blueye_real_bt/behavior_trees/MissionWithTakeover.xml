@@ -54,7 +54,7 @@
         <ActivateAutoModes name="station_keep_during_takeover"
                            depth_hold="true"
                            heading_hold="true"
-                           hold_duration="3"/>
+                           hold_duration="30"/>
 
         <Fallback name="human_decision_branch">
 

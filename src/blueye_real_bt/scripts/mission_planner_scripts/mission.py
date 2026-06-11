@@ -400,14 +400,31 @@ def run_mission_with_instant_resume(drone, mission, max_duration, logger, max_re
     retry_count = 0
     
     try:
+        # Check for leftover mission state and give the drone time to settle
+        try:
+            status = drone.mission.get_status()
+            if status and status.state:
+                logger.info(f"Previous mission state on connect: {status.state.name}")
+        except Exception as e:
+            logger.warning(f"Could not check previous mission state: {e}")
+
         # Clear any existing missions
         logger.info("Clearing any previous missions")
         drone.mission.clear()
-        time.sleep(1)
-        
-        # Send the new mission
+        time.sleep(2)
+
+        # Send the new mission (retry up to 3 times in case drone is still settling)
         logger.info(f"Sending new mission: {mission.name}")
-        drone.mission.send_new(mission)
+        for attempt in range(3):
+            try:
+                drone.mission.send_new(mission)
+                break
+            except Exception as e:
+                if attempt < 2:
+                    logger.warning(f"send_new failed (attempt {attempt + 1}/3): {e} — retrying in 2s")
+                    time.sleep(2)
+                else:
+                    raise
         time.sleep(1)
         
         # Main mission execution loop with retries
@@ -468,10 +485,6 @@ def run_mission_with_instant_resume(drone, mission, max_duration, logger, max_re
             
     except Exception as e:
         logger.error(f"Error during mission execution: {str(e)}")
-        try:
-            drone.mission.abort()
-        except:
-            pass
         return False
 
 
@@ -482,17 +495,8 @@ def disconnect_drone(drone, logger):
     
     logger.info("Disconnecting from drone")
     try:
-        # Abort mission if still running
-        try:
-            status = drone.mission.get_status()
-            if status and status.state and status.state.name in (
-                "MISSION_STATE_RUNNING", "MISSION_STATE_READY"
-            ):
-                logger.info("Aborting active mission")
-                drone.mission.abort()
-                time.sleep(1)
-        except Exception as e:
-            logger.warning(f"Error aborting mission: {str(e)}")
+        # Disconnecting from the drone automatically stops any active mission
+        # (Blueye safety: autonomous motion stops when the controlling client disconnects)
         
         # Disconnect
         drone.disconnect()

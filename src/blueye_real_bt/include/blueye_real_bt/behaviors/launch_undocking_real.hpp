@@ -2,13 +2,14 @@
 #define LAUNCH_UNDOCKING_PROCEDURE_HPP
 
 #include <string>
+#include <sys/types.h>
 #include "behaviortree_cpp/action_node.h"
 
-class LaunchUndockingProcedure : public BT::SyncActionNode
+class LaunchUndockingProcedure : public BT::StatefulActionNode
 {
 public:
     LaunchUndockingProcedure(const std::string& name, const BT::NodeConfiguration& config);
-    
+
     static BT::PortsList providedPorts()
     {
         return {
@@ -18,8 +19,13 @@ public:
             BT::InputPort<float>("reverse_power", "Power for backwards movement (0.1 to 1.0)")
         };
     }
-    
-    BT::NodeStatus tick() override;
+
+    BT::NodeStatus onStart() override;
+    BT::NodeStatus onRunning() override;
+    void onHalted() override;
+
+private:
+    pid_t pid_ = -1;
 };
 
 #endif // LAUNCH_UNDOCKING_PROCEDURE_HPP
