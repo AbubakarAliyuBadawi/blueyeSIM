@@ -164,8 +164,8 @@ class JoystickPanel(QWidget):
         cy    = 22 + pad_r + 4
         lx, rx = W // 4, 3 * W // 4
 
-        self._stick(p, lx, cy, pad_r, self._axes[0], self._axes[1], "YAW / HEAVE")
-        self._stick(p, rx, cy, pad_r, self._axes[3], self._axes[4], "SWAY / SURGE")
+        self._stick(p, lx, cy, pad_r, -self._axes[0], self._axes[1], "YAW / HEAVE")
+        self._stick(p, rx, cy, pad_r, -self._axes[3],  self._axes[4], "SWAY / SURGE")
         self._buttons_row(p, W, H)
 
     def _stick(self, p, cx, cy, r, ax, ay, label):
@@ -982,9 +982,9 @@ class OperatorHUDNode(Node):
 
     def _on_commands(self, msg: WrenchStamped):
         surge = max(-1.0, min(1.0,  msg.wrench.force.x))
-        sway  = max(-1.0, min(1.0, -msg.wrench.force.y))
+        sway  = max(-1.0, min(1.0,  msg.wrench.force.y))
         heave = max(-1.0, min(1.0,  msg.wrench.force.z))
-        yaw   = max(-1.0, min(1.0, -msg.wrench.torque.z))
+        yaw   = max(-1.0, min(1.0,  msg.wrench.torque.z))
         thrusters = [
             max(-1.0, min(1.0, surge + yaw)),   # T0 front-right
             max(-1.0, min(1.0, surge - yaw)),   # T1 front-left
