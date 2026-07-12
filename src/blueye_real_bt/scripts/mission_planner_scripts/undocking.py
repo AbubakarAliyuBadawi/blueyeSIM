@@ -39,7 +39,7 @@ def connect_to_drone(drone_ip, timeout, logger):
         logger.error(f"Failed to connect to drone: {str(e)}")
         return None
 
-def perform_undocking_sequence(drone, reverse_duration=10, reverse_power=0.4, logger=None):
+def perform_undocking_sequence(drone, reverse_duration=10, reverse_power=0.8, logger=None):
     """
     Perform undocking sequence using direct drone SDK commands.
     
@@ -78,18 +78,20 @@ def perform_undocking_sequence(drone, reverse_duration=10, reverse_power=0.4, lo
         drone.motion.auto_heading_active = True
         time.sleep(1)  # Brief pause for mode change
         
-        # Move backwards
-        drone.motion.surge = -reverse_power
-        
-        # Monitor movement
+        # Move backwards — re-send every 100 ms so the firmware watchdog never fires
         start_time = time.time()
+        last_log_time = start_time
         while time.time() - start_time < reverse_duration:
-            try:
-                current_depth = drone.depth
-                logger.info(f"Moving backwards... Depth: {current_depth:.2f}m")
-            except:
-                logger.info("Moving backwards...")
-            time.sleep(2)
+            drone.motion.surge = -reverse_power
+            now = time.time()
+            if now - last_log_time >= 2.0:
+                try:
+                    current_depth = drone.depth
+                    logger.info(f"Moving backwards... Depth: {current_depth:.2f}m")
+                except Exception:
+                    logger.info("Moving backwards...")
+                last_log_time = now
+            time.sleep(0.1)
         
         # Stop movement
         drone.motion.surge = 0.0

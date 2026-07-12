@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Test: docking phase only, with joystick takeover guard.
+
+     Flow:
+       Normal  — CheckTakeoverRequest passes → auto modes activate → docking starts.
+                 BT waits for charging signal (up to 10 min).
+                 Operator presses X on joystick and manually guides drone to dock.
+                 Charging detected → SUCCESS.
+
+       Takeover triggered — LaunchDockingProcedure::onHalted() kills the docking
+                            script and docking nodes cleanly.
+         ACCEPT — EnableJoystick → WaitForHandback → AlwaysFail
+                  → tree restarts → docking nodes relaunch → resume waiting.
+         REJECT — tree exits (operator aborted docking). -->
+<root BTCPP_format="4"
+      main_tree_to_execute="TestDocking">
+  <BehaviorTree ID="TestDocking">
+
+    <Fallback name="docking_with_takeover_guard">
+
+      <!-- Activate auto modes then run docking (interrupted if urgency >= threshold) -->
+      <ReactiveSequence name="guarded_docking">
+        <CheckTakeoverRequest/>
+
+        <Sequence name="docking_sequence">
+          <!-- Hold depth and heading so drone stays put before docking starts -->
+          <ActivateAutoModes name="pre_docking_stabilization"
+                             depth_hold="true"
+                             heading_hold="true"
+                             hold_duration="3"/>
+
+          <!-- Launch docking: starts ArUco + EKF + DVL, waits for charging signal -->
+          <LaunchDockingProcedure name="test_docking"/>
+        </Sequence>
+      </ReactiveSequence>
+
+      <!-- Takeover handler (mirrors MissionWithTakeover) -->
+      <Sequence name="takeover_handler">
+
+        <PublishState state="6"/>
+        <WaitForHumanDecision decision="{human_decision}"/>
+
+        <Fallback name="decision_branch">
+
+          <!-- REJECT: operator aborts docking — tree exits cleanly -->
+          <Sequence name="reject_path">
+            <CheckBlackboardBool key="human_decision" expected_value="false"/>
+            <PublishState state="4"/>
+          </Sequence>
+
+          <!-- ACCEPT: operator takes joystick → manually docks → hands back
+               AlwaysFail causes tree restart → docking relaunches → resumes wait -->
+          <Sequence name="accept_path">
+            <EnableJoystick/>
+            <WaitForHandback/>
+            <AlwaysFail/>
+          </Sequence>
+
+        </Fallback>
+      </Sequence>
+
+    </Fallback>
+  </BehaviorTree>
+
+  <TreeNodesModel>
+    <Action ID="ActivateAutoModes">
+      <input_port name="depth_hold"    default="true" type="Bool">Enable depth hold</input_port>
+      <input_port name="heading_hold"  default="true" type="Bool">Enable heading hold</input_port>
+      <input_port name="hold_duration" default="10"   type="Int">Hold duration in seconds</input_port>
+    </Action>
+    <Condition ID="CheckBlackboardBool">
+      <input_port name="key"            type="String">Blackboard key to read</input_port>
+      <input_port name="expected_value" default="true"  type="Bool">Value to compare against</input_port>
+      <input_port name="invert_result"  default="false" type="Bool">Invert the comparison result</input_port>
+    </Condition>
+    <Condition ID="CheckTakeoverRequest"/>
+    <Action ID="EnableJoystick"/>
+    <Action ID="LaunchDockingProcedure" editable="true"/>
+    <Action ID="PublishState">
+      <input_port name="state" type="Int">Mission state integer to publish</input_port>
+    </Action>
+    <Action ID="WaitForHandback"/>
+    <Action ID="WaitForHumanDecision">
+      <output_port name="decision" type="Bool">true = accepted, false = rejected</output_port>
+    </Action>
+  </TreeNodesModel>
+
+</root>

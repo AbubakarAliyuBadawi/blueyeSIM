@@ -11,7 +11,10 @@ public:
         : BT::StatefulActionNode(name, config), decision_received_(false), accepted_(false)
     {}
 
-    static BT::PortsList providedPorts() { return {}; }
+    // Writes decision to blackboard so the BT can branch on it.
+    static BT::PortsList providedPorts() {
+        return { BT::OutputPort<bool>("decision", "true = accepted, false = rejected") };
+    }
 
 protected:
     BT::NodeStatus onStart() override {
@@ -30,12 +33,11 @@ protected:
     BT::NodeStatus onRunning() override {
         if (!decision_received_) return BT::NodeStatus::RUNNING;
         sub_.reset();
-        if (accepted_) {
-            RCLCPP_INFO(g_node->get_logger(), "Operator ACCEPTED takeover");
-            return BT::NodeStatus::SUCCESS;
-        }
-        RCLCPP_INFO(g_node->get_logger(), "Operator REJECTED takeover — triggering emergency sequence");
-        return BT::NodeStatus::FAILURE;
+        // Write to blackboard so the BT can branch on the decision
+        setOutput("decision", accepted_);
+        RCLCPP_INFO(g_node->get_logger(),
+            "Operator %s takeover", accepted_ ? "ACCEPTED" : "REJECTED");
+        return BT::NodeStatus::SUCCESS;
     }
 
     void onHalted() override { sub_.reset(); }

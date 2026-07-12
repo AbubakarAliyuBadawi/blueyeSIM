@@ -14,15 +14,59 @@ import argparse
 import sys
 import time
 import logging
+import threading
 from pathlib import Path
 from datetime import datetime
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Point
+from std_msgs.msg import String, Int32
 import blueye.protocol as bp
 from blueye.sdk import Drone
 from blueye.protocol.types.mission_planning import DepthZeroReference
 from blueye.protocol.types.message_formats import LatLongPosition
+
+# ── Mission control channel ──────────────────────────────────────────────────
+# The BT publishes "pause" / "resume" / "stop" here.
+_pause_event  = threading.Event()
+_resume_event = threading.Event()
+_stop_event   = threading.Event()
+_control_node = None
+_state_pub    = None
+
+# Instruction ID of the first pipeline waypoint. Transit ends and inspection
+# begins when this instruction appears in completed_instruction_ids.
+# id=1 control_mode, id=2 depth_setpoint, id=3 first waypoint.
+_INSPECTION_START_INSTRUCTION_ID = 3
+
+
+def _setup_control_channel():
+    """Subscribe to /blueye/mission/control and create state publisher."""
+    global _control_node, _state_pub
+    if not rclpy.ok():
+        rclpy.init()
+    _control_node = rclpy.create_node('mission_planner_control')
+
+    def _cb(msg: String):
+        if msg.data == "pause":
+            _pause_event.set()
+        elif msg.data == "resume":
+            _resume_event.set()
+        elif msg.data == "stop":
+            _stop_event.set()
+
+    _control_node.create_subscription(String, '/blueye/mission/control', _cb, 10)
+    _state_pub = _control_node.create_publisher(Int32, '/mission_state', 10)
+    t = threading.Thread(target=rclpy.spin, args=(_control_node,), daemon=True)
+    t.start()
+
+
+def _publish_state(state: int):
+    """Publish mission state integer to /mission_state."""
+    if _state_pub is not None:
+        msg = Int32()
+        msg.data = state
+        _state_pub.publish(msg)
 
 
 def extend_ctrl_client(drone, logger=None, use_hardcoded_gps=True):
@@ -227,7 +271,7 @@ def create_mission(logger):
     # Step 2: Set pipeline inspection depth (0.0 meters - surface)
     pipeline_depth_set_point = bp.DepthSetPoint(
         # ADD DEPTH TO PIPELINE WAYPOINTS
-        depth=1.1, 
+        depth=2.0, 
         speed_to_depth=0.5,
         depth_zero_reference=DepthZeroReference.DEPTH_ZERO_REFERENCE_SURFACE
     )
@@ -398,7 +442,8 @@ def run_mission_with_instant_resume(drone, mission, max_duration, logger, max_re
     
     start_time = time.time()
     retry_count = 0
-    
+    inspection_started = False  # flips to True once first waypoint is reached
+
     try:
         # Check for leftover mission state and give the drone time to settle
         try:
@@ -439,16 +484,42 @@ def run_mission_with_instant_resume(drone, mission, max_duration, logger, max_re
             
             # Monitor mission progress
             while True:
+                # BT sent "stop" (REJECT path) — abort immediately
+                if _stop_event.is_set():
+                    logger.info("Stop signal received — terminating mission script")
+                    return False
+
+                # BT sent "pause" (takeover ACCEPT path) — freeze, wait for resume
+                if _pause_event.is_set():
+                    _pause_event.clear()
+                    logger.info("Pause signal received — pausing mission (drone holds depth)")
+                    drone.mission.pause()
+                    logger.info("Mission paused. Waiting for resume signal...")
+                    while not _resume_event.wait(timeout=1.0):
+                        if _stop_event.is_set():
+                            logger.info("Stop received while paused — terminating")
+                            return False
+                    _resume_event.clear()
+                    logger.info("Resume signal received — resuming mission")
+                    drone.mission.run()
+                    continue
+
                 # Check if maximum duration exceeded
                 elapsed = time.time() - start_time
                 if elapsed > max_duration:
                     logger.warning(f"Mission timeout after {elapsed:.1f} seconds")
-                    drone.mission.abort()
                     return False
-                
+
                 # Get current mission status
                 status = drone.mission.get_status()
-                
+
+                # Detect transit → inspection transition: first waypoint reached
+                if not inspection_started and \
+                        _INSPECTION_START_INSTRUCTION_ID in status.completed_instruction_ids:
+                    inspection_started = True
+                    _publish_state(3)  # state 3 = INSPECTION
+                    logger.info("Phase transition: TRANSIT → INSPECTION (first waypoint reached)")
+
                 # Log current status
                 state_msg = f"Mission: {status.state.name}, "
                 state_msg += f"Progress: {len(status.completed_instruction_ids)}/{status.total_number_of_instructions} instructions, "
@@ -516,6 +587,10 @@ def main():
     # Set up logging
     logger = setup_logging()
     logger.info("Starting Pipeline Survey and Docking Mission with Position Reset and Auto Resume")
+
+    # ROS control channel: receives pause/resume/stop from the BT
+    _setup_control_channel()
+    logger.info("Mission control channel ready on /blueye/mission/control")
     
     drone = None
     success = False

@@ -28,6 +28,9 @@ rclcpp::Node::SharedPtr g_node;
 std::atomic<bool> g_program_running{true};
 rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr g_mission_state_pub;
 int g_current_mission_state = 0;
+// Set by LaunchMissionProcedure::onHalted when mission is paused for takeover;
+// cleared by the main loop after it resets the tree so the mission can resume.
+bool g_mission_paused = false;
 
 void signalHandler(int signum) {
     if (g_node) {
@@ -179,6 +182,18 @@ try {
             std::this_thread::sleep_for(sleep_ms);
 
             if (BT::isStatusCompleted(status)) {
+                if (g_mission_paused && g_program_running) {
+                    // Takeover was handled (operator accepted + handed back).
+                    // Reset all BT nodes to IDLE so the tree re-enters from the top.
+                    // LaunchUndockingProcedure will skip itself (already_done_=true).
+                    // LaunchMissionProcedure will detect the paused script and resume it.
+                    RCLCPP_INFO(g_node->get_logger(),
+                        "Takeover handled — resetting tree to resume paused mission");
+                    g_mission_paused = false;
+                    tree.haltTree();
+                    status = BT::NodeStatus::RUNNING;
+                    continue;
+                }
                 RCLCPP_INFO(g_node->get_logger(), "Tree finished with status: %s",
                            status == BT::NodeStatus::SUCCESS ? "SUCCESS" : "FAILURE");
                 break;
@@ -187,6 +202,7 @@ try {
 
         RCLCPP_INFO(g_node->get_logger(), "Starting clean shutdown...");
         tree.haltTree();
+        LaunchMissionProcedure::cleanup_if_needed();
         RCLCPP_INFO(g_node->get_logger(), "Tree halted successfully");
         g_mission_state_pub.reset();  // Explicitly reset the publisher
         g_program_running = false;    // Make sure thread knows to stop

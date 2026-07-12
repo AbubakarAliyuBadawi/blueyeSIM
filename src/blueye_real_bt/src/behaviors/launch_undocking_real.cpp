@@ -12,6 +12,12 @@ LaunchUndockingProcedure::LaunchUndockingProcedure(const std::string& name, cons
 
 BT::NodeStatus LaunchUndockingProcedure::onStart()
 {
+    if (already_done_) {
+        RCLCPP_INFO(rclcpp::get_logger("launch_undocking"),
+                    "Undocking already completed — skipping for mission resume");
+        return BT::NodeStatus::SUCCESS;
+    }
+
     std::string script_path;
     if (!getInput<std::string>("script_path", script_path))
         script_path = "/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/bash_scripts/launch_undocking_real.sh";
@@ -75,6 +81,7 @@ BT::NodeStatus LaunchUndockingProcedure::onRunning()
     }
 
     RCLCPP_INFO(rclcpp::get_logger("launch_undocking"), "Undocking completed successfully");
+    already_done_ = true;
     return BT::NodeStatus::SUCCESS;
 }
 

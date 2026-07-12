@@ -4,6 +4,9 @@
 #include <std_srvs/srv/set_bool.hpp>
 
 extern rclcpp::Node::SharedPtr g_node;
+// Set true here (ACCEPT path) so main.cpp knows to restart the tree after handback.
+// Never set in the REJECT path, so emergency dock exits cleanly without a restart.
+extern bool g_mission_paused;
 
 // Disables depth_hold and heading_hold so the operator has full joystick control.
 class EnableJoystick : public BT::SyncActionNode {
@@ -21,7 +24,9 @@ public:
         bool ok = _call(depth_client_,   false, "/blueye/depth_hold")
                && _call(heading_client_, false, "/blueye/heading_hold");
         if (ok) {
-            RCLCPP_INFO(g_node->get_logger(), "EnableJoystick: auto modes disabled — joystick active");
+            g_mission_paused = true;
+            RCLCPP_INFO(g_node->get_logger(),
+                "EnableJoystick: auto modes disabled — joystick active, mission resume armed");
             return BT::NodeStatus::SUCCESS;
         }
         RCLCPP_ERROR(g_node->get_logger(), "EnableJoystick: failed to disable one or more auto modes");

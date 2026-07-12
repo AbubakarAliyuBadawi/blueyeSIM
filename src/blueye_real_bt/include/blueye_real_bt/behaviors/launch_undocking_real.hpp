@@ -26,6 +26,8 @@ public:
 
 private:
     pid_t pid_ = -1;
+    // Persists across tree.haltTree() + re-tick so undocking is skipped on mission resume
+    inline static bool already_done_ = false;
 };
 
 #endif // LAUNCH_UNDOCKING_PROCEDURE_HPP

@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Mission with single takeover guard across the entire mission.
+<!-- Full autonomous mission: undocking → inspection → docking, with takeover guard.
 
-     Flow:
-       Normal  — CheckTakeoverRequest passes → mission runs to completion.
-       Takeover triggered — LaunchMissionProcedure::onHalted() publishes "pause"
-                            to /blueye/mission/control so the drone holds depth.
-         ACCEPT — EnableJoystick (sets g_mission_paused=true) → WaitForHandback
-                  → AlwaysFail forces takeover_handler to FAIL
-                  → outer Fallback also FAILS (both children failed)
-                  → main.cpp detects g_mission_paused, resets tree
-                  → LaunchMissionProcedure::onStart() sees paused script, resumes it
-         REJECT — CheckBlackboardBool routes to emergency_return path
-                  → emergency dock succeeds → takeover_handler SUCCESS
-                  → outer Fallback SUCCESS → tree done (no restart)
+     Mission states published to /mission_state:
+       1 = UNDOCKING
+       2 = TRANSIT          (BT publishes on LaunchMission start)
+       3 = INSPECTION       (mission.py publishes when first waypoint reached)
+       4 = DOCKING
+       5 = EMERGENCY ABORT
+       6 = EMERGENCY DOCKING
+       7 = TAKEOVER REQUESTED
 
-     Tree restart loop: main.cpp calls tree.haltTree() + continues ticking
-     when g_mission_paused=true after the tree completes.
-     LaunchUndockingProcedure has already_done_=true so it skips on re-entry.
-     LaunchMissionProcedure::onStart() detects paused script and resumes. -->
+     Normal flow:
+       PublishState(1) → LaunchUndocking → ActivateAutoModes
+       PublishState(2) → LaunchMission
+       PublishState(3) → LaunchDocking → charging confirmed → SUCCESS
+
+     Takeover triggered (urgency >= threshold):
+       LaunchMissionProcedure::onHalted() publishes "pause" → drone holds depth.
+       LaunchDockingProcedure::onHalted()  stops docking nodes cleanly.
+
+       ACCEPT — EnableJoystick (sets g_mission_paused=true) → WaitForHandback
+                → AlwaysFail → tree fails with g_mission_paused=true
+                → main.cpp resets tree → LaunchUndocking skips (already_done_=true)
+                → LaunchMission resumes paused script from where it left off.
+       REJECT — emergency surface waypoint → LaunchDocking (operator manually docks). -->
+
 <root BTCPP_format="4"
-      main_tree_to_execute="MissionWithTakeover">
-  <BehaviorTree ID="MissionWithTakeover">
+      main_tree_to_execute="FullMission">
+  <BehaviorTree ID="FullMission">
 
     <Fallback name="mission_with_takeover_guard">
 
@@ -31,23 +38,28 @@
         <Sequence name="mission">
 
           <!-- Phase 1: Undocking (skipped on resume — already_done_=true) -->
+          <PublishState state="1"/>
           <LaunchUndockingProcedure name="undocking_procedure"
                                     script_path="/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/bash_scripts/launch_undocking_real.sh"
                                     drone_ip="192.168.1.101"
                                     reverse_duration="10"
                                     reverse_power="0.8"/>
 
-          <!-- Phase 2: Stabilise then run mission -->
+          <!-- Stabilise before starting inspection -->
           <ActivateAutoModes name="post_undocking_stabilization"
                              depth_hold="true"
                              heading_hold="true"
                              hold_duration="5"/>
+
+          <!-- Phase 2: Transit / Inspection -->
+          <PublishState state="2"/>
           <LaunchMissionProcedure name="pipeline_inspection_mission"
                                   script_path="/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/bash_scripts/launch_mission.sh"
                                   drone_ip="192.168.1.101"
                                   max_retries="10"/>
 
-          <!-- Phase 3: Docking -->
+          <!-- Phase 4: Docking -->
+          <PublishState state="4"/>
           <LaunchDockingProcedure name="launch_integrated_docking"/>
 
         </Sequence>
@@ -58,7 +70,7 @@
       <!-- published "pause" before this sequence started.                     -->
       <Sequence name="takeover_handler">
 
-        <PublishState state="6"/>
+        <PublishState state="7"/>
 
         <!-- Wait for operator decision. Always returns SUCCESS.
              Writes result to blackboard key "human_decision" (true=accept). -->
@@ -66,28 +78,24 @@
 
         <Fallback name="decision_branch">
 
-          <!-- REJECT: human_decision=false → runs emergency dock → SUCCESS
-               takeover_handler succeeds → outer Fallback succeeds → tree done.
-               g_mission_paused is never set so main.cpp does not restart. -->
+          <!-- REJECT: operator aborts mission — go to surface, then dock.
+               takeover_handler succeeds → outer Fallback succeeds → tree done. -->
           <Sequence name="reject_path">
             <CheckBlackboardBool key="human_decision" expected_value="false"/>
-            <PublishState state="4"/>
+            <PublishState state="5"/>
             <GoToWaypoint name="emergency_surface_waypoint"
                           waypoint_lat="63.4406996"
                           waypoint_lon="10.3489307"
                           depth="1.5"
                           drone_ip="192.168.1.101"/>
-            <PublishState state="5"/>
+            <PublishState state="6"/>
             <LaunchDockingProcedure name="emergency_docking"/>
           </Sequence>
 
-          <!-- ACCEPT: reject_path failed (human_decision=true).
-               EnableJoystick disables auto modes AND sets g_mission_paused=true.
-               WaitForHandback blocks until operator clicks hand-back.
-               AlwaysFail makes this Sequence fail → decision_branch fails
-               → takeover_handler fails → outer Fallback fails
-               → tree completes FAILURE with g_mission_paused=true
-               → main.cpp resets tree → LaunchMissionProcedure resumes. -->
+          <!-- ACCEPT: operator takes joystick → flies → hands back → mission resumes.
+               EnableJoystick sets g_mission_paused=true.
+               AlwaysFail causes tree to complete with FAILURE + g_mission_paused=true.
+               main.cpp resets tree: LaunchUndocking skips, LaunchMission resumes. -->
           <Sequence name="accept_path">
             <EnableJoystick/>
             <WaitForHandback/>
