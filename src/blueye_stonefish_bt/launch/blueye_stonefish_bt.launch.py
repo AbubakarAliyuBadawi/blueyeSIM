@@ -38,7 +38,7 @@ def generate_launch_description():
         parameters=[{
             "odometry_topic": LaunchConfiguration("odometry_topic"),
             "desired_vel_topic": "/blueye/ref_vel",
-            "heading_tolerance": 0.3,
+            "heading_tolerance": 0.01,
             "circle_of_acceptance": 0.5,
             "max_heading_rate": 0.15,
             "max_heave_rate": 0.3,
@@ -64,6 +64,10 @@ def generate_launch_description():
             "rt_depth_satUpper": 12.0,  "rt_depth_satLower": -12.0,
             "rt_yaw_kp": 10.0,   "rt_yaw_ki": 0.0,   "rt_yaw_kd": 3.0,
             "rt_yaw_satUpper": 10.0,    "rt_yaw_satLower": -10.0,
+            "heading_hold_enabled":    True,
+            "kp_heading":              1.5,
+            "yaw_rate_deadband":       0.05,
+            "max_corrective_yaw_rate": 0.1,
         }],
     )
 

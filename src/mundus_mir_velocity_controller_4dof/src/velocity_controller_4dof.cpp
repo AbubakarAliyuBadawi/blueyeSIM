@@ -160,7 +160,8 @@ const geometry_msgs::msg::TwistStamped::SharedPtr msg) {
 
     double vel_psi;
     if (heading_hold_enabled_) {
-        if (std::abs(joystick_psi) > yaw_rate_deadband_) {
+        if (std::abs(joystick_psi) > yaw_rate_deadband_ ||
+            std::abs(current_values_(3)) > yaw_rate_deadband_) {
             desired_yaw_         = current_yaw_;
             heading_initialized_ = true;
             vel_psi              = joystick_psi;

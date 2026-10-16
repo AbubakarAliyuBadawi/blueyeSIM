@@ -97,6 +97,7 @@ class WaypointController : public rclcpp::Node
         bool run_controller_ = false;
         bool go_to_waypoint_ = false;
         bool stationary_waypoint_set_ = false;
+        bool heading_aligned_ = false;
         vector<Waypoint> waypoints_;
         Waypoint stationary_waypoint_;
 

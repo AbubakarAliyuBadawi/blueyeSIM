@@ -4,6 +4,7 @@
 #include "mundus_mir_msgs/srv/run_waypoint_controller.hpp"
 
 extern rclcpp::Node::SharedPtr g_node;
+extern bool g_mission_paused;
 
 class EnableJoystick : public BT::SyncActionNode {
 public:
@@ -30,6 +31,7 @@ public:
             return BT::NodeStatus::FAILURE;
         }
         RCLCPP_INFO(g_node->get_logger(), "Waypoint controller stopped — joystick is now active");
+        g_mission_paused = true;
         return BT::NodeStatus::SUCCESS;
     }
 

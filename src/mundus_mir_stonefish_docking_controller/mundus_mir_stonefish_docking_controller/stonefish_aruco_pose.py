@@ -8,7 +8,7 @@ from geometry_msgs.msg import Pose, PoseWithCovarianceStamped
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import Bool, String
 
 from mundus_mir_stonefish_docking_controller.aruco_board_stonefish import id_board, pos_board
@@ -18,7 +18,7 @@ class StonefishArucoPose(Node):
     def __init__(self):
         super().__init__("stonefish_aruco_pose")
 
-        self.declare_parameter("image_topic", "/blueye/cam")
+        self.declare_parameter("image_topic", "/blueye/cam/image_color/compressed")
         self.declare_parameter("camera_frame_id", "blueye_camera_front")
         self.declare_parameter("tag_frame_id", "tag")
         self.declare_parameter("debug_view", False)
@@ -59,7 +59,7 @@ class StonefishArucoPose(Node):
         self.have_docking_progress = False
 
         self.image_sub = self.create_subscription(
-            Image, self.image_topic, self.image_callback, qos_profile_sensor_data
+            CompressedImage, self.image_topic, self.image_callback, qos_profile_sensor_data
         )
         self.filtered_odom_sub = self.create_subscription(
             Odometry, "/odometry/filtered", self.filtered_odometry_callback, 10
@@ -176,7 +176,7 @@ class StonefishArucoPose(Node):
             )
 
     def image_callback(self, msg):
-        frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+        frame = self.bridge.compressed_imgmsg_to_cv2(msg, desired_encoding="bgr8")
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         detector = cv2.aruco.ArucoDetector(self.aruco_dict, self.detector_params)

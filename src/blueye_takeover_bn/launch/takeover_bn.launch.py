@@ -39,5 +39,20 @@ def generate_launch_description():
                     "poor_threshold_hz": 1.0,
                 }],
             ),
+            Node(
+                package="blueye_takeover_bn",
+                executable="human_model",
+                name="human_model",
+                output="screen",
+                parameters=[{
+                    "publish_rate_hz":    2.0,
+                    "mission_duration_s": 450.0,
+                    "fatigue_start":      0.65,
+                    "fatigue_end":        0.20,
+                    "stress_start":       0.70,
+                    "stress_end":         0.25,
+                    "noise_std":          0.02,
+                }],
+            ),
         ]
     )

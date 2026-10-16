@@ -6,6 +6,8 @@
 
 using namespace std::chrono_literals;
 
+std::unordered_map<std::string, bool> StationKeeping::done_;
+
 StationKeeping::StationKeeping(const std::string& name, const BT::NodeConfiguration& config)
     : BT::StatefulActionNode(name, config)
 {
@@ -28,6 +30,10 @@ StationKeeping::StationKeeping(const std::string& name, const BT::NodeConfigurat
 }
 
 BT::NodeStatus StationKeeping::onStart() {
+    if (done_[name()]) {
+        RCLCPP_INFO(g_node->get_logger(), "StationKeeping '%s' already completed — skipping", name().c_str());
+        return BT::NodeStatus::SUCCESS;
+    }
     // Get duration and heading parameters
     auto duration = getInput<int>("duration");
     if (!duration) {
@@ -71,6 +77,22 @@ BT::NodeStatus StationKeeping::onStart() {
         return BT::NodeStatus::FAILURE;
     }
     
+    // Publish waypoint goal for recording
+    {
+        auto x_opt = getInput<double>("x");
+        auto y_opt = getInput<double>("y");
+        auto z_opt = getInput<double>("z");
+        if (g_waypoint_goal_pub) {
+            geometry_msgs::msg::PointStamped pt;
+            pt.header.stamp    = g_node->get_clock()->now();
+            pt.header.frame_id = "world";
+            pt.point.x = x_opt.has_value() ? x_opt.value() : current_x_;
+            pt.point.y = y_opt.has_value() ? y_opt.value() : current_y_;
+            pt.point.z = z_opt.has_value() ? z_opt.value() : current_z_;
+            g_waypoint_goal_pub->publish(pt);
+        }
+    }
+
     // Record start time for duration tracking
     start_time_ = std::chrono::steady_clock::now();
     RCLCPP_INFO(g_node->get_logger(), "Starting station keeping for %d seconds with heading %.2f rad",
@@ -96,12 +118,10 @@ BT::NodeStatus StationKeeping::onRunning() {
         current_time - start_time_).count();
     
     if (elapsed >= duration.value()) {
-        RCLCPP_INFO(g_node->get_logger(), "Station keeping completed after %d seconds", 
+        RCLCPP_INFO(g_node->get_logger(), "Station keeping completed after %d seconds",
                    static_cast<int>(elapsed));
-        
-        // Clean up resources before returning success
         stopExecution();
-        
+        done_[name()] = true;
         return BT::NodeStatus::SUCCESS;
     }
     
@@ -274,13 +294,13 @@ void StationKeeping::stopExecution() {
         auto future = go_client_->async_send_request(go_request);
         rclcpp::spin_until_future_complete(g_node, future, 1s);
     }
-    
+
     // Then stop the controller
     startWaypointController(false);
-    
+
     // Finally clear any waypoints
     clearWaypoints();
-    
+
     RCLCPP_INFO(g_node->get_logger(), "Station keeping execution stopped");
 }
 

@@ -59,8 +59,9 @@ void WaypointController::controller_callback(const nav_msgs::msg::Odometry::Shar
                 go_to_waypoint_ = false;
                 stationary_waypoint_set_ = true;
             }
-            // If we are close to the waypoint, remove it
+            // If we are close to the waypoint, remove it and reset alignment for the next one
             waypoints_.erase(waypoints_.begin());
+            heading_aligned_ = false;
             return;
         }
 
@@ -105,19 +106,22 @@ void WaypointController::go_to_waypoint(const nav_msgs::msg::Odometry::SharedPtr
             heading_err += 2 * M_PI;
         }
 
-        if (abs(heading_err) > heading_tolerance_)
+        // Rotate first until heading is within tolerance, then surge and correct simultaneously
+        if (!heading_aligned_)
         {
-            // Rotate towards the correct heading, all other velocity fields are set to 0 by default
-            geometry_msgs::msg::TwistStamped desired_velocity;
-            desired_velocity.header.stamp = msg->header.stamp;
-            desired_velocity.header.frame_id = "body_frame";
-            // Since we are outside tolerance "max" speed is used
-            desired_velocity.twist.angular.z = heading_err > 0 ? heading_speed_ : -heading_speed_;
-            desired_velocity_pub_->publish(desired_velocity);
-            return;
+            if (abs(heading_err) > heading_tolerance_)
+            {
+                geometry_msgs::msg::TwistStamped desired_velocity;
+                desired_velocity.header.stamp = msg->header.stamp;
+                desired_velocity.header.frame_id = "body_frame";
+                desired_velocity.twist.angular.z = heading_err > 0 ? heading_speed_ : -heading_speed_;
+                desired_velocity_pub_->publish(desired_velocity);
+                return;
+            }
+            heading_aligned_ = true;
         }
 
-        // If heading is within tolerance, go to waypoint
+        // Surge toward waypoint while continuously correcting heading
         // Stonefish Blueye convention: positive commanded heave moves the vehicle up,
         // which decreases odometry z. Use current - target so z above target commands down
         // and z below target commands up.
@@ -384,6 +388,7 @@ void WaypointController::go_to_waypoints(const std::shared_ptr<mundus_mir_msgs::
     }
     go_to_waypoint_ = request->run;
     stationary_waypoint_set_ = false;
+    heading_aligned_ = false;
 
     // Set response
     response->accepted = true;

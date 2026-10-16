@@ -2,17 +2,20 @@
 #pragma once
 #include <behaviortree_cpp/action_node.h>
 #include <rclcpp/rclcpp.hpp>
+#include <unordered_map>
+#include <string>
 #include "mundus_mir_msgs/srv/add_waypoint.hpp"
 #include "mundus_mir_msgs/srv/run_waypoint_controller.hpp"
 #include "mundus_mir_msgs/srv/go_to_waypoints.hpp"
 #include "mundus_mir_msgs/srv/clear_waypoints.hpp"
 #include "mundus_mir_msgs/srv/get_waypoint_status.hpp"
 #include <nav_msgs/msg/odometry.hpp>
+#include <geometry_msgs/msg/point_stamped.hpp>
 #include <chrono>
 #include <cmath>
 #include <limits>
-// Forward declaration of global node
 extern rclcpp::Node::SharedPtr g_node;
+extern rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr g_waypoint_goal_pub;
 class StationKeeping : public BT::StatefulActionNode {
 public:
 StationKeeping(const std::string& name, const BT::NodeConfiguration& config);
@@ -43,6 +46,7 @@ rclcpp::Client<mundus_mir_msgs::srv::GetWaypointStatus>::SharedPtr status_client
  // Odometry for current position/heading fallback
 rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
 double current_x_{0.0}, current_y_{0.0}, current_z_{0.0}, current_yaw_{0.0};
+static std::unordered_map<std::string, bool> done_;
  // Helper methods
 bool clearWaypoints();
 bool addWaypoint(double heading, bool altitude_mode = false, double target_altitude = 2.0);

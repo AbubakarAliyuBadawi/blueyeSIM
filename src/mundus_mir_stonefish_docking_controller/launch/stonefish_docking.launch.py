@@ -49,7 +49,7 @@ def generate_launch_description():
         parameters=[
             {
                 "use_sim_time": False,
-                "image_topic": "/blueye/cam/image_color",
+                "image_topic": "/blueye/cam/image_color/compressed",
                 "debug_view": debug_view,
                 "fx": 1662.8,
                 "fy": 1662.8,

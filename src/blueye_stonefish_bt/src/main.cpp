@@ -22,6 +22,7 @@
 #include "behaviortree_cpp/bt_factory.h"
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 #include <std_msgs/msg/int32.hpp>
+#include <geometry_msgs/msg/point_stamped.hpp>
 #include <memory>
 #include <chrono>
 #include <thread>
@@ -30,7 +31,9 @@
 rclcpp::Node::SharedPtr g_node;
 std::atomic<bool> g_program_running{true};
 rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr g_mission_state_pub;
+rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr g_waypoint_goal_pub;
 int g_current_mission_state = 0;
+bool g_mission_paused = false;
 
 void signalHandler(int signum) {
     if (g_node) RCLCPP_INFO(g_node->get_logger(), "Signal %d received — shutting down", signum);
@@ -43,7 +46,8 @@ int main(int argc, char** argv) {
 
     g_node = rclcpp::Node::make_shared("blueye_stonefish_bt");
     g_node->declare_parameter("behavior_tree_path", "");
-    g_mission_state_pub = g_node->create_publisher<std_msgs::msg::Int32>("/mission_state", 10);
+    g_mission_state_pub  = g_node->create_publisher<std_msgs::msg::Int32>("/mission_state", 10);
+    g_waypoint_goal_pub  = g_node->create_publisher<geometry_msgs::msg::PointStamped>("/blueye/waypoint_goal", 10);
 
     // Continuous mission-state publishing thread
     std::thread([&]() {
@@ -108,6 +112,13 @@ int main(int argc, char** argv) {
             auto status = tree.tickOnce();
             rclcpp::spin_some(g_node);
             if (BT::isStatusCompleted(status)) {
+                if (g_mission_paused) {
+                    g_mission_paused = false;
+                    tree.haltTree();
+                    RCLCPP_INFO(g_node->get_logger(),
+                        "Operator handed back control — resuming mission from last completed waypoint");
+                    continue;
+                }
                 RCLCPP_INFO(g_node->get_logger(), "Mission finished: %s",
                             status == BT::NodeStatus::SUCCESS ? "SUCCESS" : "FAILURE");
                 break;

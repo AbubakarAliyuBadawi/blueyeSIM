@@ -6,9 +6,12 @@
 #include "mundus_mir_msgs/srv/go_to_waypoints.hpp"
 #include "mundus_mir_msgs/srv/get_waypoint_status.hpp"
 #include "mundus_mir_msgs/srv/clear_waypoints.hpp"
+#include <geometry_msgs/msg/point_stamped.hpp>
 #include <chrono>
-// Forward declaration of global node
+#include <unordered_map>
+#include <string>
 extern rclcpp::Node::SharedPtr g_node;
+extern rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr g_waypoint_goal_pub;
 class NavigateToWaypoint : public BT::StatefulActionNode {
 public:
 NavigateToWaypoint(const std::string& name, const BT::NodeConfiguration& config)
@@ -45,6 +48,7 @@ rclcpp::Client<mundus_mir_msgs::srv::GetWaypointStatus>::SharedPtr status_client
 bool first_run_;
 bool execution_started_;
 bool controller_enabled_;
+static std::unordered_map<std::string, bool> done_;
 bool enableController();
 bool clearWaypoints();
 bool addWaypoint(double x, double y, double z, double velocity, bool fixed_heading, double heading,

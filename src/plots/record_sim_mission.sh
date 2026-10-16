@@ -49,10 +49,21 @@ TOPICS="$TOPICS /blueye/human/stress"
 # Waypoints / pipeline
 TOPICS="$TOPICS /blueye/current_waypoint"
 TOPICS="$TOPICS /blueye/current_reference"
+TOPICS="$TOPICS /blueye/waypoint_goal"
 
 # Docking
 TOPICS="$TOPICS /blueye/docking_controller_status"
 TOPICS="$TOPICS /blueye/docking_progress"
 TOPICS="$TOPICS /blueye/docking_station_detected"
+
+# Thruster setpoints (T0=front-left, T1=front-right, T2=rear-left, T3=rear-right)
+TOPICS="$TOPICS /blueye/thrusters"
+
+# ArUco / docking camera
+TOPICS="$TOPICS /blueye/aruco_visibility"
+TOPICS="$TOPICS /blueye/pose_estimated_board_stamped"
+
+# Speed and heading
+TOPICS="$TOPICS /blueye/speed"
 
 ros2 bag record --output "$BAG_DIR" $TOPICS

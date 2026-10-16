@@ -13,31 +13,31 @@ public:
     {
         run_client_ = g_node->create_client<mundus_mir_msgs::srv::RunWaypointController>(
             "/blueye/run_waypoint_controller");
+        // Subscribe at construction so handback is never missed regardless of timing.
+        sub_ = g_node->create_subscription<std_msgs::msg::Bool>(
+            "/blueye/takeover_request/handback", 10,
+            [this](const std_msgs::msg::Bool::SharedPtr msg) {
+                if (msg->data) handback_received_ = true;
+            });
     }
 
     static BT::PortsList providedPorts() { return {}; }
 
 protected:
     BT::NodeStatus onStart() override {
-        handback_received_ = false;
-        sub_ = g_node->create_subscription<std_msgs::msg::Bool>(
-            "/blueye/takeover_request/handback", 10,
-            [this](const std_msgs::msg::Bool::SharedPtr msg) {
-                if (msg->data) handback_received_ = true;
-            });
+        handback_received_ = false;  // reset so previous handbacks don't fire immediately
         RCLCPP_INFO(g_node->get_logger(), "WaitForHandback: joystick control active, waiting for handback...");
         return BT::NodeStatus::RUNNING;
     }
 
     BT::NodeStatus onRunning() override {
         if (!handback_received_) return BT::NodeStatus::RUNNING;
-        sub_.reset();
         _re_enable_waypoint_controller();
         RCLCPP_INFO(g_node->get_logger(), "Handback received — resuming autonomous mission");
         return BT::NodeStatus::SUCCESS;
     }
 
-    void onHalted() override { sub_.reset(); }
+    void onHalted() override {}  // keep subscription alive
 
 private:
     bool handback_received_;

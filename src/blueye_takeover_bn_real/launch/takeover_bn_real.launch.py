@@ -4,7 +4,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 
-def generate_launch_description():
+def generate_launch_description():   
     return LaunchDescription(
         [
             DeclareLaunchArgument("update_rate_hz", default_value="2.0"),

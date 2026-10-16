@@ -5,17 +5,17 @@
       <base_link name="Base" type="model" physics="submerged">
         <physical>
           <mesh filename="object_files/blueye.obj" scale="1.0"/>
-          <origin rpy="0.0 0.0 -1.5708" xyz="-0.342450 0.125871 0.200953"/>
+          <origin rpy="0.0 0.0 -1.5708" xyz="-0.342450 0.125871 0.2"/>
         </physical>
         <visual>
           <mesh filename="object_files/blueye.obj" scale="1.0"/>
-          <origin rpy="0.0 0.0 -1.5708" xyz="-0.342450 0.125871 0.200953"/>
+          <origin rpy="0.0 0.0 -1.5708" xyz="-0.342450 0.125871 0.2"/>
         </visual>
         <material name="Neutral"/>
         <look name="BlueyeBlue"/>
         <mass value="18.42"/>
         <inertia xyz="10000 10000 3"/>
-        <hydrodynamics viscous_drag="0.10 0.18 0.18 0.0 0.0 5.5" quadratic_drag="0.3 0.8 0.5 0.0 0.0 100.0"/>
+        <hydrodynamics viscous_drag="0.10 0.18 0.18 0.0 0.0 0.0" quadratic_drag="0.3 0.8 0.5 0.0 0.0 0.0"/>
         <!-- <hydrodynamics viscous_drag="0.10 0.18 0.18" quadratic_drag="0.3 0.8 0.5"/> -->
         <cg xyz="0.0 0.0 0.06" rpy="0.0 0.0 0.0"/>
       </base_link>
@@ -107,7 +107,7 @@
         <ros_publisher topic="/blueye/imu/data_raw"/>
       </sensor>
 
-      <sensor name="odom" type="odometry" rate="5.0">
+      <sensor name="odom" type="odometry" rate="50.0">
         <link name="Base"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <ros_publisher topic="/blueye/odom"/>

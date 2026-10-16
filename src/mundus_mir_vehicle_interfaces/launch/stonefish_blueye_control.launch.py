@@ -76,6 +76,10 @@ def generate_launch_description():
             "rt_yaw_kd":         3.0,
             "rt_yaw_satUpper":   8.0,
             "rt_yaw_satLower":  -8.0,
+            "heading_hold_enabled":    False,
+            "kp_heading":              1.5,
+            "yaw_rate_deadband":       0.05,
+            "max_corrective_yaw_rate": 0.1,
         }],
     )
 

@@ -3,6 +3,8 @@
 
 using namespace std::chrono_literals;
 
+std::unordered_map<std::string, bool> NavigateToWaypoint::done_;
+
 bool NavigateToWaypoint::enableController() {
     if (controller_enabled_) {
         return true;
@@ -36,6 +38,10 @@ bool NavigateToWaypoint::enableController() {
 }
 
 BT::NodeStatus NavigateToWaypoint::onStart() {
+    if (done_[name()]) {
+        RCLCPP_INFO(g_node->get_logger(), "NavigateToWaypoint '%s' already completed — skipping", name().c_str());
+        return BT::NodeStatus::SUCCESS;
+    }
     RCLCPP_INFO(g_node->get_logger(), "Starting NavigateToWaypoint node...");
 
     // First ensure the controller is enabled
@@ -62,6 +68,16 @@ BT::NodeStatus NavigateToWaypoint::onStart() {
     
     RCLCPP_INFO(g_node->get_logger(), "Received waypoint: x=%.2f, y=%.2f, z=%.2f, v=%.2f, fixed_heading=%s, heading=%.2f",
                x, y, z, velocity, fixed_heading ? "true" : "false", heading);
+
+    if (g_waypoint_goal_pub) {
+        geometry_msgs::msg::PointStamped pt;
+        pt.header.stamp    = g_node->get_clock()->now();
+        pt.header.frame_id = "world";
+        pt.point.x = x;
+        pt.point.y = y;
+        pt.point.z = z;
+        g_waypoint_goal_pub->publish(pt);
+    }
     
     if (altitude_mode) {
         RCLCPP_INFO(g_node->get_logger(), "Note: Altitude mode is not supported in this version. Using fixed z value.");
@@ -129,12 +145,14 @@ BT::NodeStatus NavigateToWaypoint::onRunning() {
     // If no waypoints left, we've reached our destination
     if (result->status_code.find("Amount of waypoints: 0") != std::string::npos) {
         RCLCPP_INFO(g_node->get_logger(), "Waypoint reached successfully");
+        done_[name()] = true;
         return BT::NodeStatus::SUCCESS;
     }
-    
+
     // If we're in station-keeping mode, we've also reached our destination
     if (result->status_code.find("Station Keep On Position") != std::string::npos) {
         RCLCPP_INFO(g_node->get_logger(), "Waypoint reached, now in station-keeping mode");
+        done_[name()] = true;
         return BT::NodeStatus::SUCCESS;
     }
 
