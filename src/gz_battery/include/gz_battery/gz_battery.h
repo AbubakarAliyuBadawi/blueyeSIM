@@ -4,6 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "mundus_mir_msgs/msg/battery_status.hpp"
 #include "std_msgs/msg/float64.hpp"
+#include "std_msgs/msg/float64_multi_array.hpp"
 #include <array>
 #include <random>
 
@@ -19,11 +20,13 @@ private:
     // ROS 2 components
     rclcpp::Publisher<mundus_mir_msgs::msg::BatteryStatus>::SharedPtr battery_publisher_;
     std::vector<rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr> thruster_subscriptions_;
+    rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr thrusters_array_subscription_;
     rclcpp::TimerBase::SharedPtr timer_;
-    
+
 
     // Parameters
     std::string battery_topic_;
+    std::string thrusters_topic_; // Stonefish: all thruster setpoints in one array
     double publish_frequency_;
     double voltage_sensor_noise_mean_;
     double voltage_sensor_noise_stddev_;

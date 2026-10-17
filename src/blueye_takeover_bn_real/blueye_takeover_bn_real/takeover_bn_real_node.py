@@ -14,26 +14,13 @@ from rclpy.node import Node
 from std_msgs.msg import Float32, Float64, Int32, String
 
 
-pysmile.License(
-    (
-        b"SMILE LICENSE b18e1861 e2fb7176 fd1b028d "
-        b"THIS IS AN ACADEMIC LICENSE AND CAN BE USED "
-        b"SOLELY FOR ACADEMIC RESEARCH AND TEACHING, "
-        b"AS DEFINED IN THE BAYESFUSION ACADEMIC "
-        b"SOFTWARE LICENSING AGREEMENT. "
-        b"Serial #: 4aiii2myovtuprliry4nogll5 "
-        b"Issued for: Abubakar Aliyu Badawi (badawi.abubakaraliyu@gmail.com) "
-        b"Academic institution: Norwegian University of Science and Technology "
-        b"Valid until: 2026-10-29 "
-        b"Issued by BayesFusion activation server"
-    ),
-    [
-        0xC1, 0x74, 0x1A, 0x4E, 0x81, 0xDB, 0x00, 0x2E, 0xD8, 0xE3, 0x62, 0x95, 0xA3, 0x1D, 0x14, 0x19,
-        0xCA, 0x73, 0xBA, 0x84, 0x77, 0xE3, 0x02, 0x15, 0x99, 0xC7, 0x09, 0x8B, 0xC0, 0x7E, 0x13, 0xF9,
-        0x84, 0xD6, 0x15, 0xAE, 0x23, 0x72, 0x16, 0x9F, 0x92, 0x86, 0xD3, 0x03, 0xD1, 0xE7, 0x59, 0xE8,
-        0xE5, 0xB5, 0x73, 0xE3, 0xDB, 0x9D, 0xE0, 0xC6, 0x4D, 0x4C, 0x7F, 0x31, 0x9F, 0x47, 0x63, 0xBD,
-    ],
-)
+try:
+    import pysmile_license  # noqa: F401  (BayesFusion licence file; keeps the key out of the code)
+except ImportError as exc:
+    raise SystemExit(
+        "pysmile_license.py not found. Put the BayesFusion licence file on the Python path, "
+        "e.g. next to pysmile.so in ~/.local/lib/python3.10/site-packages/"
+    ) from exc
 
 
 class RealTakeoverBayesianNetwork(Node):

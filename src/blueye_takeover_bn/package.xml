@@ -16,6 +16,9 @@
   <depend>nav_msgs</depend>
   <depend>mundus_mir_msgs</depend>
   <depend>stonefish_ros2</depend>
+  <exec_depend>gz_battery</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>stonefish_sim</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
-"""Full-mission Bayesian network node for takeover request inference."""
+"""Full-mission Bayesian network node for takeover request inference.
 
+Works with a static network (v2) and with the dynamic network v4 (temporal plate). With a dynamic network the node
+keeps the evidence of the last N updates and enters it slice by slice (sliding window); the published posterior is
+that of the last slice. N = parameter dbn_slices (0: the number of slices stored in the file).
+"""
+
+import collections
 import json
 import math
 import os
@@ -9,41 +15,29 @@ from typing import Dict, Optional
 import pysmile
 import rclpy
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Point, PointStamped, Pose
 from mundus_mir_msgs.msg import BatteryStatus
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from std_msgs.msg import Float32, Float64, String
+from std_msgs.msg import Float32, Float64, Int32, String
 from stonefish_ros2.msg import DVL
 
-
-pysmile.License(
-    (
-        b"SMILE LICENSE b18e1861 e2fb7176 fd1b028d "
-        b"THIS IS AN ACADEMIC LICENSE AND CAN BE USED "
-        b"SOLELY FOR ACADEMIC RESEARCH AND TEACHING, "
-        b"AS DEFINED IN THE BAYESFUSION ACADEMIC "
-        b"SOFTWARE LICENSING AGREEMENT. "
-        b"Serial #: 4aiii2myovtuprliry4nogll5 "
-        b"Issued for: Abubakar Aliyu Badawi (badawi.abubakaraliyu@gmail.com) "
-        b"Academic institution: Norwegian University of Science and Technology "
-        b"Valid until: 2026-10-29 "
-        b"Issued by BayesFusion activation server"
-    ),
-    [
-        0xC1, 0x74, 0x1A, 0x4E, 0x81, 0xDB, 0x00, 0x2E, 0xD8, 0xE3, 0x62, 0x95, 0xA3, 0x1D, 0x14, 0x19,
-        0xCA, 0x73, 0xBA, 0x84, 0x77, 0xE3, 0x02, 0x15, 0x99, 0xC7, 0x09, 0x8B, 0xC0, 0x7E, 0x13, 0xF9,
-        0x84, 0xD6, 0x15, 0xAE, 0x23, 0x72, 0x16, 0x9F, 0x92, 0x86, 0xD3, 0x03, 0xD1, 0xE7, 0x59, 0xE8,
-        0xE5, 0xB5, 0x73, 0xE3, 0xDB, 0x9D, 0xE0, 0xC6, 0x4D, 0x4C, 0x7F, 0x31, 0x9F, 0x47, 0x63, 0xBD,
-    ],
-)
+try:
+    import pysmile_license  # noqa: F401  (BayesFusion licence file; keeps the key out of the code)
+except ImportError as exc:
+    raise SystemExit(
+        "pysmile_license.py not found. Put the BayesFusion licence file on the Python path, "
+        "e.g. next to pysmile.so in ~/.local/lib/python3.10/site-packages/"
+    ) from exc
 
 
 class TakeoverBayesianNetwork(Node):
     """Passive BN aggregator for full-mission takeover request probability."""
 
     TARGET_NODE = "TakeoverRequest"
+    # /mission_state of the behaviour tree; 6 (takeover) is not a phase, the phase before it still applies
+    MISSION_STATES = {1: "Undocking", 2: "Transit", 3: "Inspection", 4: "Homing", 5: "Docking"}
 
     def __init__(self):
         super().__init__("takeover_bayesian_network")
@@ -52,12 +46,28 @@ class TakeoverBayesianNetwork(Node):
         self.network_path = self._resolve_network_path()
         self.net.read_file(self.network_path)
         self.node_ids = set(self.net.get_all_node_ids())
+        self.outcomes = {n: list(self.net.get_outcome_ids(n)) for n in self.node_ids}
+        # Posteriors of every node are published with the evidence (explanation and bn_state_viewer)
+        self.posterior_nodes = sorted(self.node_ids)
+        self.net.clear_all_targets()                       # no targets: SMILE updates every node
+        self.dynamic = any(self.net.get_node_temporal_type(n) == pysmile.NodeTemporalType.PLATE for n in self.node_ids)
+        if self.dynamic:
+            n_slices = int(self.get_parameter("dbn_slices").value)
+            if n_slices > 0:
+                self.net.set_slice_count(n_slices)
+            self.n_slices = self.net.get_slice_count()
+            self.history = collections.deque(maxlen=self.n_slices)
         self.evidence: Dict[str, str] = {}
         self.last_seen: Dict[str, rclpy.time.Time] = {}
 
+        # Docking controller target (tag frame, compared with odometry_topic)
         self.current_pose: Optional[Pose] = None
         self.current_waypoint: Optional[Pose] = None
         self.current_reference: Optional[Pose] = None
+        # Behaviour tree goal (world frame, compared with goal_odometry_topic); the leg starts where the vehicle was
+        self.goal_pose: Optional[Pose] = None
+        self.goal: Optional[Point] = None
+        self.goal_start: Optional[Point] = None
 
         self._setup_publishers()
         self._setup_subscribers()
@@ -69,7 +79,8 @@ class TakeoverBayesianNetwork(Node):
             default_phase = str(self.get_parameter("default_mission_phase").value)
             self._set_evidence("MissionPhase", default_phase, "default")
 
-        self.get_logger().info(f"Loaded full mission BN: {self.network_path}")
+        self.get_logger().info(f"Loaded full mission BN: {self.network_path}"
+                               + (f" (dynamic, {self.n_slices} slices)" if self.dynamic else " (static)"))
         self.get_logger().info("Publishing takeover inference on /blueye/takeover_request/*")
 
     def _declare_parameters(self):
@@ -78,16 +89,20 @@ class TakeoverBayesianNetwork(Node):
         self.declare_parameter("default_mission_phase", "Transit")
         self.declare_parameter("use_default_mission_phase", True)
         self.declare_parameter("takeover_threshold", 0.65)
+        self.declare_parameter("dbn_slices", 0)            # dynamic network: window length; 0 = value in the file
 
         self.declare_parameter("mission_phase_topic", "/mission/phase")
+        self.declare_parameter("mission_state_topic", "/mission_state")
         self.declare_parameter("battery_topic", "/blueye/battery")
         self.declare_parameter("dvl_topic", "/blueye/dvl/sim")
         self.declare_parameter("sonar_image_topic", "/blueye/fls/image")
         self.declare_parameter("pipeline_marker_ids_topic", "/blueye/pipeline_marker_ids")
         self.declare_parameter("aruco_visibility_topic", "/blueye/aruco_visibility")
-        self.declare_parameter("current_waypoint_topic", "/blueye/pipeline_current_waypoint")
-        self.declare_parameter("current_reference_topic", "/blueye/pipeline_current_reference")
+        self.declare_parameter("current_waypoint_topic", "/blueye/current_waypoint")
+        self.declare_parameter("current_reference_topic", "/blueye/current_reference")
         self.declare_parameter("odometry_topic", "/odometry/filtered")
+        self.declare_parameter("goal_topic", "/blueye/waypoint_goal")
+        self.declare_parameter("goal_odometry_topic", "/blueye/odom")
         self.declare_parameter("current_topic", "/blueye/current")
         self.declare_parameter("speed_topic", "/blueye/speed")
         self.declare_parameter("altitude_topic", "/blueye/altitude")
@@ -96,6 +111,7 @@ class TakeoverBayesianNetwork(Node):
         self.declare_parameter("fatigue_topic", "/blueye/human/fatigue")
         self.declare_parameter("stress_topic", "/blueye/human/stress")
 
+        self.declare_parameter("use_dvl_altitude", True)
         self.declare_parameter("dvl_timeout_s", 2.0)
         self.declare_parameter("aruco_timeout_s", 1.5)
         self.declare_parameter("sonar_timeout_s", 2.0)
@@ -115,7 +131,7 @@ class TakeoverBayesianNetwork(Node):
         if configured:
             return configured
         package_share = get_package_share_directory("blueye_takeover_bn")
-        return os.path.join(package_share, "config", "full_mission.xdsl")
+        return os.path.join(package_share, "config", "UnifiedMissionDBN_v4.xdsl")
 
     def _setup_publishers(self):
         self.state_pub = self.create_publisher(String, "/blueye/takeover_request/state", 10)
@@ -129,6 +145,7 @@ class TakeoverBayesianNetwork(Node):
 
     def _setup_subscribers(self):
         self.create_subscription(String, self.get_parameter("mission_phase_topic").value, self._mission_phase_cb, 10)
+        self.create_subscription(Int32, self.get_parameter("mission_state_topic").value, self._mission_state_cb, 10)
         self.create_subscription(BatteryStatus, self.get_parameter("battery_topic").value, self._battery_cb, 10)
         self.create_subscription(DVL, self.get_parameter("dvl_topic").value, self._dvl_cb, 10)
         self.create_subscription(Image, self.get_parameter("sonar_image_topic").value, self._sonar_cb, 10)
@@ -137,6 +154,8 @@ class TakeoverBayesianNetwork(Node):
         self.create_subscription(Pose, self.get_parameter("current_waypoint_topic").value, self._waypoint_cb, 10)
         self.create_subscription(Pose, self.get_parameter("current_reference_topic").value, self._reference_cb, 10)
         self.create_subscription(Odometry, self.get_parameter("odometry_topic").value, self._odometry_cb, 10)
+        self.create_subscription(PointStamped, self.get_parameter("goal_topic").value, self._goal_cb, 10)
+        self.create_subscription(Odometry, self.get_parameter("goal_odometry_topic").value, self._goal_odometry_cb, 10)
         self.create_subscription(Float32, self.get_parameter("current_topic").value, self._current_cb, 10)
         self.create_subscription(Float32, self.get_parameter("speed_topic").value, self._speed_cb, 10)
         self.create_subscription(Float32, self.get_parameter("altitude_topic").value, self._altitude_cb, 10)
@@ -165,9 +184,10 @@ class TakeoverBayesianNetwork(Node):
             self.get_logger().warning(f"BN node '{node_id}' is not present; ignored evidence from {source}")
             return
         try:
-            outcomes = list(self.net.get_outcome_ids(node_id))
+            outcomes = self.outcomes[node_id]
             canonical = self._canonical_state(state_id, outcomes)
-            self.net.set_evidence(node_id, outcomes.index(canonical))
+            if not self.dynamic:                           # dynamic network: entered slice by slice at each update
+                self.net.set_evidence(node_id, outcomes.index(canonical))
             self.evidence[node_id] = canonical
         except Exception as exc:
             self.get_logger().warning(f"Failed to set {node_id}={state_id} from {source}: {exc}")
@@ -175,10 +195,11 @@ class TakeoverBayesianNetwork(Node):
     def _clear_evidence(self, node_id: str):
         if node_id not in self.evidence:
             return
-        try:
-            self.net.clear_evidence(node_id)
-        except Exception:
-            return
+        if not self.dynamic:
+            try:
+                self.net.clear_evidence(node_id)
+            except Exception:
+                return
         self.evidence.pop(node_id, None)
 
     @staticmethod
@@ -203,6 +224,16 @@ class TakeoverBayesianNetwork(Node):
     def _mission_phase_cb(self, msg: String):
         self._mark_seen("mission_phase")
         self._set_evidence("MissionPhase", msg.data, "mission_phase")
+
+    def _mission_state_cb(self, msg: Int32):
+        state = int(msg.data)
+        if state in (5, 6):                                # docking controller or operator in control: no BT goal
+            self.goal = self.goal_start = None
+        phase = self.MISSION_STATES.get(state)
+        if phase is None:
+            return
+        self._mark_seen("mission_phase")
+        self._set_evidence("MissionPhase", phase, "mission_state")
 
     def _battery_cb(self, msg: BatteryStatus):
         self._mark_seen("battery")
@@ -229,6 +260,9 @@ class TakeoverBayesianNetwork(Node):
         else:
             state = "Nominal"
         self._set_evidence("DVLStatus", state, "dvl")
+        if bool(self.get_parameter("use_dvl_altitude").value) and msg.altitude >= 0.0:   # -1: no bottom lock
+            self._mark_seen("altitude")
+            self._set_evidence("Altitude", self._altitude_state(float(msg.altitude)), "dvl_altitude")
 
     def _sonar_cb(self, msg: Image):
         nearest = self._nearest_sonar_return(msg)
@@ -246,6 +280,7 @@ class TakeoverBayesianNetwork(Node):
         self._set_evidence("SonarRange", state, "sonar")
 
     def _nearest_sonar_return(self, msg: Image) -> Optional[float]:
+        """Range of the nearest echo; math.inf when no echo is above the threshold, None for an unusable image."""
         if msg.height == 0 or msg.width == 0 or not msg.data:
             return None
         threshold = int(self.get_parameter("sonar_intensity_threshold").value)
@@ -268,7 +303,7 @@ class TakeoverBayesianNetwork(Node):
             if best_row is not None:
                 break
         if best_row is None:
-            return None
+            return math.inf                                # sonar working, nothing within range
         return (best_row / max(float(msg.height - 1), 1.0)) * max_range
 
     @staticmethod
@@ -306,12 +341,12 @@ class TakeoverBayesianNetwork(Node):
         self._set_evidence("ArUcoVisibility", state, "aruco_visibility")
 
     def _waypoint_cb(self, msg: Pose):
-        self._mark_seen("target")
+        self._mark_seen("controller")
         self.current_waypoint = msg
         self._update_target_evidence()
 
     def _reference_cb(self, msg: Pose):
-        self._mark_seen("target")
+        self._mark_seen("controller")
         self.current_reference = msg
         self._update_target_evidence()
 
@@ -320,34 +355,57 @@ class TakeoverBayesianNetwork(Node):
         self.current_pose = msg.pose.pose
         self._update_target_evidence()
 
+    def _goal_cb(self, msg: PointStamped):
+        self.goal = msg.point
+        self.goal_start = self.goal_pose.position if self.goal_pose is not None else None
+        self._update_target_evidence()
+
+    def _goal_odometry_cb(self, msg: Odometry):
+        self.goal_pose = msg.pose.pose
+        self._update_target_evidence()
+
     def _update_target_evidence(self):
-        if self.current_pose is None:
+        """Docking controller waypoint/reference while it publishes, otherwise the behaviour tree goal."""
+        if self._fresh("controller", float(self.get_parameter("target_timeout_s").value)) \
+                and self.current_pose is not None:
+            target = self.current_waypoint or self.current_reference
+            reference = self.current_reference or self.current_waypoint
+            distance = self._distance(self.current_pose.position, target.position)
+            error = self._distance(self.current_pose.position, reference.position)
+        elif self.goal is not None and self.goal_pose is not None:
+            position = self.goal_pose.position
+            if self.goal_start is None:
+                self.goal_start = position
+            distance = self._distance(position, self.goal)
+            error = self._cross_track(position, self.goal_start, self.goal)
+        else:
             return
-        target = self.current_waypoint or self.current_reference
-        reference = self.current_reference or self.current_waypoint
-        if target is not None:
-            distance = self._distance(self.current_pose, target)
-            if distance > float(self.get_parameter("range_far_m").value):
-                self._set_evidence("RangeToTarget", "Far", "target")
-            elif distance < float(self.get_parameter("range_close_m").value):
-                self._set_evidence("RangeToTarget", "Close", "target")
-            else:
-                self._set_evidence("RangeToTarget", "Mid", "target")
-        if reference is not None:
-            error = self._distance(self.current_pose, reference)
-            if error < float(self.get_parameter("tracking_low_m").value):
-                self._set_evidence("WaypointTrackingError", "Low", "target")
-            elif error > float(self.get_parameter("tracking_high_m").value):
-                self._set_evidence("WaypointTrackingError", "High", "target")
-            else:
-                self._set_evidence("WaypointTrackingError", "Medium", "target")
+        self._mark_seen("target")
+        if distance > float(self.get_parameter("range_far_m").value):
+            self._set_evidence("RangeToTarget", "Far", "target")
+        elif distance < float(self.get_parameter("range_close_m").value):
+            self._set_evidence("RangeToTarget", "Close", "target")
+        else:
+            self._set_evidence("RangeToTarget", "Mid", "target")
+        if error < float(self.get_parameter("tracking_low_m").value):
+            self._set_evidence("WaypointTrackingError", "Low", "target")
+        elif error > float(self.get_parameter("tracking_high_m").value):
+            self._set_evidence("WaypointTrackingError", "High", "target")
+        else:
+            self._set_evidence("WaypointTrackingError", "Medium", "target")
 
     @staticmethod
-    def _distance(a: Pose, b: Pose) -> float:
-        dx = a.position.x - b.position.x
-        dy = a.position.y - b.position.y
-        dz = a.position.z - b.position.z
-        return math.sqrt(dx * dx + dy * dy + dz * dz)
+    def _distance(a: Point, b: Point) -> float:
+        return math.dist((a.x, a.y, a.z), (b.x, b.y, b.z))
+
+    @staticmethod
+    def _cross_track(p: Point, a: Point, b: Point) -> float:
+        """Distance from p to the straight leg a -> b."""
+        ab = (b.x - a.x, b.y - a.y, b.z - a.z)
+        ap = (p.x - a.x, p.y - a.y, p.z - a.z)
+        length2 = sum(c * c for c in ab)
+        t = 0.0 if length2 < 1e-9 else max(0.0, min(1.0, sum(u * v for u, v in zip(ap, ab)) / length2))
+        return math.dist((p.x, p.y, p.z), (a.x + t * ab[0], a.y + t * ab[1], a.z + t * ab[2]))
 
     def _current_cb(self, msg: Float32):
         self._mark_seen("current")
@@ -373,14 +431,15 @@ class TakeoverBayesianNetwork(Node):
 
     def _altitude_cb(self, msg: Float32):
         self._mark_seen("altitude")
-        altitude = float(msg.data)
+        self._set_evidence("Altitude", self._altitude_state(float(msg.data)), "altitude")
+
+    @staticmethod
+    def _altitude_state(altitude: float) -> str:
         if altitude > 2.0:
-            state = "Safe"
-        elif altitude > 1.0:
-            state = "Marginal"
-        else:
-            state = "Unsafe"
-        self._set_evidence("Altitude", state, "altitude")
+            return "Safe"
+        if altitude > 1.0:
+            return "Marginal"
+        return "Unsafe"
 
     def _camera_cb(self, msg: String):
         self._mark_seen("camera")
@@ -409,6 +468,8 @@ class TakeoverBayesianNetwork(Node):
     def _apply_timeouts(self):
         if not self._fresh("dvl", float(self.get_parameter("dvl_timeout_s").value)):
             self._set_evidence("DVLStatus", "Failed", "dvl_timeout")
+        if not self._fresh("altitude", float(self.get_parameter("dvl_timeout_s").value)):
+            self._clear_evidence("Altitude")               # DVL silent or without bottom lock
         if not self._fresh("aruco", float(self.get_parameter("aruco_timeout_s").value)):
             self._set_evidence("ArUcoVisibility", "None", "aruco_timeout")
         if not self._fresh("sonar", float(self.get_parameter("sonar_timeout_s").value)):
@@ -417,17 +478,23 @@ class TakeoverBayesianNetwork(Node):
             self._clear_evidence("RangeToTarget")
             self._clear_evidence("WaypointTrackingError")
 
+    def _posterior(self, node_id: str) -> Dict[str, float]:
+        outcomes = self.outcomes[node_id]
+        values = list(self.net.get_node_value(node_id))[-len(outcomes):]   # dynamic network: the last slice
+        return dict(zip(outcomes, values))
+
     def _periodic_update(self):
         try:
             self._apply_timeouts()
+            if self.dynamic:
+                self._enter_window()
             self.net.update_beliefs()
-            outcomes = list(self.net.get_outcome_ids(self.TARGET_NODE))
-            values = list(self.net.get_node_value(self.TARGET_NODE))
+            probabilities = self._posterior(self.TARGET_NODE)
+            posteriors = {node_id: self._posterior(node_id) for node_id in self.posterior_nodes}
         except Exception as exc:
             self.get_logger().error(f"BN update failed: {exc}")
             return
 
-        probabilities = dict(zip(outcomes, values))
         state, probability = max(probabilities.items(), key=lambda item: item[1])
 
         self._publish_string(self.state_pub, state)
@@ -449,10 +516,20 @@ class TakeoverBayesianNetwork(Node):
                     "state": state,
                     "probabilities": probabilities,
                     "evidence": self.evidence,
+                    "posteriors": posteriors,
                 },
                 sort_keys=True,
             ),
         )
+
+    def _enter_window(self):
+        """Evidence of the last N updates, oldest first, in the last slices of the window."""
+        self.history.append(dict(self.evidence))
+        self.net.clear_all_evidence()
+        first = self.n_slices - len(self.history)
+        for k, snapshot in enumerate(self.history):
+            for node_id, state in snapshot.items():
+                self.net.set_temporal_evidence(node_id, first + k, self.outcomes[node_id].index(state))
 
     @staticmethod
     def _publish_float(pub, value: float):

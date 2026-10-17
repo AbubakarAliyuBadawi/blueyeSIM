@@ -54,5 +54,37 @@ def generate_launch_description():
                     "noise_std":          0.02,
                 }],
             ),
+            Node(
+                package="gz_battery",
+                executable="gz_battery_node",
+                name="gz_battery",
+                output="screen",
+                parameters=[{
+                    "battery_topic": "/blueye/battery",
+                    "thrusters_topic": "/blueye/thrusters",
+                }],
+            ),
+            Node(
+                package="blueye_takeover_bn",
+                executable="sim_current",
+                name="sim_current",
+                output="screen",
+                parameters=[{
+                    "enabled": False,
+                    "enable_after_s": 0.0,
+                }],
+            ),
+            Node(
+                package="blueye_takeover_bn",
+                executable="usbl_strength_monitor",
+                name="usbl_strength_monitor",
+                output="screen",
+            ),
+            Node(
+                package="blueye_takeover_bn",
+                executable="speed_monitor",
+                name="speed_monitor",
+                output="screen",
+            ),
         ]
     )

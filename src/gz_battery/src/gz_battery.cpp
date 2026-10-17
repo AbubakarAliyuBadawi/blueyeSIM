@@ -13,7 +13,16 @@ GZ_Battery::GZ_Battery() : Node("gz_battery"), state_of_charge_(1.0f) { // Start
     // Battery status publisher
     battery_publisher_ = create_publisher<mundus_mir_msgs::msg::BatteryStatus>(battery_topic_, 1);
 
-    // Subscribe to thruster velocity commands
+    // Subscribe to thruster setpoints (Stonefish: one array for all thrusters)
+    thrusters_array_subscription_ = create_subscription<std_msgs::msg::Float64MultiArray>(
+        thrusters_topic_, 10,
+        [this](std_msgs::msg::Float64MultiArray::SharedPtr msg) {
+            for (size_t i = 0; i < thruster_cmds_.size() && i < msg->data.size(); ++i) {
+                thruster_cmds_[i] = msg->data[i];
+            }
+        });
+
+    // Subscribe to thruster velocity commands (Gazebo: one topic per thruster)
     for (size_t i = 0; i < 4; ++i) {
         std::string topic_name = "/blueye/thruster_" + std::to_string(i + 1) + "/cmd_vel";
         thruster_subscriptions_.emplace_back(
@@ -38,6 +47,7 @@ void GZ_Battery::get_configuration_parameters() {
 
     // Declare and fetch ROS parameters
     declare_parameter("battery_topic", "blueye/battery");
+    declare_parameter("thrusters_topic", "/blueye/thrusters");
     declare_parameter("publish_frequency", 1.0);
     declare_parameter("voltage_sensor_noise_mean", 0.0);
     declare_parameter("voltage_sensor_noise_stddev", 0.1);
@@ -47,6 +57,7 @@ void GZ_Battery::get_configuration_parameters() {
     
     // Fetch parameters
     battery_topic_ = get_parameter("battery_topic").as_string();
+    thrusters_topic_ = get_parameter("thrusters_topic").as_string();
     publish_frequency_ = get_parameter("publish_frequency").as_double();
     voltage_sensor_noise_mean_ = get_parameter("voltage_sensor_noise_mean").as_double();
     voltage_sensor_noise_stddev_ = get_parameter("voltage_sensor_noise_stddev").as_double();
