@@ -14,6 +14,7 @@
 #include "blueye_stonefish_bt/actions/wait_for_human_decision.hpp"
 #include "blueye_stonefish_bt/actions/enable_joystick.hpp"
 #include "blueye_stonefish_bt/actions/wait_for_handback.hpp"
+#include "blueye_stonefish_bt/actions/hold_position.hpp"
 #include "blueye_stonefish_bt/decorators/abort_on_condition_decorator.hpp"
 
 #include <rclcpp/rclcpp.hpp>
@@ -22,6 +23,8 @@
 #include "behaviortree_cpp/bt_factory.h"
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 #include <std_msgs/msg/int32.hpp>
+#include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/string.hpp>
 #include <geometry_msgs/msg/point_stamped.hpp>
 #include <memory>
 #include <chrono>
@@ -34,6 +37,8 @@ rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr g_mission_state_pub;
 rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr g_waypoint_goal_pub;
 int g_current_mission_state = 0;
 bool g_mission_paused = false;
+bool g_shadow_mode = false;                    // takeover_mode: closed_loop (default) or shadow
+std::atomic<bool> g_decision_pending{false};   // WaitForHumanDecision is waiting for the operator
 
 void signalHandler(int signum) {
     if (g_node) RCLCPP_INFO(g_node->get_logger(), "Signal %d received — shutting down", signum);
@@ -46,16 +51,37 @@ int main(int argc, char** argv) {
 
     g_node = rclcpp::Node::make_shared("blueye_stonefish_bt");
     g_node->declare_parameter("behavior_tree_path", "");
+    g_node->declare_parameter("takeover_mode", "closed_loop");
     g_mission_state_pub  = g_node->create_publisher<std_msgs::msg::Int32>("/mission_state", 10);
     g_waypoint_goal_pub  = g_node->create_publisher<geometry_msgs::msg::PointStamped>("/blueye/waypoint_goal", 10);
+    auto pending_pub = g_node->create_publisher<std_msgs::msg::Bool>("/blueye/takeover_request/pending", 10);
+    auto mode_pub    = g_node->create_publisher<std_msgs::msg::String>("/blueye/takeover_request/mode", 10);
 
-    // Continuous mission-state publishing thread
-    std::thread([&]() {
+    const std::string takeover_mode = g_node->get_parameter("takeover_mode").as_string();
+    if (takeover_mode != "closed_loop" && takeover_mode != "shadow") {
+        RCLCPP_ERROR(g_node->get_logger(), "takeover_mode must be 'closed_loop' or 'shadow', got '%s'",
+                     takeover_mode.c_str());
+        rclcpp::shutdown();
+        return 1;
+    }
+    g_shadow_mode = takeover_mode == "shadow";
+    RCLCPP_INFO(g_node->get_logger(), "Takeover mode: %s", g_shadow_mode
+        ? "SHADOW (urgency crossings are logged, the mission never stops)"
+        : "CLOSED LOOP (urgency crossing holds the vehicle and asks the operator)");
+
+    // Continuous mission-state publishing thread (also: decision pending for the HUD, takeover mode)
+    std::thread([pending_pub, mode_pub, takeover_mode]() {
         rclcpp::Rate rate(10);
         while (rclcpp::ok() && g_program_running) {
             auto msg = std::make_unique<std_msgs::msg::Int32>();
             msg->data = g_current_mission_state;
             g_mission_state_pub->publish(*msg);
+            std_msgs::msg::Bool pending;
+            pending.data = g_decision_pending;
+            pending_pub->publish(pending);
+            std_msgs::msg::String mode;
+            mode.data = takeover_mode;
+            mode_pub->publish(mode);
             rate.sleep();
         }
     }).detach();
@@ -93,6 +119,7 @@ int main(int argc, char** argv) {
     factory.registerNodeType<WaitForHumanDecision>("WaitForHumanDecision");
     factory.registerNodeType<EnableJoystick>("EnableJoystick");
     factory.registerNodeType<WaitForHandback>("WaitForHandback");
+    factory.registerNodeType<HoldPosition>("HoldPosition");
 
     try {
         std::string mission_file;

@@ -49,7 +49,7 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 
 from sensor_msgs.msg import Image, Joy
 from nav_msgs.msg import Odometry
-from std_msgs.msg import Bool, Float32, Float64, Float64MultiArray
+from std_msgs.msg import Bool, Float32, Float64, Float64MultiArray, Int32, String
 from stonefish_ros2.msg import BeaconInfo
 
 
@@ -63,7 +63,9 @@ class _Signals(QObject):
     odom_ready        = pyqtSignal(object)   # nav_msgs/Odometry
     usbl_ready        = pyqtSignal(object)   # stonefish_ros2/BeaconInfo
     takeover_update   = pyqtSignal(float, float)   # urgency, threshold
-    show_popup        = pyqtSignal()
+    decision_pending  = pyqtSignal(bool)           # BT waits for an operator decision
+    mission_state     = pyqtSignal(int)            # /mission_state (6 = takeover)
+    takeover_mode     = pyqtSignal(str)            # closed_loop / shadow
 
 
 # ── Camera panel ──────────────────────────────────────────────────────────────
@@ -795,7 +797,7 @@ class TakeoverDialog(QDialog):
         msg = QLabel(
             "The Bayesian Network suggests human intervention is needed.\n"
             "Accept to take manual joystick control.\n"
-            "Reject to trigger the emergency return-to-dock sequence."
+            "Reject (or close this window) to trigger the emergency return-to-dock sequence."
         )
         msg.setAlignment(Qt.AlignCenter)
         msg.setWordWrap(True)
@@ -831,7 +833,12 @@ class OperatorWindow(QMainWindow):
     def __init__(self, signals: _Signals, ros_node):
         super().__init__()
         self._ros_node      = ros_node
-        self._in_takeover   = False
+        self._in_takeover   = False     # operator accepted; joystick control until the BT resumes
+        self._handback_sent = False
+        self._dialog        = None      # the one open takeover popup
+        self._dialog_withdrawn = False  # BT stopped waiting while the popup was open
+        self._urgency       = 0.0
+        self._threshold     = 0.65
         self.setWindowTitle("Blueye X3  —  Operator Interface")
         self.setStyleSheet("background:#181825;")
         self.resize(1280, 820)
@@ -842,9 +849,19 @@ class OperatorWindow(QMainWindow):
         root.setContentsMargins(4, 4, 4, 4)
         root.setSpacing(4)
 
-        # ── takeover banner (always visible at top) ─────────────────────────
+        # ── takeover banner + mode (always visible at top) ──────────────────
         self.takeover_banner = TakeoverBanner()
-        root.addWidget(self.takeover_banner)
+        self.mode_label = QLabel("MODE: —")
+        self.mode_label.setFixedHeight(32)
+        self.mode_label.setStyleSheet(
+            "background:#1e1e2e; color:#6c7086; font-family:Monospace; font-size:11px; "
+            "font-weight:bold; padding:0 10px;"
+        )
+        banner_row = QHBoxLayout()
+        banner_row.setSpacing(4)
+        banner_row.addWidget(self.takeover_banner, stretch=1)
+        banner_row.addWidget(self.mode_label)
+        root.addLayout(banner_row)
 
         tabs = QTabWidget()
         tabs.setStyleSheet(
@@ -896,12 +913,13 @@ class OperatorWindow(QMainWindow):
 
         overview_layout.addWidget(bottom, stretch=3)
 
-        # ── handback button (hidden until joystick takeover is active) ──────
+        # ── handback button (hidden until joystick takeover is active; enabled once urgency < threshold) ──
         self.handback_btn = QPushButton("HAND BACK CONTROL TO MISSION")
         self.handback_btn.setFixedHeight(40)
         self.handback_btn.setStyleSheet(
-            "background:#89b4fa; color:#1e1e2e; font-family:Monospace; "
-            "font-size:13px; font-weight:bold; border-radius:4px;"
+            "QPushButton { background:#89b4fa; color:#1e1e2e; font-family:Monospace; "
+            "font-size:13px; font-weight:bold; border-radius:4px; }"
+            "QPushButton:disabled { background:#45475a; color:#a6adc8; }"
         )
         self.handback_btn.hide()
         self.handback_btn.clicked.connect(self._on_handback)
@@ -920,26 +938,71 @@ class OperatorWindow(QMainWindow):
         signals.odom_ready.connect(self.usbl_panel.ingest_odom)
         signals.usbl_ready.connect(self.usbl_panel.ingest)
         signals.takeover_update.connect(self._on_takeover_update)
-        signals.show_popup.connect(self._on_show_popup)
+        signals.decision_pending.connect(self._on_decision_pending)
+        signals.mission_state.connect(self._on_mission_state)
+        signals.takeover_mode.connect(self._on_takeover_mode)
 
     def _on_takeover_update(self, urgency: float, threshold: float):
+        self._urgency, self._threshold = urgency, threshold
         self.takeover_banner.update_values(urgency, threshold)
+        self._update_handback_btn()
 
-    def _on_show_popup(self):
-        if self._in_takeover:
+    def _on_decision_pending(self, pending: bool):
+        """The BT asks for a decision: one popup per request, whatever the urgency does meanwhile."""
+        if not pending:
+            if self._dialog is not None and self._dialog.isVisible():  # BT stopped waiting, still unanswered
+                self._dialog_withdrawn = True
+                self._dialog.done(QDialog.Rejected)
             return
-        dlg = TakeoverDialog(self)
-        dlg.exec_()
-        decision = dlg.result_accepted()
-        self._ros_node.publish_human_decision(decision)
-        if decision:
+        if self._dialog is not None or self._in_takeover:
+            return
+        self._dialog = TakeoverDialog(self)
+        self._dialog_withdrawn = False
+        self._dialog.exec_()                              # closing the window counts as reject
+        accepted = self._dialog.result_accepted()
+        withdrawn = self._dialog_withdrawn
+        self._dialog = None
+        if withdrawn:
+            if self._ros_node.decision_pending:          # asked again while the popup was closing
+                QTimer.singleShot(0, lambda: self._on_decision_pending(True))
+            return
+        self._ros_node.publish_human_decision(accepted)
+        if accepted:
             self._in_takeover = True
+            self._handback_sent = False
+            self._update_handback_btn()
             self.handback_btn.show()
+
+    def _on_mission_state(self, state: int):
+        if self._in_takeover and state != 6:              # BT resumed the mission after the hand back
+            self._in_takeover = False
+            self._handback_sent = False
+            self.handback_btn.hide()
+
+    def _on_takeover_mode(self, mode: str):
+        shadow = mode == "shadow"
+        self.mode_label.setText("MODE: SHADOW (no takeover)" if shadow else "MODE: CLOSED LOOP")
+        self.mode_label.setStyleSheet(
+            "background:#1e1e2e; font-family:Monospace; font-size:11px; font-weight:bold; padding:0 10px; "
+            + ("color:#f9e2af;" if shadow else "color:#a6e3a1;")
+        )
+
+    def _update_handback_btn(self):
+        if self._handback_sent:
+            self.handback_btn.setEnabled(False)
+            self.handback_btn.setText("HANDING BACK — MISSION RESUMING …")
+        elif self._urgency < self._threshold:
+            self.handback_btn.setEnabled(True)
+            self.handback_btn.setText("HAND BACK CONTROL TO MISSION")
+        else:
+            self.handback_btn.setEnabled(False)
+            self.handback_btn.setText(f"HAND BACK AVAILABLE WHEN URGENCY < {self._threshold:.2f} "
+                                      f"(NOW {self._urgency:.2f})")
 
     def _on_handback(self):
         self._ros_node.publish_handback()
-        self._in_takeover = False
-        self.handback_btn.hide()
+        self._handback_sent = True
+        self._update_handback_btn()
 
 
 # ── ROS2 node ─────────────────────────────────────────────────────────────────
@@ -952,7 +1015,9 @@ class OperatorHUDNode(Node):
         self._bridge    = CvBridge()
         self._urgency   = 0.0
         self._threshold = 0.65
-        self._popup_sent = False
+        self._pending   = None
+        self._state     = None
+        self._mode      = None
 
         best_effort = QoSProfile(
             reliability=ReliabilityPolicy.BEST_EFFORT,
@@ -976,6 +1041,12 @@ class OperatorHUDNode(Node):
             Float64, "/blueye/takeover_request/urgency", self._on_urgency, 10)
         self.create_subscription(
             Float32, "/blueye/takeover_request/threshold", self._on_threshold, 10)
+        self.create_subscription(
+            Bool, "/blueye/takeover_request/pending", self._on_pending, 10)
+        self.create_subscription(
+            Int32, "/mission_state", self._on_mission_state, 10)
+        self.create_subscription(
+            String, "/blueye/takeover_request/mode", self._on_mode, 10)
 
         self._decision_pub = self.create_publisher(
             Bool, "/blueye/takeover_request/human_decision", 10)
@@ -1011,14 +1082,29 @@ class OperatorHUDNode(Node):
     def _on_urgency(self, msg):
         self._urgency = msg.data
         self._signals.takeover_update.emit(self._urgency, self._threshold)
-        if self._urgency >= self._threshold and not self._popup_sent:
-            self._popup_sent = True
-            self._signals.show_popup.emit()
-        elif self._urgency < self._threshold * 0.8:
-            self._popup_sent = False
 
     def _on_threshold(self, msg):
         self._threshold = msg.data
+
+    @property
+    def decision_pending(self) -> bool:
+        return bool(self._pending)
+
+    # The BT publishes these at 10 Hz; the window only needs the changes
+    def _on_pending(self, msg):
+        if msg.data != self._pending:
+            self._pending = msg.data
+            self._signals.decision_pending.emit(msg.data)
+
+    def _on_mission_state(self, msg):
+        if msg.data != self._state:
+            self._state = msg.data
+            self._signals.mission_state.emit(msg.data)
+
+    def _on_mode(self, msg):
+        if msg.data != self._mode:
+            self._mode = msg.data
+            self._signals.takeover_mode.emit(msg.data)
 
     def publish_human_decision(self, accepted: bool):
         out = Bool()

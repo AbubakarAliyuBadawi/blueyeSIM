@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Full mission test with takeover guard.
-     If the Bayesian Network urgency >= threshold:
-       1. Drone holds station
-       2. Operator popup appears in the HUD
-       3a. ACCEPT  → joystick control until operator hands back
-       3b. REJECT  → emergency Transit_2 + Docking sequence
+     takeover_mode:=closed_loop (default). If the Bayesian Network urgency >= threshold:
+       1. Drone holds position (HoldPosition: docking stopped, waypoint controller station-keeps)
+       2. One operator popup appears in the HUD (/blueye/takeover_request/pending)
+       3a. ACCEPT  → joystick control; hand back is possible once urgency < threshold, and the
+                     mission resumes at the interrupted step (completed waypoints are skipped)
+       3b. REJECT or closing the popup → emergency Transit_2 + Docking sequence
+     takeover_mode:=shadow: crossings are only logged; the mission never stops.
 
      Mission states on /mission_state:
        1 = UnDocking
@@ -70,7 +72,8 @@
       <!-- ── TAKEOVER HANDLER (runs when CheckTakeoverRequest fails) ────── -->
       <Sequence name="takeover_handler">
 
-        <!-- Drone holds naturally — waypoint controller already stopped by onHalted() -->
+        <!-- Hold position actively while the operator decides -->
+        <HoldPosition/>
         <PublishState state="6"/>
 
         <Fallback name="human_decision_branch">
@@ -91,6 +94,10 @@
             <NavigateToWaypoint name="emergency_dock_approach"
                                 x="6.50" y="-19.0" z="2.28"
                                 velocity="0.2" fixed_heading="false"/>
+            <!-- Face the docking station (markers in view) before docking, as in the normal mission -->
+            <StationKeeping name="emergency_heading_hold"
+                            x="6.50" y="-19.0" z="2.28"
+                            heading="-1.5708" duration="30"/>
             <PublishState state="5"/>
             <LaunchDockingProcedure name="emergency_docking"/>
             <Wait name="wait_emergency_docking" duration="120"/>

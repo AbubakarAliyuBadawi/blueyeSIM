@@ -86,7 +86,7 @@ class TakeoverBayesianNetwork(Node):
     def _declare_parameters(self):
         self.declare_parameter("bn_file", "")
         self.declare_parameter("update_rate_hz", 2.0)
-        self.declare_parameter("default_mission_phase", "Transit")
+        self.declare_parameter("default_mission_phase", "Undocking")
         self.declare_parameter("use_default_mission_phase", True)
         self.declare_parameter("takeover_threshold", 0.65)
         self.declare_parameter("dbn_slices", 0)            # dynamic network: window length; 0 = value in the file

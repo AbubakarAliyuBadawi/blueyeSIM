@@ -8,7 +8,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             DeclareLaunchArgument("update_rate_hz", default_value="2.0"),
-            DeclareLaunchArgument("default_mission_phase", default_value="Transit"),
+            DeclareLaunchArgument("default_mission_phase", default_value="Undocking"),
             DeclareLaunchArgument("use_default_mission_phase", default_value="true"),
             DeclareLaunchArgument("takeover_threshold", default_value="0.65"),
             Node(

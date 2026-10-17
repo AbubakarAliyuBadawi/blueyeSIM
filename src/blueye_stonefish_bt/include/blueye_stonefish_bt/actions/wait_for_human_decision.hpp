@@ -2,8 +2,10 @@
 #include <behaviortree_cpp/action_node.h>
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
+#include <atomic>
 
 extern rclcpp::Node::SharedPtr g_node;
+extern std::atomic<bool> g_decision_pending;   // published on /blueye/takeover_request/pending; the HUD pops up on it
 
 class WaitForHumanDecision : public BT::StatefulActionNode {
 public:
@@ -27,12 +29,14 @@ protected:
         // Reset flags so stale messages from before this takeover cycle are ignored.
         decision_received_ = false;
         accepted_ = false;
+        g_decision_pending = true;
         RCLCPP_INFO(g_node->get_logger(), "WaitForHumanDecision: waiting for operator response...");
         return BT::NodeStatus::RUNNING;
     }
 
     BT::NodeStatus onRunning() override {
         if (!decision_received_) return BT::NodeStatus::RUNNING;
+        g_decision_pending = false;
         if (accepted_) {
             RCLCPP_INFO(g_node->get_logger(), "Operator ACCEPTED takeover");
             return BT::NodeStatus::SUCCESS;
@@ -41,7 +45,7 @@ protected:
         return BT::NodeStatus::FAILURE;
     }
 
-    void onHalted() override {}  // keep subscription alive across tree resets
+    void onHalted() override { g_decision_pending = false; }  // keep subscription alive across tree resets
 
 private:
     bool decision_received_;

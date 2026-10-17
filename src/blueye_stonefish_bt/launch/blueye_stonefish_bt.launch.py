@@ -16,6 +16,13 @@ def generate_launch_description():
         description="Path to the BehaviorTree XML file to execute.",
     )
 
+    takeover_mode_arg = DeclareLaunchArgument(
+        "takeover_mode",
+        default_value="closed_loop",
+        description="closed_loop: urgency crossing holds the vehicle and asks the operator; "
+                    "shadow: crossings are only logged and the mission continues.",
+    )
+
     odometry_topic_arg = DeclareLaunchArgument(
         "odometry_topic",
         default_value="/blueye/odom",
@@ -27,7 +34,10 @@ def generate_launch_description():
         executable="blueye_stonefish_bt",
         name="blueye_stonefish_bt",
         output="screen",
-        parameters=[{"behavior_tree_path": LaunchConfiguration("bt_file")}],
+        parameters=[{
+            "behavior_tree_path": LaunchConfiguration("bt_file"),
+            "takeover_mode": LaunchConfiguration("takeover_mode"),
+        }],
     )
 
     waypoint_controller = Node(
@@ -122,6 +132,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         bt_file_arg,
+        takeover_mode_arg,
         odometry_topic_arg,
         waypoint_controller,
         velocity_controller,
