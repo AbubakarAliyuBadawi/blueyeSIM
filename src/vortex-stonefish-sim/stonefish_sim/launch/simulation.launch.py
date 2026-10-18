@@ -21,6 +21,7 @@ gpu_scenarios = [
     "orca_freya_demo",
     "tacc",
     "blueye",
+    "blueye_obstacle",
 ]
 no_gpu_scenarios = [
     "orca_no_gpu",

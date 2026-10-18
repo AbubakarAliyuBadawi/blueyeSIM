@@ -10,7 +10,7 @@ import collections
 import json
 import math
 import os
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -72,6 +72,7 @@ class TakeoverBayesianNetwork(Node):
         self.goal: Optional[Point] = None
         self.goal_start: Optional[Point] = None             # the leg starts where the vehicle was
         self.sonar_frame: Optional[Image] = None
+        self.critical_point: Optional[Tuple[float, float]] = None   # world (x, y) of the last Critical echo
         self.structure_map = self._load_structure_map()
         self.usbl_beacon = self._load_usbl_beacon()
 
@@ -132,6 +133,9 @@ class TakeoverBayesianNetwork(Node):
         self.declare_parameter("sonar_range_max_m", 5.0)
         self.declare_parameter("sonar_horizontal_fov_deg", 90.0)
         self.declare_parameter("sonar_forward_offset_m", 0.18)
+        # An echo that disappears inside the sonar's blind zone is too close to see, not gone: SonarRange stays Critical
+        # while the vehicle is within this distance of where the Critical echo was last seen (0 disables)
+        self.declare_parameter("sonar_blind_hold_m", 1.0)
         # Known structures are not obstacles: "<mesh>:<key>", placed by <key>_position/_orientation in structures_config
         self.declare_parameter("mask_known_structures", True)
         self.declare_parameter("known_structures", ["docking_station_rig:docking_rig", "pipe2:pipeline"])
@@ -376,18 +380,37 @@ class TakeoverBayesianNetwork(Node):
         nearest = self._nearest_sonar_return(self.sonar_frame)
         if nearest is None:
             return
+        distance, point = nearest
         critical = float(self.get_parameter("sonar_critical_range_m").value)
         clear = float(self.get_parameter("sonar_clear_range_m").value)
-        if nearest < critical:
+        if distance < critical:
             state = "Critical"
-        elif nearest < clear:
+            if point is not None:
+                self.critical_point = point
+        elif self._in_blind_hold():
+            state = "Critical"
+            self.get_logger().info("Sonar: obstacle inside the blind zone, SonarRange held at Critical",
+                                   throttle_duration_sec=5.0)
+        elif distance < clear:
             state = "Near"
         else:
             state = "Clear"
         self._set_evidence("SonarRange", state, "sonar")
 
-    def _nearest_sonar_return(self, msg: Image) -> Optional[float]:
-        """Range of the nearest echo that is not a known structure; math.inf without one, None for an unusable image."""
+    def _in_blind_hold(self) -> bool:
+        """True while the vehicle is still within sonar_blind_hold_m of the last Critical echo."""
+        hold = float(self.get_parameter("sonar_blind_hold_m").value)
+        if self.critical_point is None or self.world_pose is None or hold <= 0.0:
+            return False
+        position = self.world_pose.position
+        if math.dist((position.x, position.y), self.critical_point) <= hold:
+            return True
+        self.critical_point = None
+        return False
+
+    def _nearest_sonar_return(self, msg: Image) -> Optional[Tuple[float, Optional[Tuple[float, float]]]]:
+        """(range, world x/y) of the nearest echo that is not a known structure; (math.inf, None) without one, None for
+        an unusable image. The position is None without a world pose."""
         bytes_per_pixel = self._image_bytes_per_pixel(msg.encoding)
         try:
             pixels = np.asarray(msg.data, dtype=np.uint8).reshape(msg.height, msg.step)
@@ -397,29 +420,38 @@ class TakeoverBayesianNetwork(Node):
             return None
         rows, cols = np.nonzero(image > int(self.get_parameter("sonar_intensity_threshold").value))
         if rows.size == 0:
-            return math.inf                                # sonar working, nothing within range
+            return math.inf, None                          # sonar working, nothing within range
         range_min = float(self.get_parameter("sonar_range_min_m").value)
         range_max = float(self.get_parameter("sonar_range_max_m").value)
         ranges = range_min + (msg.height - 1 - rows) / (msg.height - 1) * (range_max - range_min)
-        if self.structure_map is not None and self.world_pose is not None:
-            ranges = ranges[~self._on_known_structure(ranges, cols, msg.width)]
+        if self.world_pose is None:
+            return float(ranges.min()), None
+        x, y = self._sonar_world_xy(ranges, cols, msg.width)
+        if self.structure_map is not None:
+            unknown = ~self._on_known_structure(x, y)
+            ranges, x, y = ranges[unknown], x[unknown], y[unknown]
             if ranges.size == 0:
-                return math.inf
-        return float(ranges.min())
+                return math.inf, None
+        k = int(np.argmin(ranges))
+        return float(ranges[k]), (float(x[k]), float(y[k]))
 
-    def _on_known_structure(self, ranges, cols, width):
-        """True for the sonar returns (range, beam column) that fall on a known structure."""
+    def _sonar_world_xy(self, ranges, cols, width):
+        """World (x, y) of the sonar returns (range, beam column), from the world pose."""
         pose = self.world_pose
         yaw = self._yaw(pose.orientation)
         bearing = yaw + (cols / (width - 1) - 0.5) * math.radians(float(self.get_parameter("sonar_horizontal_fov_deg").value))
         offset = float(self.get_parameter("sonar_forward_offset_m").value)
         x = pose.position.x + offset * math.cos(yaw) + ranges * np.cos(bearing)
         y = pose.position.y + offset * math.sin(yaw) + ranges * np.sin(bearing)
+        return x, y
+
+    def _on_known_structure(self, x, y):
+        """True for the sonar returns at world (x, y) that fall on a known structure."""
         x0, y0, resolution, grid = self.structure_map
         i = ((x - x0) / resolution).astype(int)
         j = ((y - y0) / resolution).astype(int)
         inside = (i >= 0) & (i < grid.shape[1]) & (j >= 0) & (j < grid.shape[0])
-        known = np.zeros(ranges.size, dtype=bool)
+        known = np.zeros(x.size, dtype=bool)
         known[inside] = grid[j[inside], i[inside]] > 0
         return known
 

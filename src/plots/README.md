@@ -8,6 +8,7 @@ Scripts stay in this folder; their output goes into one folder per run, named ex
 | `paper/<run>/` | Figures and tables for a run used in the RESS paper (bag in `src/rosbags/paper/<run>/`). |
 | `paper/<run>/diagnostics/` | Engineering plots of the same run (trajectory, depth, heading, velocity tracking, thrusters). |
 | `paper/mission_plan/` | Plan view of the mission (`mission_plan.pdf/.png`), drawn from `TestMission.xml`. |
+| `paper/s1_obstacle_comparison/` | S1 open loop against closed loop (`s1_ol_vs_cl.pdf/.png`, `.csv/.md`). |
 | `development_2026-10_bn_v4/` | Plots of superseded development runs (bags in `src/rosbags/development_2026-10_bn_v4/`). |
 | `archive_2026-07_to_08/` | Plots of the older takeover tests (bags in `src/rosbags/archive_2026-06_to_08/`). |
 
@@ -17,6 +18,8 @@ Scripts stay in this folder; their output goes into one folder per run, named ex
 |---|---|
 | `plot_nominal_run.py` | Paper figures and tables for one run. |
 | `plot_mission_plan.py` | Plan view of the mission: waypoints read from the behaviour tree, markers from `pipe.scn`. Rerun after changing the mission. |
+| `plot_hazard_run.py` | Results of one hazard-scenario run: `hazard_timeline` (Fig. 9 panel), `hazard_results.csv/.md` (one row of the results table), `hazard_summary.txt`. Run with `--scenario S1` (injection found automatically from the first sonar echo off the rock) or `--injection <s>`. |
+| `plot_ol_cl_comparison.py` | S1 open loop against closed loop (`--ol <bag> --cl <bag>`): plan view around the rock, distance to the rock and urgency; output in `paper/s1_obstacle_comparison/`. |
 | `plot_sim_mission.py` | Engineering plots of a simulated mission. |
 | `plot_real_mission.py` | Engineering plots of a field mission. |
 | `view_3d_map.py` | Interactive 3D view of a run. |
@@ -27,7 +30,7 @@ Scripts stay in this folder; their output goes into one folder per run, named ex
 ```bash
 source ~/Desktop/auto-pilot/install/setup.bash
 cd ~/Desktop/auto-pilot/src
-python3 plots/plot_nominal_run.py rosbags/paper/<run>
+python3 plots/plot_nominal_run.py rosbags/paper/<run>        # add --obstacle-config <blueye_obstacle_config.yaml> for S1 runs
 python3 plots/plot_sim_mission.py rosbags/paper/<run> --out plots/paper/<run>/diagnostics
 ```
 

@@ -81,7 +81,9 @@ TAKEOVER_STATES = [("NoTakeoverRequired", "No takeover", "#2ca02c"),
 TOPICS = ["/mission_state", "/rosout", "/blueye/odom", "/blueye/waypoint_goal", "/blueye/battery",
           "/blueye/takeover_request/urgency", "/blueye/takeover_request/threshold",
           "/blueye/takeover_request/evidence", "/blueye/takeover_request/mode",
-          "/blueye/human/fatigue", "/blueye/human/stress", "/blueye/docking_controller_status"]
+          "/blueye/human/fatigue", "/blueye/human/stress", "/blueye/docking_controller_status",
+          "/blueye/takeover_request/pending", "/blueye/takeover_request/human_decision",
+          "/blueye/takeover_request/handback"]
 
 plt.rcParams.update({"font.size": 8, "axes.labelsize": 8, "axes.titlesize": 8, "legend.fontsize": 7,
                      "xtick.labelsize": 7, "ytick.labelsize": 7, "pdf.fonttype": 42, "ps.fonttype": 42})
@@ -147,7 +149,45 @@ def phase_segments(data, start, end):
             current, seg_start = v, t
     if current is not None:
         segs.append((seg_start, end, current))
-    return segs
+    # a mission resumed after a hand-back republishes the earlier phases within a moment: drop segments under 1 s
+    kept = [sg for sg in segs if sg[1] - sg[0] >= 1.0] or segs
+    merged = []
+    for a, b, p in kept:
+        if merged and merged[-1][2] == p:
+            merged[-1] = (merged[-1][0], b, p)
+        else:
+            if merged:
+                merged[-1] = (merged[-1][0], a, merged[-1][2])
+            merged.append((a, b, p))
+    return merged
+
+
+def takeover_events(data, start, end):
+    """[(time, label, colour)] of the operator events: takeover request (popup), accepted/rejected, hand-back."""
+    events, prev = [], False
+    for t, v in data.get("/blueye/takeover_request/pending", []):
+        if v and not prev and start <= t <= end:
+            events.append((t, "takeover request", "#d62728"))
+        prev = v
+    for t, v in data.get("/blueye/takeover_request/human_decision", []):
+        if start <= t <= end:
+            events.append((t, "accepted" if v else "rejected", "#1baf7a" if v else "#d62728"))
+    for t, v in data.get("/blueye/takeover_request/handback", []):
+        if v and start <= t <= end:
+            events.append((t, "hand-back", "#2a78d6"))
+    return sorted(events)
+
+
+def mark_events(ax, events, start, labels=False):
+    """Vertical line per event; with labels, events closer than 10 s share one label."""
+    for t, label, colour in events:
+        ax.axvline(t - start, color=colour, lw=0.9, ls="-.")
+    if not labels or not events:
+        return
+    # one line above the panel: "Takeover: request 129 s, accepted 133 s, hand-back 159 s"
+    text = "Takeover: " + ", ".join(f"{label.replace('takeover ', '')} {t - start:.0f} s" for t, label, _ in events)
+    ax.text(events[0][0] - start, 1.13, text, ha="left", va="bottom", fontsize=6.5, color="#d62728",
+            transform=ax.get_xaxis_transform())
 
 
 def phase_at(segs, t):
@@ -167,6 +207,20 @@ def count_alarms(samples, threshold):
         elif not armed and v < 0.8 * threshold:
             armed = True
     return alarms
+
+
+def rock_outline(config_path, meshes_dir, scale=0.15):
+    """Horizontal outline (N, E) of the transit rock of the obstacle scenario (objects/transit_rock.scn)."""
+    from scipy.spatial import ConvexHull
+    with open(config_path) as f:
+        config = yaml.safe_load(f)
+    x, y, _ = (float(v) for v in str(config["transit_rock_position"]).split())
+    yaw = float(str(config["transit_rock_orientation"]).split()[2])
+    v = np.array([[float(t) for t in l.split()[1:3]] for l in open(os.path.join(meshes_dir, "rock.obj"))
+                  if l.startswith("v ")]) * scale
+    c, s = math.cos(yaw), math.sin(yaw)
+    w = np.stack([x + c * v[:, 0] - s * v[:, 1], y + s * v[:, 0] + c * v[:, 1]], axis=1)
+    return w[ConvexHull(w).vertices]
 
 
 def structure_grid(config_path, meshes_dir, structures, resolution=0.05):
@@ -204,12 +258,13 @@ def shade_phases(ax, segs, start, labels=False):
     for a, b, p in segs:
         name, colour = PHASES.get(p, (str(p), "grey"))
         ax.axvspan(a - start, b - start, color=colour, alpha=0.10, lw=0)
-        if labels:
+        total = segs[-1][1] - segs[0][0]
+        if labels and (b - a) >= 0.04 * total:          # very short phases keep their shading but no name
             ax.text((a + b) / 2 - start, 1.02, name, transform=ax.get_xaxis_transform(), ha="center",
                     va="bottom", fontsize=7, color=colour)
 
 
-def fig_mission_map(data, segs, start, end, grids, out):
+def fig_mission_map(data, segs, start, end, grids, out, obstacle=None, events=()):
     odom = [o for o in data["/blueye/odom"] if start <= o[0] <= end]
     fig, ax = plt.subplots(figsize=(3.6, 3.5))
     for (x0, y0, res, grid), (colour, label) in zip(grids, [("#7f7f7f", "Docking station"), ("#8c564b", "Pipeline")]):
@@ -219,6 +274,8 @@ def fig_mission_map(data, segs, start, end, grids, out):
         ax.imshow(masked, origin="lower", extent=(y0, y0 + ny * res, x0, x0 + nx * res),
                   cmap=matplotlib.colors.ListedColormap([colour]), alpha=0.55, interpolation="nearest")
         ax.plot([], [], "s", color=colour, alpha=0.55, label=label)
+    if obstacle is not None:
+        ax.fill(obstacle[:, 1], obstacle[:, 0], color="#52514e", alpha=0.9, lw=0, zorder=3, label="Obstacle (rock)")
     pts = np.array([[o[2], o[1]] for o in odom])
     phase = [phase_at(segs, o[0]) for o in odom]
     lines = np.stack([pts[:-1], pts[1:]], axis=1)
@@ -236,6 +293,12 @@ def fig_mission_map(data, segs, start, end, grids, out):
     ax.plot([], [], "o", mfc="white", mec="black", mew=0.8, ms=7, label="Waypoint (visit order)")
     ax.plot(pts[0, 0], pts[0, 1], "D", color="black", ms=4.5, zorder=6, label="Start")
     ax.plot(pts[-1, 0], pts[-1, 1], "s", mfc="none", mec="black", ms=6, zorder=6, label="End")
+    ot = [o[0] for o in odom]
+    for t, label, colour in events:
+        if label in ("takeover request", "hand-back"):
+            o = odom[min(bisect.bisect_left(ot, t), len(odom) - 1)]
+            ax.plot(o[2], o[1], "v" if label == "takeover request" else "^", color=colour, ms=5.5, mec="white",
+                    mew=0.5, zorder=7, label=label.capitalize())
     for p in sorted(set(phase) - {None}):
         ax.plot([], [], color=PHASES[p][1], lw=2, label=PHASES[p][0])
     ax.set_xlabel("East [m]")
@@ -254,7 +317,7 @@ def fig_mission_map(data, segs, start, end, grids, out):
     save(fig, out, "fig1_mission_map")
 
 
-def fig_timeline(data, segs, start, end, threshold, alarms, out):
+def fig_timeline(data, segs, start, end, threshold, alarms, out, events=()):
     urg = [(t - start, v) for t, v in data["/blueye/takeover_request/urgency"] if start <= t <= end]
     ev = [(t, e) for t, e in data["/blueye/takeover_request/evidence"] if start <= t <= end]
     fig, axes = plt.subplots(4, 1, figsize=(7.2, 6.6), sharex=True,
@@ -313,10 +376,12 @@ def fig_timeline(data, segs, start, end, threshold, alarms, out):
     d.text(0.005, 0.85, "(d)", transform=d.transAxes, fontweight="bold")
     d.set_xlabel("Mission time [s]")
     d.set_xlim(0, end - start)
+    for ax in axes:
+        mark_events(ax, events, start, labels=ax is a)
     save(fig, out, "fig2_timeline")
 
 
-def fig_hidden_nodes(data, segs, start, end, out):
+def fig_hidden_nodes(data, segs, start, end, out, events=()):
     ev = [(t - start, e) for t, e in data["/blueye/takeover_request/evidence"] if start <= t <= end]
     times = [t for t, _ in ev]
     fig, axes = plt.subplots(6, 2, figsize=(7.2, 7.0), sharex=True, gridspec_kw={"hspace": 0.35, "wspace": 0.12})
@@ -331,6 +396,7 @@ def fig_hidden_nodes(data, segs, start, end, out):
             ax.stackplot(times, probs, colors=severity_colours(len(states)), alpha=0.85, lw=0)
             for a, _, _ in segs[1:]:
                 ax.axvline(a - start, color="black", lw=0.6, ls=":")
+            mark_events(ax, events, start)
             ax.set_ylim(0, 1)
             ax.set_yticks([0, 0.5, 1])
             ax.set_title(f"{node} ({states[0]} / {states[-1]})", loc="left", fontsize=7, pad=2)
@@ -346,7 +412,8 @@ def fig_hidden_nodes(data, segs, start, end, out):
                  Patch(color=sev[2], label="bad")],
         loc="center", bbox_to_anchor=(0.5, 0.42), frameon=False, ncol=3,
         title="State (posterior probability, stacked)")
-    axes[5, 1].text(0.5, 0.02, "Dotted lines: phase changes\n" + " \u2192 ".join(PHASES[p][0] for _, _, p in segs),
+    axes[5, 1].text(0.5, 0.02, "Dotted lines: phase changes\n" + " \u2192 ".join(PHASES[p][0] for _, _, p in segs)
+                    + ("\nDash-dot lines: takeover request, accepted, hand-back" if events else ""),
                     transform=axes[5, 1].transAxes, ha="center", va="top", fontsize=7)
     save(fig, out, "fig3_hidden_nodes")
 
@@ -360,7 +427,7 @@ def save(fig, out, name):
 
 # ── Tables ──────────────────────────────────────────────────────────────────────
 
-def summaries(data, bag, segs, start, end, result, threshold, alarms, out):
+def summaries(data, bag, segs, start, end, result, threshold, alarms, out, events=()):
     urg = [(t, v) for t, v in data["/blueye/takeover_request/urgency"] if start <= t <= end]
     ev = [(t, e) for t, e in data["/blueye/takeover_request/evidence"] if start <= t <= end]
     dt = np.median(np.diff([t for t, _ in urg])) if len(urg) > 1 else 0.5
@@ -409,6 +476,15 @@ def summaries(data, bag, segs, start, end, result, threshold, alarms, out):
         f"samples before mission start (excluded): {len(pre)}, max urgency {max(pre):.3f}" if pre else
         "samples before mission start (excluded): 0",
     ]
+    if events:
+        lines.append("operator events: " + "; ".join(f"{label} at {t - start:.1f} s" for t, label, _ in events))
+        req = next((t for t, l, _ in events if l == "takeover request"), None)
+        dec = next((t for t, l, _ in events if l in ("accepted", "rejected")), None)
+        hb = next((t for t, l, _ in events if l == "hand-back"), None)
+        if req is not None and dec is not None:
+            lines.append(f"operator decision time: {dec - req:.1f} s")
+        if dec is not None and hb is not None:
+            lines.append(f"manual control (accepted to hand-back): {hb - dec:.1f} s")
     with open(os.path.join(out, "run_summary.txt"), "w") as f:
         f.write("\n".join(lines) + "\n")
     print("\n".join("  " + l for l in lines))
@@ -421,6 +497,8 @@ def main():
     parser.add_argument("--out", default=None, help="output directory (default: src/plots/paper/<bag_name>/)")
     parser.add_argument("--config", default=None, help="scenario config with the structure poses "
                         "(default: stonefish_sim/config/blueye_config.yaml)")
+    parser.add_argument("--obstacle-config", default=None, help="scenario config with transit_rock_position/"
+                        "orientation (e.g. stonefish_sim/config/blueye_obstacle_config.yaml) to draw the rock")
     args = parser.parse_args()
 
     bag = os.path.abspath(args.bag_path)
@@ -441,11 +519,14 @@ def main():
     threshold = float(thr[-1][1]) if thr else 0.65
     alarms = count_alarms([(t, v) for t, v in data["/blueye/takeover_request/urgency"] if start <= t <= end],
                           threshold)
+    events = takeover_events(data, start, end)
+    obstacle = rock_outline(args.obstacle_config, os.path.join(share, "data", "object_files")) \
+        if args.obstacle_config else None
     print(f"Writing to {out}")
-    fig_mission_map(data, segs, start, end, grids, out)
-    fig_timeline(data, segs, start, end, threshold, alarms, out)
-    fig_hidden_nodes(data, segs, start, end, out)
-    summaries(data, bag, segs, start, end, result, threshold, alarms, out)
+    fig_mission_map(data, segs, start, end, grids, out, obstacle, events)
+    fig_timeline(data, segs, start, end, threshold, alarms, out, events)
+    fig_hidden_nodes(data, segs, start, end, out, events)
+    summaries(data, bag, segs, start, end, result, threshold, alarms, out, events)
 
 
 if __name__ == "__main__":

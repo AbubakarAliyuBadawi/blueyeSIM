@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<scenario>
+
+  <!-- Obstacle on the transit leg (scenario S1, blueye_obstacle). rock.obj scaled to 0.15 and standing on its long
+       axis: about 1.5 m tall, 0.90 m across the track and 0.47 m along it. Placed by transit_rock_position /
+       transit_rock_orientation in config/blueye_obstacle_config.yaml. Not a known structure for the takeover BN,
+       so the sonar reports it as an obstacle. -->
+  <static name="TransitRock" type="model">
+    <physical>
+      <!-- convex hull of rock.obj: cheap contacts, so the simulator keeps real time when the vehicle hits it -->
+      <mesh filename="object_files/rock_collision.obj" scale="0.15"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </physical>
+    <visual>
+      <mesh filename="object_files/rock.obj" scale="0.15"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+    </visual>
+    <material name="Rock"/>
+    <look name="Gray"/>
+    <world_transform xyz="$(param transit_rock_position)" rpy="$(param transit_rock_orientation)"/>
+  </static>
+
+</scenario>

@@ -1,0 +1,15 @@
+bag: s1_obstacle_run01_closedloop_20261018
+takeover mode: closed_loop
+mission result: SUCCESS
+docking: Docking complete (final push finished)
+analysis window: 1.0 s to 813.2 s of the bag (812.2 s)
+distance travelled: 48.0 m
+battery: 100.0 % -> 92.0 %
+threshold: 0.65
+alarms (rising crossings, re-armed below 0.8 x threshold): 1
+peak urgency: 0.817 at 132.4 s (Takeover)
+evidence at peak: {"Altitude": "Safe", "BatteryLevel": "High", "CameraQuality": "Excellent", "Current": "Low", "DVLStatus": "Nominal", "Fatigue": "Low", "MissionPhase": "Transit", "SonarRange": "Critical", "Speed": "Safe", "Stress": "Low", "USBLStrength": "Strong"}
+samples before mission start (excluded): 1, max urgency 0.402
+operator events: takeover request at 129.5 s; accepted at 133.2 s; hand-back at 158.7 s
+operator decision time: 3.7 s
+manual control (accepted to hand-back): 25.5 s
