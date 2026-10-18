@@ -41,7 +41,7 @@ class PipelineMarkerInspector(Node):
 
         self.marker_map = {
             "aruco_01": Marker("aruco_01", 0.0, -1.0, -0.11, 0.0),
-            "aruco_02": Marker("aruco_02", 2.0, -3.0, -0.11, 0.0),
+            "aruco_02": Marker("aruco_02", 2.0, -2.3, -0.11, 0.0),
             "aruco_03": Marker("aruco_03", 1.0, -5.0, -0.11, 0.775),
             "aruco_04": Marker("aruco_04", 0.0, -7.5, -0.11, 0.0),
             "aruco_05": Marker("aruco_05", 0.0, -13.0, -0.11, 0.0),

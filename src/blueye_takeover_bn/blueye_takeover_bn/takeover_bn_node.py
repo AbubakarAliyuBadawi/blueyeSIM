@@ -18,7 +18,7 @@ import pysmile
 import rclpy
 import yaml
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import Point, PointStamped, Pose
+from geometry_msgs.msg import Point, PointStamped, Pose, PoseWithCovarianceStamped
 from mundus_mir_msgs.msg import BatteryStatus
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
@@ -63,7 +63,7 @@ class TakeoverBayesianNetwork(Node):
         self.evidence: Dict[str, str] = {}
         self.last_seen: Dict[str, rclpy.time.Time] = {}
 
-        # Docking controller target (tag frame, compared with odometry_topic)
+        # Docking controller target (tag frame, compared with the visual docking pose of docking_pose_topic)
         self.current_pose: Optional[Pose] = None
         self.current_waypoint: Optional[Pose] = None
         self.current_reference: Optional[Pose] = None
@@ -106,7 +106,7 @@ class TakeoverBayesianNetwork(Node):
         self.declare_parameter("aruco_visibility_topic", "/blueye/aruco_visibility")
         self.declare_parameter("current_waypoint_topic", "/blueye/current_waypoint")
         self.declare_parameter("current_reference_topic", "/blueye/current_reference")
-        self.declare_parameter("odometry_topic", "/odometry/filtered")
+        self.declare_parameter("docking_pose_topic", "/blueye/pose_estimated_board_stamped")
         self.declare_parameter("goal_topic", "/blueye/waypoint_goal")
         self.declare_parameter("goal_odometry_topic", "/blueye/odom")
         self.declare_parameter("current_topic", "/blueye/current")
@@ -122,6 +122,7 @@ class TakeoverBayesianNetwork(Node):
         self.declare_parameter("aruco_timeout_s", 1.5)
         self.declare_parameter("sonar_timeout_s", 2.0)
         self.declare_parameter("target_timeout_s", 2.0)
+        self.declare_parameter("docking_pose_timeout_s", 1.0)  # markers out of view: no docking target evidence
         self.declare_parameter("dvl_cov_degraded_threshold", 0.4)
         self.declare_parameter("sonar_intensity_threshold", 60)
         self.declare_parameter("sonar_clear_range_m", 2.0)
@@ -250,7 +251,8 @@ class TakeoverBayesianNetwork(Node):
         self.create_subscription(String, self.get_parameter("aruco_visibility_topic").value, self._aruco_visibility_cb, 10)
         self.create_subscription(Pose, self.get_parameter("current_waypoint_topic").value, self._waypoint_cb, 10)
         self.create_subscription(Pose, self.get_parameter("current_reference_topic").value, self._reference_cb, 10)
-        self.create_subscription(Odometry, self.get_parameter("odometry_topic").value, self._odometry_cb, 10)
+        self.create_subscription(PoseWithCovarianceStamped, self.get_parameter("docking_pose_topic").value,
+                                 self._docking_pose_cb, 10)
         self.create_subscription(PointStamped, self.get_parameter("goal_topic").value, self._goal_cb, 10)
         self.create_subscription(Odometry, self.get_parameter("goal_odometry_topic").value, self._goal_odometry_cb, 10)
         self.create_subscription(Float32, self.get_parameter("current_topic").value, self._current_cb, 10)
@@ -469,8 +471,9 @@ class TakeoverBayesianNetwork(Node):
         self.current_reference = msg
         self._update_target_evidence()
 
-    def _odometry_cb(self, msg: Odometry):
-        self._mark_seen("odom")
+    def _docking_pose_cb(self, msg: PoseWithCovarianceStamped):
+        """Visual pose from the dock markers: the same pose, in the same frame, as the docking controller uses."""
+        self._mark_seen("docking_pose")
         self.current_pose = msg.pose.pose
         self._update_target_evidence()
 
@@ -484,9 +487,14 @@ class TakeoverBayesianNetwork(Node):
         self._update_target_evidence()
 
     def _update_target_evidence(self):
-        """Docking controller waypoint/reference while it publishes, otherwise the behaviour tree goal."""
-        if self._fresh("controller", float(self.get_parameter("target_timeout_s").value)) \
-                and self.current_pose is not None:
+        """Docking controller waypoint/reference while it publishes, otherwise the behaviour tree goal. While docking,
+        the vehicle is located by the visual pose; with the markers out of view the evidence is left out."""
+        if self._fresh("controller", float(self.get_parameter("target_timeout_s").value)):
+            if self.current_pose is None or \
+                    not self._fresh("docking_pose", float(self.get_parameter("docking_pose_timeout_s").value)):
+                self._clear_evidence("RangeToTarget")
+                self._clear_evidence("WaypointTrackingError")
+                return
             target = self.current_waypoint or self.current_reference
             reference = self.current_reference or self.current_waypoint
             distance = self._distance(self.current_pose.position, target.position)

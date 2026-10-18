@@ -22,7 +22,7 @@
       <dimensions xyz="0.15 0.15 0.002"/>
       <material name="Neutral"/>
       <look name="Aruco5x5_21" uv_mode="1"/>
-      <origin xyz="0.0 0.0 -0.15" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0.0 -1.0 -0.15" rpy="0.0 0.0 0.0"/>
     </link>
     <joint name="aruco_01_joint" type="fixed">
       <parent name="pipe_base"/>
@@ -34,7 +34,7 @@
       <dimensions xyz="0.15 0.15 0.002"/>
       <material name="Neutral"/>
       <look name="Aruco5x5_22" uv_mode="1"/>
-      <origin xyz="0.0 -1.5 -0.15" rpy="0.0 0.0 0.0"/>
+      <origin xyz="2.0 -2.3 -0.15" rpy="0.0 0.0 0.0"/>
     </link>
     <joint name="aruco_02_joint" type="fixed">
       <parent name="pipe_base"/>
@@ -46,7 +46,7 @@
       <dimensions xyz="0.15 0.15 0.002"/>
       <material name="Neutral"/>
       <look name="Aruco5x5_23" uv_mode="1"/>
-      <origin xyz="1.0 -2.0 -0.15" rpy="0.0 0.0 1.5708"/>
+      <origin xyz="1.0 -5.0 -0.15" rpy="0.0 0.0 0.7854"/>
     </link>
     <joint name="aruco_03_joint" type="fixed">
       <parent name="pipe_base"/>

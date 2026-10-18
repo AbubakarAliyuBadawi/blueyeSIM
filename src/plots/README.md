@@ -7,6 +7,8 @@ Scripts stay in this folder; their output goes into one folder per run, named ex
 |---|---|
 | `paper/<run>/` | Figures and tables for a run used in the RESS paper (bag in `src/rosbags/paper/<run>/`). |
 | `paper/<run>/diagnostics/` | Engineering plots of the same run (trajectory, depth, heading, velocity tracking, thrusters). |
+| `paper/mission_plan/` | Plan view of the mission (`mission_plan.pdf/.png`), drawn from `TestMission.xml`. |
+| `development_2026-10_bn_v4/` | Plots of superseded development runs (bags in `src/rosbags/development_2026-10_bn_v4/`). |
 | `archive_2026-07_to_08/` | Plots of the older takeover tests (bags in `src/rosbags/archive_2026-06_to_08/`). |
 
 ## Scripts
@@ -14,6 +16,7 @@ Scripts stay in this folder; their output goes into one folder per run, named ex
 | Script | Use |
 |---|---|
 | `plot_nominal_run.py` | Paper figures and tables for one run. |
+| `plot_mission_plan.py` | Plan view of the mission: waypoints read from the behaviour tree, markers from `pipe.scn`. Rerun after changing the mission. |
 | `plot_sim_mission.py` | Engineering plots of a simulated mission. |
 | `plot_real_mission.py` | Engineering plots of a field mission. |
 | `view_3d_map.py` | Interactive 3D view of a run. |

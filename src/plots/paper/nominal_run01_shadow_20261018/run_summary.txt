@@ -2,11 +2,11 @@ bag: nominal_run01_shadow_20261018
 takeover mode: shadow
 mission result: SUCCESS
 docking: Docking complete (final push finished)
-analysis window: 1.1 s to 554.5 s of the bag (553.5 s)
-distance travelled: 31.8 m
-battery: 100.0 % -> 94.6 %
+analysis window: 0.9 s to 789.8 s of the bag (788.9 s)
+distance travelled: 46.1 m
+battery: 100.0 % -> 92.6 %
 threshold: 0.65
 alarms (rising crossings, re-armed below 0.8 x threshold): 0
-peak urgency: 0.608 at 95.1 s (Transit)
-evidence at peak: {"Altitude": "Safe", "BatteryLevel": "High", "CameraQuality": "Excellent", "Current": "Low", "DVLStatus": "Nominal", "Fatigue": "Medium", "MissionPhase": "Transit", "RangeToTarget": "Far", "SonarRange": "Clear", "Speed": "Safe", "Stress": "Medium", "USBLStrength": "Lost", "WaypointTrackingError": "Low"}
-samples before mission start (excluded): 2, max urgency 0.759
+peak urgency: 0.542 at 777.2 s (Docking)
+evidence at peak: {"Altitude": "Safe", "BatteryLevel": "High", "CameraQuality": "Excellent", "Current": "Low", "DVLStatus": "Nominal", "Fatigue": "Medium", "MissionPhase": "Docking", "RangeToTarget": "Close", "SonarRange": "Near", "Speed": "Safe", "Stress": "Medium", "WaypointTrackingError": "Low"}
+samples before mission start (excluded): 1, max urgency 0.437

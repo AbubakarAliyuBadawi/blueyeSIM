@@ -36,21 +36,32 @@
                               x="1.0" y="-12.5" z="2.75"
                               velocity="0.4" fixed_heading="false"/>
 
-          <!-- 3. PIPELINE INSPECTION -->
+          <!-- 3. PIPELINE INSPECTION: markers 05, 06, 04, 03, 02 along the pipe (aruco_01 is not visited) -->
           <PublishState state="3"/>
           <NavigateToWaypoint name="nav_aruco_05"
                               x="1.0" y="-12.5" z="2.75"
                               velocity="0.25" fixed_heading="false"/>
 
-
           <NavigateToWaypoint name="nav_aruco_06"
                               x="-2.0" y="-10.0" z="2.75"
                               velocity="0.25" fixed_heading="false"/>
 
-          <!-- 4. HOMING -->
+          <NavigateToWaypoint name="nav_aruco_04"
+                              x="1.0" y="-7.0" z="2.75"
+                              velocity="0.25" fixed_heading="false"/>
+
+          <NavigateToWaypoint name="nav_aruco_03"
+                              x="2.0" y="-4.5" z="2.75"
+                              velocity="0.25" fixed_heading="false"/>
+
+          <NavigateToWaypoint name="nav_aruco_02"
+                              x="3.0" y="-1.8" z="2.75"
+                              velocity="0.25" fixed_heading="false"/>
+
+          <!-- 4. HOMING: join the dock centre line (north 6.5), then straight to the dock approach -->
           <PublishState state="4"/>
           <NavigateToWaypoint name="homing_midpoint"
-                              x="2.0" y="-15.0" z="2.28"
+                              x="6.5" y="-10.0" z="2.28"
                               velocity="0.25" fixed_heading="false"/>
 
           <NavigateToWaypoint name="dock_approach"

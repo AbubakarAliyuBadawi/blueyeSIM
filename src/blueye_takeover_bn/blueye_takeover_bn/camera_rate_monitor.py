@@ -1,4 +1,7 @@
-"""Monitors /blueye/cam/image_color publish rate and maps it to CameraQuality states.
+"""Monitors the camera frame rate on /blueye/cam/image_color/compressed and maps it to CameraQuality states.
+
+The compressed stream is counted because it is small: subscribing to the raw 1920x1080 images made this node fall
+behind under load and report a camera failure while the camera itself kept running at 10 Hz.
 
 The published state is the best state seen over the last min_degraded_s, so a worse state is only
 reported once every sample in that window was at least that bad. Short frame-rate dips of the simulator
@@ -10,7 +13,7 @@ import time
 
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import String
 
 
@@ -20,7 +23,7 @@ class CameraRateMonitor(Node):
     def __init__(self):
         super().__init__("camera_rate_monitor")
 
-        self.declare_parameter("camera_topic", "/blueye/cam/image_color")
+        self.declare_parameter("camera_topic", "/blueye/cam/image_color/compressed")
         self.declare_parameter("camera_quality_topic", "/blueye/camera_quality")
         self.declare_parameter("publish_rate_hz", 1.0)
         self.declare_parameter("window_size", 20)
@@ -43,7 +46,7 @@ class CameraRateMonitor(Node):
         )
 
         self.create_subscription(
-            Image,
+            CompressedImage,
             self.get_parameter("camera_topic").value,
             self._image_cb,
             rclpy.qos.qos_profile_sensor_data,
@@ -56,7 +59,7 @@ class CameraRateMonitor(Node):
             f"Camera rate monitor started on '{self.get_parameter('camera_topic').value}'"
         )
 
-    def _image_cb(self, _msg: Image):
+    def _image_cb(self, _msg: CompressedImage):
         self._timestamps.append(time.monotonic())
 
     def _compute_rate(self) -> float:

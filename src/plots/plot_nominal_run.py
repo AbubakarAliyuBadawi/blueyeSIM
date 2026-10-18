@@ -37,8 +37,9 @@ from matplotlib.patches import Patch
 from rclpy.serialization import deserialize_message
 from rosidl_runtime_py.utilities import get_message
 
-PHASES = {1: ("Undocking", "#1f77b4"), 2: ("Transit", "#2ca02c"), 3: ("Inspection", "#bcbd22"),
-          4: ("Homing", "#ff7f0e"), 5: ("Docking", "#9467bd"), 6: ("Takeover", "#d62728")}
+# Phase colours: the validated categorical palette in phase order, the same as plot_mission_plan.py
+PHASES = {1: ("Undocking", "#2a78d6"), 2: ("Transit", "#eb6834"), 3: ("Inspection", "#1baf7a"),
+          4: ("Homing", "#eda100"), 5: ("Docking", "#e87ba4"), 6: ("Takeover", "#e34948")}
 
 # Observed nodes, states ordered from nominal to worst
 EVIDENCE_ROWS = [
@@ -228,11 +229,13 @@ def fig_mission_map(data, segs, start, end, grids, out):
         if (round(x, 2), round(y, 2)) != last:
             goals.append((x, y))
             last = (round(x, 2), round(y, 2))
+    # waypoints: the visit order inside a small circle drawn exactly on the waypoint, so labels cannot collide
     for i, (x, y) in enumerate(goals, 1):
-        ax.plot(y, x, "x", color="black", ms=5, mew=1.2)
-        ax.annotate(f"WP{i}", (y, x), xytext=(4, 3), textcoords="offset points", fontsize=7)
-    ax.plot(pts[0, 0], pts[0, 1], "o", color="black", ms=5, label="Start")
-    ax.plot(pts[-1, 0], pts[-1, 1], "s", mfc="none", mec="black", ms=6, label="End")
+        ax.plot(y, x, "o", mfc="white", mec="black", mew=0.8, ms=8.5, zorder=5)
+        ax.text(y, x, str(i), ha="center", va="center", fontsize=5.5, fontweight="bold", zorder=6)
+    ax.plot([], [], "o", mfc="white", mec="black", mew=0.8, ms=7, label="Waypoint (visit order)")
+    ax.plot(pts[0, 0], pts[0, 1], "D", color="black", ms=4.5, zorder=6, label="Start")
+    ax.plot(pts[-1, 0], pts[-1, 1], "s", mfc="none", mec="black", ms=6, zorder=6, label="End")
     for p in sorted(set(phase) - {None}):
         ax.plot([], [], color=PHASES[p][1], lw=2, label=PHASES[p][0])
     ax.set_xlabel("East [m]")
@@ -242,10 +245,10 @@ def fig_mission_map(data, segs, start, end, grids, out):
     # view: the track and the docking station (the pipeline continues beyond the view to the east)
     x0, y0, res, grid = grids[0]
     ny, nx = grid.shape
-    xmin, xmax = min(pts[:, 0].min(), y0), max(pts[:, 0].max(), y0 + ny * res)
-    ymin, ymax = min(pts[:, 1].min(), x0), max(pts[:, 1].max(), x0 + nx * res)
-    ax.set_xlim(xmin - 0.8, xmax + 2.0)
-    ax.set_ylim(ymin - 1.0, ymax + 0.8)
+    east = [*pts[:, 0], y0, y0 + ny * res, *(g[1] for g in goals)]
+    north = [*pts[:, 1], x0, x0 + nx * res, *(g[0] for g in goals)]
+    ax.set_xlim(min(east) - 0.8, max(east) + 1.0)
+    ax.set_ylim(min(north) - 0.8, max(north) + 0.8)
     ax.grid(alpha=0.3, lw=0.5)
     ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0), frameon=False)
     save(fig, out, "fig1_mission_map")
@@ -266,7 +269,9 @@ def fig_timeline(data, segs, start, end, threshold, alarms, out):
     for ta in alarms:
         a.axvline(ta - start, color="#d62728", lw=0.8)
     peak = max(urg, key=lambda s: s[1])
-    a.annotate(f"max {peak[1]:.2f}", peak, xytext=(6, -2), textcoords="offset points", fontsize=7)
+    near_end = peak[0] > 0.85 * (end - start)
+    a.annotate(f"max {peak[1]:.2f}", peak, xytext=(-48, 4) if near_end else (6, -2), textcoords="offset points",
+               fontsize=7)
     a.set_ylim(0, 1)
     a.set_ylabel("Urgency")
     a.legend(loc="upper right", ncol=2, frameon=False)
