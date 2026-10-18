@@ -12,8 +12,11 @@ import math
 import os
 from typing import Dict, Optional
 
+import cv2
+import numpy as np
 import pysmile
 import rclpy
+import yaml
 from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import Point, PointStamped, Pose
 from mundus_mir_msgs.msg import BatteryStatus
@@ -64,10 +67,13 @@ class TakeoverBayesianNetwork(Node):
         self.current_pose: Optional[Pose] = None
         self.current_waypoint: Optional[Pose] = None
         self.current_reference: Optional[Pose] = None
-        # Behaviour tree goal (world frame, compared with goal_odometry_topic); the leg starts where the vehicle was
-        self.goal_pose: Optional[Pose] = None
+        # World-frame pose (goal_odometry_topic): behaviour tree goals, sonar masking and ArUco view check
+        self.world_pose: Optional[Pose] = None
         self.goal: Optional[Point] = None
-        self.goal_start: Optional[Point] = None
+        self.goal_start: Optional[Point] = None             # the leg starts where the vehicle was
+        self.sonar_frame: Optional[Image] = None
+        self.structure_map = self._load_structure_map()
+        self.usbl_beacon = self._load_usbl_beacon()
 
         self._setup_publishers()
         self._setup_subscribers()
@@ -120,6 +126,29 @@ class TakeoverBayesianNetwork(Node):
         self.declare_parameter("sonar_intensity_threshold", 60)
         self.declare_parameter("sonar_clear_range_m", 2.0)
         self.declare_parameter("sonar_critical_range_m", 0.7)
+        # Sonar image (Stonefish FLS): one column per beam, one row per range bin, the last row is the nearest
+        self.declare_parameter("sonar_range_min_m", 0.1)
+        self.declare_parameter("sonar_range_max_m", 5.0)
+        self.declare_parameter("sonar_horizontal_fov_deg", 90.0)
+        self.declare_parameter("sonar_forward_offset_m", 0.18)
+        # Known structures are not obstacles: "<mesh>:<key>", placed by <key>_position/_orientation in structures_config
+        self.declare_parameter("mask_known_structures", True)
+        self.declare_parameter("known_structures", ["docking_station_rig:docking_rig", "pipe2:pipeline"])
+        self.declare_parameter("structures_config", "")      # default: stonefish_sim/config/blueye_config.yaml
+        self.declare_parameter("structure_meshes_dir", "")   # default: stonefish_sim/data/object_files
+        self.declare_parameter("structure_margin_m", 0.5)
+        # ArUco evidence only while the dock markers are expected in the camera view
+        self.declare_parameter("dock_markers_xy", [6.5, -22.7])
+        self.declare_parameter("aruco_min_range_m", 0.5)
+        self.declare_parameter("aruco_max_range_m", 10.0)
+        self.declare_parameter("camera_half_fov_deg", 30.0)
+        # USBL evidence not used close to the dock, where its structure blocks the acoustic path
+        self.declare_parameter("usbl_beacon_frame", "docking_rig")        # scenario object carrying the beacon
+        self.declare_parameter("usbl_beacon_offset", [1.3, 2.18])         # beacon in that object's frame [m]
+        self.declare_parameter("usbl_shadow_radius_m", 3.0)
+        # Altitude states [m above the seabed]
+        self.declare_parameter("altitude_safe_m", 0.6)
+        self.declare_parameter("altitude_marginal_m", 0.4)
         self.declare_parameter("range_far_m", 5.0)
         self.declare_parameter("range_close_m", 1.0)
         self.declare_parameter("tracking_low_m", 0.5)
@@ -132,6 +161,74 @@ class TakeoverBayesianNetwork(Node):
             return configured
         package_share = get_package_share_directory("blueye_takeover_bn")
         return os.path.join(package_share, "config", "UnifiedMissionDBN_v4.xdsl")
+
+    def _scenario_config(self) -> dict:
+        """Positions of the scenario objects (dock, pipe, ...): structures_config, by default the Stonefish one."""
+        path = str(self.get_parameter("structures_config").value) or \
+            os.path.join(get_package_share_directory("stonefish_sim"), "config", "blueye_config.yaml")
+        with open(path) as f:
+            return yaml.safe_load(f)
+
+    @staticmethod
+    def _config_pose(config: dict, key: str):
+        """(x, y, yaw) of a scenario object from its <key>_position / <key>_orientation entries."""
+        x, y, _ = (float(v) for v in str(config[f"{key}_position"]).split())
+        return x, y, float(str(config[f"{key}_orientation"]).split()[2])
+
+    def _load_structure_map(self):
+        """Footprint grid (x0, y0, resolution, grid) of the known structures; sonar returns on them are not obstacles."""
+        if not bool(self.get_parameter("mask_known_structures").value):
+            return None
+        resolution = 0.1
+        try:
+            config = self._scenario_config()
+            meshes = str(self.get_parameter("structure_meshes_dir").value) or \
+                os.path.join(get_package_share_directory("stonefish_sim"), "data", "object_files")
+            polygons = []
+            for entry in self.get_parameter("known_structures").value:
+                mesh, key = entry.split(":")
+                polygons += self._mesh_footprint(os.path.join(meshes, f"{mesh}.obj"), *self._config_pose(config, key))
+        except (OSError, KeyError, ValueError) as exc:
+            self.get_logger().warning(f"Known structures not loaded, sonar returns are not masked: {exc}")
+            return None
+        margin = float(self.get_parameter("structure_margin_m").value)
+        points = np.concatenate(polygons)
+        x0, y0 = points.min(axis=0) - margin - resolution
+        nx, ny = ((points.max(axis=0) + margin + resolution - (x0, y0)) / resolution).astype(int) + 1
+        grid = np.zeros((ny, nx), np.uint8)
+        cv2.fillPoly(grid, [np.round((p - (x0, y0)) / resolution).astype(np.int32) for p in polygons], 1)
+        size = 2 * int(round(margin / resolution)) + 1
+        grid = cv2.dilate(grid, np.ones((size, size), np.uint8))
+        self.get_logger().info(f"Sonar: {len(polygons)} faces of known structures masked (margin {margin} m)")
+        return x0, y0, resolution, grid
+
+    def _load_usbl_beacon(self):
+        """World (x, y) of the dock's USBL beacon: its offset in the dock frame, placed by the scenario config."""
+        try:
+            x, y, yaw = self._config_pose(self._scenario_config(), str(self.get_parameter("usbl_beacon_frame").value))
+        except (OSError, KeyError, ValueError) as exc:
+            self.get_logger().warning(f"USBL beacon position not loaded, USBL evidence is used everywhere: {exc}")
+            return None
+        dx, dy = self.get_parameter("usbl_beacon_offset").value
+        beacon = (x + math.cos(yaw) * dx - math.sin(yaw) * dy, y + math.sin(yaw) * dx + math.cos(yaw) * dy)
+        self.get_logger().info(f"USBL: no evidence within {self.get_parameter('usbl_shadow_radius_m').value} m "
+                               f"of the dock beacon at ({beacon[0]:.2f}, {beacon[1]:.2f})")
+        return beacon
+
+    @staticmethod
+    def _mesh_footprint(path: str, x: float, y: float, yaw: float):
+        """Faces of an .obj mesh projected on the horizontal plane, in world coordinates (NED)."""
+        vertices, faces = [], []
+        with open(path) as f:
+            for line in f:
+                if line.startswith("v "):
+                    vertices.append([float(v) for v in line.split()[1:3]])
+                elif line.startswith("f "):
+                    faces.append([int(v.split("/")[0]) - 1 for v in line.split()[1:]])
+        v = np.array(vertices)
+        c, s = math.cos(yaw), math.sin(yaw)
+        world = np.stack([x + c * v[:, 0] - s * v[:, 1], y + s * v[:, 0] + c * v[:, 1]], axis=1)
+        return [world[face] for face in faces]
 
     def _setup_publishers(self):
         self.state_pub = self.create_publisher(String, "/blueye/takeover_request/state", 10)
@@ -265,10 +362,18 @@ class TakeoverBayesianNetwork(Node):
             self._set_evidence("Altitude", self._altitude_state(float(msg.altitude)), "dvl_altitude")
 
     def _sonar_cb(self, msg: Image):
-        nearest = self._nearest_sonar_return(msg)
+        """Keep the latest frame; it is evaluated at each BN update with the pose at that time."""
+        if msg.height < 2 or msg.width < 2 or self._image_bytes_per_pixel(msg.encoding) is None:
+            return
+        self.sonar_frame = msg
+        self._mark_seen("sonar")
+
+    def _update_sonar_evidence(self):
+        if self.sonar_frame is None or not self._fresh("sonar", float(self.get_parameter("sonar_timeout_s").value)):
+            return
+        nearest = self._nearest_sonar_return(self.sonar_frame)
         if nearest is None:
             return
-        self._mark_seen("sonar")
         critical = float(self.get_parameter("sonar_critical_range_m").value)
         clear = float(self.get_parameter("sonar_clear_range_m").value)
         if nearest < critical:
@@ -280,31 +385,45 @@ class TakeoverBayesianNetwork(Node):
         self._set_evidence("SonarRange", state, "sonar")
 
     def _nearest_sonar_return(self, msg: Image) -> Optional[float]:
-        """Range of the nearest echo; math.inf when no echo is above the threshold, None for an unusable image."""
-        if msg.height == 0 or msg.width == 0 or not msg.data:
-            return None
-        threshold = int(self.get_parameter("sonar_intensity_threshold").value)
+        """Range of the nearest echo that is not a known structure; math.inf without one, None for an unusable image."""
         bytes_per_pixel = self._image_bytes_per_pixel(msg.encoding)
-        if bytes_per_pixel is None:
-            self.get_logger().warning(f"Unsupported sonar image encoding '{msg.encoding}'")
+        try:
+            pixels = np.asarray(msg.data, dtype=np.uint8).reshape(msg.height, msg.step)
+            image = pixels[:, :msg.width * bytes_per_pixel].reshape(msg.height, msg.width, bytes_per_pixel).max(axis=2)
+        except ValueError:
+            self.get_logger().warning("Malformed sonar image", throttle_duration_sec=10.0)
             return None
-        max_range = 5.0
-        best_row = None
-        data = msg.data
-        for row in range(msg.height):
-            row_start = row * msg.step
-            for col in range(msg.width):
-                idx = row_start + col * bytes_per_pixel
-                if idx >= len(data):
-                    break
-                if max(data[idx:idx + bytes_per_pixel]) > threshold:
-                    best_row = row
-                    break
-            if best_row is not None:
-                break
-        if best_row is None:
+        rows, cols = np.nonzero(image > int(self.get_parameter("sonar_intensity_threshold").value))
+        if rows.size == 0:
             return math.inf                                # sonar working, nothing within range
-        return (best_row / max(float(msg.height - 1), 1.0)) * max_range
+        range_min = float(self.get_parameter("sonar_range_min_m").value)
+        range_max = float(self.get_parameter("sonar_range_max_m").value)
+        ranges = range_min + (msg.height - 1 - rows) / (msg.height - 1) * (range_max - range_min)
+        if self.structure_map is not None and self.world_pose is not None:
+            ranges = ranges[~self._on_known_structure(ranges, cols, msg.width)]
+            if ranges.size == 0:
+                return math.inf
+        return float(ranges.min())
+
+    def _on_known_structure(self, ranges, cols, width):
+        """True for the sonar returns (range, beam column) that fall on a known structure."""
+        pose = self.world_pose
+        yaw = self._yaw(pose.orientation)
+        bearing = yaw + (cols / (width - 1) - 0.5) * math.radians(float(self.get_parameter("sonar_horizontal_fov_deg").value))
+        offset = float(self.get_parameter("sonar_forward_offset_m").value)
+        x = pose.position.x + offset * math.cos(yaw) + ranges * np.cos(bearing)
+        y = pose.position.y + offset * math.sin(yaw) + ranges * np.sin(bearing)
+        x0, y0, resolution, grid = self.structure_map
+        i = ((x - x0) / resolution).astype(int)
+        j = ((y - y0) / resolution).astype(int)
+        inside = (i >= 0) & (i < grid.shape[1]) & (j >= 0) & (j < grid.shape[0])
+        known = np.zeros(ranges.size, dtype=bool)
+        known[inside] = grid[j[inside], i[inside]] > 0
+        return known
+
+    @staticmethod
+    def _yaw(q) -> float:
+        return math.atan2(2.0 * (q.w * q.z + q.x * q.y), 1.0 - 2.0 * (q.y * q.y + q.z * q.z))
 
     @staticmethod
     def _image_bytes_per_pixel(encoding: str) -> Optional[int]:
@@ -357,11 +476,11 @@ class TakeoverBayesianNetwork(Node):
 
     def _goal_cb(self, msg: PointStamped):
         self.goal = msg.point
-        self.goal_start = self.goal_pose.position if self.goal_pose is not None else None
+        self.goal_start = self.world_pose.position if self.world_pose is not None else None
         self._update_target_evidence()
 
     def _goal_odometry_cb(self, msg: Odometry):
-        self.goal_pose = msg.pose.pose
+        self.world_pose = msg.pose.pose
         self._update_target_evidence()
 
     def _update_target_evidence(self):
@@ -372,8 +491,8 @@ class TakeoverBayesianNetwork(Node):
             reference = self.current_reference or self.current_waypoint
             distance = self._distance(self.current_pose.position, target.position)
             error = self._distance(self.current_pose.position, reference.position)
-        elif self.goal is not None and self.goal_pose is not None:
-            position = self.goal_pose.position
+        elif self.goal is not None and self.world_pose is not None:
+            position = self.world_pose.position
             if self.goal_start is None:
                 self.goal_start = position
             distance = self._distance(position, self.goal)
@@ -433,13 +552,34 @@ class TakeoverBayesianNetwork(Node):
         self._mark_seen("altitude")
         self._set_evidence("Altitude", self._altitude_state(float(msg.data)), "altitude")
 
-    @staticmethod
-    def _altitude_state(altitude: float) -> str:
-        if altitude > 2.0:
+    def _altitude_state(self, altitude: float) -> str:
+        if altitude >= float(self.get_parameter("altitude_safe_m").value):
             return "Safe"
-        if altitude > 1.0:
+        if altitude >= float(self.get_parameter("altitude_marginal_m").value):
             return "Marginal"
         return "Unsafe"
+
+    def _dock_markers_in_view(self) -> Optional[bool]:
+        """Whether the dock markers can be expected in the camera view (range and bearing); None without a pose."""
+        if self.world_pose is None:
+            return None
+        markers = self.get_parameter("dock_markers_xy").value
+        dx = markers[0] - self.world_pose.position.x
+        dy = markers[1] - self.world_pose.position.y
+        distance = math.hypot(dx, dy)
+        bearing = math.degrees(math.atan2(dy, dx) - self._yaw(self.world_pose.orientation))
+        bearing = (bearing + 180.0) % 360.0 - 180.0
+        return (float(self.get_parameter("aruco_min_range_m").value) <= distance
+                <= float(self.get_parameter("aruco_max_range_m").value)
+                and abs(bearing) <= float(self.get_parameter("camera_half_fov_deg").value))
+
+    def _in_usbl_shadow(self) -> Optional[bool]:
+        """Whether the dock structure can block the USBL path from here (close to the beacon); None without a pose."""
+        if self.world_pose is None or self.usbl_beacon is None:
+            return None
+        distance = math.hypot(self.usbl_beacon[0] - self.world_pose.position.x,
+                              self.usbl_beacon[1] - self.world_pose.position.y)
+        return distance < float(self.get_parameter("usbl_shadow_radius_m").value)
 
     def _camera_cb(self, msg: String):
         self._mark_seen("camera")
@@ -486,6 +626,11 @@ class TakeoverBayesianNetwork(Node):
     def _periodic_update(self):
         try:
             self._apply_timeouts()
+            self._update_sonar_evidence()
+            if self._dock_markers_in_view() is False:      # markers cannot be seen from here: no evidence
+                self._clear_evidence("ArUcoVisibility")
+            if self._in_usbl_shadow():                     # dock shadows the acoustic path: no evidence
+                self._clear_evidence("USBLStrength")
             if self.dynamic:
                 self._enter_window()
             self.net.update_beliefs()

@@ -42,12 +42,14 @@ class WaypointHandler:
     def ssa(angle):
         return (angle + math.pi) % (2.0 * math.pi) - math.pi
 
+    def is_reached(self, waypoint, current_pose):
+        distance = np.linalg.norm(np.array(waypoint[:3]) - np.array(current_pose[:3]))
+        heading_error = abs(self.ssa(waypoint[3] - current_pose[3]))
+        return distance < waypoint[4] and heading_error < np.deg2rad(5)
+
     def fetch_waypoint(self, current_pose):
         current_waypoint = self.waypoints[0]
-        distance = np.linalg.norm(np.array(current_waypoint[:3]) - np.array(current_pose[:3]))
-        heading_error = abs(self.ssa(current_waypoint[3] - current_pose[3]))
-
-        if distance < current_waypoint[4] and heading_error < np.deg2rad(5):
+        if self.is_reached(current_waypoint, current_pose):
             if len(self.waypoints) > 1:
                 self.waypoints.pop(0)
                 return True, self.waypoints[0]
@@ -89,6 +91,10 @@ class StonefishDockingController(Node):
         self.declare_parameter("use_visual_pose_fallback", True)
         self.declare_parameter("prefer_visual_pose", True)
         self.declare_parameter("auto_start", False)
+        # Markers lost on the last waypoint (inside the dock): drive slowly straight in, then docking is complete
+        self.declare_parameter("final_push_enabled", True)
+        self.declare_parameter("final_push_speed", 0.06)
+        self.declare_parameter("final_push_duration_s", 12.0)
 
         self.command_pub = self.create_publisher(TwistStamped, self.get_parameter("command_topic").value, 10)
         self.status_pub = self.create_publisher(String, "/blueye/docking_controller_status", 10)
@@ -148,6 +154,8 @@ class StonefishDockingController(Node):
         self.completed_waypoints = 0
         self.total_waypoints = len(self.waypoint_handler.waypoints)
         self.previous_waypoint = []
+        self.docking_complete = False
+        self.push_start = None
         self.timer = self.create_timer(self.get_parameter("controller_period").value, self.command_callback)
         state = "armed" if self.docking_armed else "disarmed; call /blueye/start_docking to begin"
         self.get_logger().info(f"Docking controller started {state}")
@@ -169,6 +177,8 @@ class StonefishDockingController(Node):
         self.completed_waypoints = 0
         self.total_waypoints = len(self.waypoint_handler.waypoints)
         self.previous_waypoint = []
+        self.docking_complete = False
+        self.push_start = None
         self.surge_controller.reset()
         self.sway_controller.reset()
         self.heave_controller.reset()
@@ -202,10 +212,16 @@ class StonefishDockingController(Node):
         if not self.docking_armed:
             self.publish_status("waiting_for_start")
             return
+        if self.docking_complete:
+            self.publish_status("docking_complete")
+            self.publish_stop()
+            return
         if not self.valid_odometry:
             self.publish_status("waiting_for_pose")
             return
         if self.get_parameter("require_aruco_detection").value and not self.docking_detected:
+            if self.final_push():
+                return
             self.publish_status("waiting_for_aruco_detection")
             self.publish_stop()
             return
@@ -230,6 +246,10 @@ class StonefishDockingController(Node):
             self.completed_waypoints += 1
             self.previous_waypoint = potentially_previous_waypoint
             self.get_logger().info("Waypoint reached")
+        if len(self.waypoint_handler.waypoints) == 1 and self.waypoint_handler.is_reached(
+                waypoint, [self.current_x, self.current_y, self.current_z, self.current_psi]):
+            self.complete_docking("last waypoint reached")
+            return
 
         waypoint_msg = Pose()
         waypoint_msg.position.x = float(waypoint[0])
@@ -310,6 +330,34 @@ class StonefishDockingController(Node):
             f"{twist_msg.twist.angular.z:.3f})"
         )
 
+    def final_push(self):
+        """Markers lost while heading for the last waypoint: the vehicle is inside the dock and aligned, too close
+        for the camera. Drive slowly straight in for final_push_duration_s, then docking is complete.
+        Returns False before the last waypoint; the controller then waits for the markers."""
+        if not self.get_parameter("final_push_enabled").value or len(self.waypoint_handler.waypoints) != 1 \
+                or not self.previous_waypoint:
+            return False
+        now = time.perf_counter()
+        if self.push_start is None:
+            self.push_start = now
+            self.get_logger().info("Markers lost on the last waypoint: final push into the dock")
+        if now - self.push_start >= float(self.get_parameter("final_push_duration_s").value):
+            self.complete_docking("final push finished")
+            return True
+        twist_msg = TwistStamped()
+        twist_msg.header.stamp = self.get_clock().now().to_msg()
+        twist_msg.header.frame_id = "body_frame"
+        twist_msg.twist.linear.x = float(self.get_parameter("final_push_speed").value)
+        self.command_pub.publish(twist_msg)
+        self.publish_status("final_push")
+        return True
+
+    def complete_docking(self, reason):
+        self.docking_complete = True
+        self.get_logger().info(f"Docking complete ({reason})")
+        self.publish_status("docking_complete")
+        self.publish_stop()
+
     def publish_stop(self):
         twist_msg = TwistStamped()
         twist_msg.header.stamp = self.get_clock().now().to_msg()
@@ -347,11 +395,11 @@ class StonefishDockingController(Node):
         self.valid_odometry = True
 
     def visual_pose_callback(self, msg):
+        # prefer_visual_pose: pose and heading from the markers, velocities from the EKF (odometry_callback).
+        # Otherwise the visual pose is only a fallback while there is no EKF odometry.
         if not self.get_parameter("prefer_visual_pose").value:
             if self.have_ekf_odometry or not self.get_parameter("use_visual_pose_fallback").value:
                 return
-        elif not self.get_parameter("use_visual_pose_fallback").value:
-            return
 
         self.have_visual_pose = True
         self.current_x = msg.pose.pose.position.x

@@ -59,12 +59,13 @@
 
           <StationKeeping name="approach_heading_hold"
                           x="6.50" y="-19.0" z="2.28"
-                          heading="-1.5708" duration="30"/>
+                          heading="-1.5708" duration="30"
+                          heading_tolerance_deg="5" max_duration="60"/>
 
           <!-- 5. DOCKING -->
           <PublishState state="5"/>
           <LaunchDockingProcedure name="trigger_docking"/>
-          <Wait name="wait_for_docking" duration="120"/>
+          <WaitForDocking name="wait_for_docking" timeout="300"/>
 
         </Sequence>
       </ReactiveSequence>
@@ -97,10 +98,11 @@
             <!-- Face the docking station (markers in view) before docking, as in the normal mission -->
             <StationKeeping name="emergency_heading_hold"
                             x="6.50" y="-19.0" z="2.28"
-                            heading="-1.5708" duration="30"/>
+                            heading="-1.5708" duration="30"
+                            heading_tolerance_deg="5" max_duration="60"/>
             <PublishState state="5"/>
             <LaunchDockingProcedure name="emergency_docking"/>
-            <Wait name="wait_emergency_docking" duration="120"/>
+            <WaitForDocking name="wait_emergency_docking" timeout="300"/>
           </Sequence>
 
         </Fallback>

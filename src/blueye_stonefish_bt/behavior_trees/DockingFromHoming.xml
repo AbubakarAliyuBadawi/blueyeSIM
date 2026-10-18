@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Docking test: the end of TestMission.xml from the homing midpoint.
+     Start the simulator with the "homing midpoint" pose in stonefish_sim/config/blueye_config.yaml
+     (vehicle at (2.0, -15.0, 2.28), facing away from the dock), and stonefish_docking.launch.py.
+     The vehicle goes to the dock approach point, turns to face the docking station and docks.
+     Same takeover guard and handler as TestMission.xml (takeover_mode:=closed_loop or shadow).
+
+     ros2 launch blueye_stonefish_bt blueye_stonefish_bt.launch.py \
+       bt_file:=$(ros2 pkg prefix blueye_stonefish_bt)/share/blueye_stonefish_bt/behavior_trees/DockingFromHoming.xml -->
+<root BTCPP_format="4" main_tree_to_execute="DockingFromHoming">
+  <BehaviorTree ID="DockingFromHoming">
+    <Fallback name="docking_with_takeover_guard">
+
+      <!-- ── HOMING (last leg) + DOCKING (interrupted if takeover is requested) ── -->
+      <ReactiveSequence name="guarded_docking">
+        <CheckTakeoverRequest/>
+        <Sequence name="homing_and_docking">
+
+          <!-- 4. HOMING: last waypoint, then face the docking station -->
+          <PublishState state="4"/>
+          <NavigateToWaypoint name="dock_approach"
+                              x="6.50" y="-19.0" z="2.28"
+                              velocity="0.2" fixed_heading="false"/>
+
+          <StationKeeping name="approach_heading_hold"
+                          x="6.50" y="-19.0" z="2.28"
+                          heading="-1.5708" duration="30"
+                          heading_tolerance_deg="5" max_duration="60"/>
+
+          <!-- 5. DOCKING -->
+          <PublishState state="5"/>
+          <LaunchDockingProcedure name="trigger_docking"/>
+          <WaitForDocking name="wait_for_docking" timeout="300"/>
+
+        </Sequence>
+      </ReactiveSequence>
+
+      <!-- ── TAKEOVER HANDLER (runs when CheckTakeoverRequest fails) ────── -->
+      <Sequence name="takeover_handler">
+
+        <!-- Hold position actively while the operator decides -->
+        <HoldPosition/>
+        <PublishState state="6"/>
+
+        <Fallback name="human_decision_branch">
+
+          <!-- Accepted: hand control to joystick, wait for handback -->
+          <Sequence name="joystick_takeover">
+            <WaitForHumanDecision/>
+            <EnableJoystick/>
+            <WaitForHandback/>
+          </Sequence>
+
+          <!-- Rejected: emergency return to dock -->
+          <Sequence name="emergency_return">
+            <PublishState state="4"/>
+            <NavigateToWaypoint name="emergency_dock_approach"
+                                x="6.50" y="-19.0" z="2.28"
+                                velocity="0.2" fixed_heading="false"/>
+            <StationKeeping name="emergency_heading_hold"
+                            x="6.50" y="-19.0" z="2.28"
+                            heading="-1.5708" duration="30"
+                            heading_tolerance_deg="5" max_duration="60"/>
+            <PublishState state="5"/>
+            <LaunchDockingProcedure name="emergency_docking"/>
+            <WaitForDocking name="wait_emergency_docking" timeout="300"/>
+          </Sequence>
+
+        </Fallback>
+      </Sequence>
+
+    </Fallback>
+  </BehaviorTree>
+</root>

@@ -1,4 +1,9 @@
-"""Monitors /blueye/cam/image_color publish rate and maps it to CameraQuality states."""
+"""Monitors /blueye/cam/image_color publish rate and maps it to CameraQuality states.
+
+The published state is the best state seen over the last min_degraded_s, so a worse state is only
+reported once every sample in that window was at least that bad. Short frame-rate dips of the simulator
+(render stalls, start-up) are therefore not reported as a camera failure; a better state is published at once.
+"""
 
 import collections
 import time
@@ -10,6 +15,8 @@ from std_msgs.msg import String
 
 
 class CameraRateMonitor(Node):
+    QUALITY_ORDER = ("Excellent", "Good", "Poor", "Failed")
+
     def __init__(self):
         super().__init__("camera_rate_monitor")
 
@@ -21,7 +28,10 @@ class CameraRateMonitor(Node):
         self.declare_parameter("excellent_threshold_hz", 8.0)
         self.declare_parameter("good_threshold_hz", 5.0)
         self.declare_parameter("poor_threshold_hz", 1.0)
+        self.declare_parameter("min_degraded_s", 3.0)
 
+        self._history = collections.deque()   # (time, raw state) over the last min_degraded_s
+        self._started = None
         self._timestamps = collections.deque(
             maxlen=int(self.get_parameter("window_size").value)
         )
@@ -72,11 +82,20 @@ class CameraRateMonitor(Node):
     def _publish_quality(self):
         rate = self._compute_rate()
         state = self._rate_to_state(rate)
+        now = time.monotonic()
+        hold = float(self.get_parameter("min_degraded_s").value)
+        if self._started is None:
+            self._started = now
+        self._history.append((now, state))
+        while now - self._history[0][0] > hold:
+            self._history.popleft()
+        best = min((s for _, s in self._history), key=self.QUALITY_ORDER.index)
+        if best not in ("Excellent", "Good") and now - self._started < hold:
+            return                                        # start-up: nothing known yet
         msg = String()
-        msg.data = state
+        msg.data = best
         self._pub.publish(msg)
-        self.get_logger().debug(f"Camera rate: {rate:.2f} Hz → CameraQuality: {state}")
-
+        self.get_logger().debug(f"Camera rate: {rate:.2f} Hz → {state}, published: {best}")
 
 def main(args=None):
     rclpy.init(args=args)

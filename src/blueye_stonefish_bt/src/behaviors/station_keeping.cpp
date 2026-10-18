@@ -45,6 +45,7 @@ BT::NodeStatus StationKeeping::onStart() {
     double heading_val = (heading_input && !std::isnan(heading_input.value()))
                          ? heading_input.value()
                          : current_yaw_;
+    target_heading_ = heading_val;
 
     bool altitude_mode = false;
     double target_altitude = 2.0;
@@ -118,8 +119,24 @@ BT::NodeStatus StationKeeping::onRunning() {
         current_time - start_time_).count();
     
     if (elapsed >= duration.value()) {
-        RCLCPP_INFO(g_node->get_logger(), "Station keeping completed after %d seconds",
-                   static_cast<int>(elapsed));
+        // Optionally keep holding until the heading is reached (e.g. markers in view before docking)
+        double tolerance_deg = -1.0;
+        int max_duration = 0;
+        getInput("heading_tolerance_deg", tolerance_deg);
+        getInput("max_duration", max_duration);
+        const double error_deg = std::abs(std::remainder(target_heading_ - current_yaw_, 2.0 * M_PI)) * 180.0 / M_PI;
+        if (tolerance_deg > 0.0 && error_deg > tolerance_deg) {
+            if (elapsed < std::max(max_duration, duration.value())) {
+                RCLCPP_INFO_THROTTLE(g_node->get_logger(), *g_node->get_clock(), 5000,
+                    "Station keeping: heading error %.1f deg > %.1f deg, still aligning (%ld s)",
+                    error_deg, tolerance_deg, static_cast<long>(elapsed));
+                return BT::NodeStatus::RUNNING;
+            }
+            RCLCPP_WARN(g_node->get_logger(),
+                "Station keeping: max duration reached with heading error %.1f deg", error_deg);
+        }
+        RCLCPP_INFO(g_node->get_logger(), "Station keeping completed after %d seconds (heading error %.1f deg)",
+                   static_cast<int>(elapsed), error_deg);
         stopExecution();
         done_[name()] = true;
         return BT::NodeStatus::SUCCESS;

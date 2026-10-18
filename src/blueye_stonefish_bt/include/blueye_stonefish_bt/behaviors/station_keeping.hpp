@@ -27,7 +27,9 @@ BT::InputPort<double>("x", "X coordinate for station keeping (optional)"),
 BT::InputPort<double>("y", "Y coordinate for station keeping (optional)"),
 BT::InputPort<double>("z", "Z coordinate for station keeping (optional)"),
 BT::InputPort<bool>("altitude_mode", false, "Whether to use altitude mode instead of fixed z"),
-BT::InputPort<double>("target_altitude", 2.0, "Target altitude above seafloor in meters")
+BT::InputPort<double>("target_altitude", 2.0, "Target altitude above seafloor in meters"),
+BT::InputPort<double>("heading_tolerance_deg", -1.0, "If > 0: after duration, keep holding until the heading error is below this"),
+BT::InputPort<int>("max_duration", 0, "Upper limit in seconds while waiting for the heading (0: duration)")
  };
  }
 protected:
@@ -46,6 +48,7 @@ rclcpp::Client<mundus_mir_msgs::srv::GetWaypointStatus>::SharedPtr status_client
  // Odometry for current position/heading fallback
 rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
 double current_x_{0.0}, current_y_{0.0}, current_z_{0.0}, current_yaw_{0.0};
+double target_heading_{0.0};
 static std::unordered_map<std::string, bool> done_;
  // Helper methods
 bool clearWaypoints();

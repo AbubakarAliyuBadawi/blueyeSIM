@@ -72,6 +72,11 @@ class WaypointController : public rclcpp::Node
         // Go to waypoint - Controller function to make the robot go to the first waypoint in waypoints_
         void go_to_waypoint(const nav_msgs::msg::Odometry::SharedPtr msg);
 
+        // Align heading - turn in place towards the waypoint, wait until the yaw is still, accept only a heading
+        // within align_heading_tolerance (otherwise turn again). Sets the yaw command, returns true once aligned.
+        bool align_heading(float heading_err, float yaw_rate, geometry_msgs::msg::TwistStamped &desired_velocity);
+        void reset_alignment();
+
         // Waypoint service callbacks
         void add_waypoint(const std::shared_ptr<mundus_mir_msgs::srv::AddWaypoint::Request> request,
                           std::shared_ptr<mundus_mir_msgs::srv::AddWaypoint::Response> response);
@@ -98,6 +103,9 @@ class WaypointController : public rclcpp::Node
         bool go_to_waypoint_ = false;
         bool stationary_waypoint_set_ = false;
         bool heading_aligned_ = false;
+        bool align_waiting_ = false;          // turn finished, waiting for the yaw to come to rest
+        bool align_still_ = false;            // yaw at rest since align_still_since_
+        rclcpp::Time align_still_since_;
         vector<Waypoint> waypoints_;
         Waypoint stationary_waypoint_;
 
@@ -107,6 +115,9 @@ class WaypointController : public rclcpp::Node
         string get_waypoints_srv_name_, clear_waypoints_srv_name_, go_to_waypoints_srv_name_;
         string get_waypoint_status_srv_name_, run_waypoint_controller_srv_name_;
         float circle_of_acceptance_, heading_tolerance_, heading_speed_, heave_speed_, station_keep_speed_;
+        float station_keep_min_heading_rate_, station_keep_heading_tolerance_;
+        float realign_heading_error_, align_heading_tolerance_, align_heading_gain_, align_min_heading_rate_;
+        float align_coast_time_, align_still_time_;
 
         // Current odometry subscriber, used to get the robots current position. 
         rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_sub_;

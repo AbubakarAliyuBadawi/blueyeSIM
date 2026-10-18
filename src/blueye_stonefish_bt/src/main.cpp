@@ -15,6 +15,7 @@
 #include "blueye_stonefish_bt/actions/enable_joystick.hpp"
 #include "blueye_stonefish_bt/actions/wait_for_handback.hpp"
 #include "blueye_stonefish_bt/actions/hold_position.hpp"
+#include "blueye_stonefish_bt/actions/wait_for_docking.hpp"
 #include "blueye_stonefish_bt/decorators/abort_on_condition_decorator.hpp"
 
 #include <rclcpp/rclcpp.hpp>
@@ -120,6 +121,7 @@ int main(int argc, char** argv) {
     factory.registerNodeType<EnableJoystick>("EnableJoystick");
     factory.registerNodeType<WaitForHandback>("WaitForHandback");
     factory.registerNodeType<HoldPosition>("HoldPosition");
+    factory.registerNodeType<WaitForDocking>("WaitForDocking");
 
     try {
         std::string mission_file;

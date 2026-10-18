@@ -61,7 +61,7 @@ void WaypointController::controller_callback(const nav_msgs::msg::Odometry::Shar
             }
             // If we are close to the waypoint, remove it and reset alignment for the next one
             waypoints_.erase(waypoints_.begin());
-            heading_aligned_ = false;
+            reset_alignment();
             return;
         }
 
@@ -106,19 +106,33 @@ void WaypointController::go_to_waypoint(const nav_msgs::msg::Odometry::SharedPtr
             heading_err += 2 * M_PI;
         }
 
-        // Rotate first until heading is within tolerance, then surge and correct simultaneously
+        // While surging the waypoint drifted off the nose (the heading cannot be corrected well while surging):
+        // stop and align again, but only if the current heading would pass outside the circle of acceptance.
+        // Close to the waypoint the heading error grows quickly even for a small offset that still gets there.
+        float distance = calculate_distance(waypoints_.front(), msg);
+        bool would_miss = std::abs(heading_err) > M_PI / 2 ||
+                          distance * std::sin(std::abs(heading_err)) > 0.8 * circle_of_acceptance_;
+        if (heading_aligned_ && std::abs(heading_err) > realign_heading_error_ && would_miss)
+        {
+            reset_alignment();
+            RCLCPP_INFO(get_logger(), "Heading error %.0f deg while surging, %.2f m from the waypoint: stopping to realign",
+                        heading_err * 180.0 / M_PI, distance);
+        }
+
+        // Rotate in place until the heading is settled on the waypoint, then surge and correct simultaneously
         if (!heading_aligned_)
         {
-            if (abs(heading_err) > heading_tolerance_)
+            geometry_msgs::msg::TwistStamped desired_velocity;
+            desired_velocity.header.stamp = msg->header.stamp;
+            desired_velocity.header.frame_id = "body_frame";
+            if (!align_heading(heading_err, msg->twist.twist.angular.z, desired_velocity))
             {
-                geometry_msgs::msg::TwistStamped desired_velocity;
-                desired_velocity.header.stamp = msg->header.stamp;
-                desired_velocity.header.frame_id = "body_frame";
-                desired_velocity.twist.angular.z = heading_err > 0 ? heading_speed_ : -heading_speed_;
                 desired_velocity_pub_->publish(desired_velocity);
                 return;
             }
             heading_aligned_ = true;
+            RCLCPP_INFO(get_logger(), "Heading aligned (error %.1f deg), surging %.2f m to the waypoint",
+                        heading_err * 180.0 / M_PI, calculate_distance(waypoints_.front(), msg));
         }
 
         // Surge toward waypoint while continuously correcting heading
@@ -183,6 +197,59 @@ void WaypointController::go_to_waypoint(const nav_msgs::msg::Odometry::SharedPtr
     }
 }
 
+bool WaypointController::align_heading(float heading_err, float yaw_rate,
+                                       geometry_msgs::msg::TwistStamped &desired_velocity)
+{
+    // Turn: proportional to the error, at least align_min_heading_rate (above the velocity controller's heading-hold
+    // deadband). Stop commanding when within heading_tolerance, or earlier when the vehicle, already turning towards
+    // the target, would coast the rest of the way in (|yaw rate| * align_coast_time), so it does not overshoot.
+    if (!align_waiting_)
+    {
+        bool coasting_in = yaw_rate * heading_err > 0 && std::abs(heading_err) < std::abs(yaw_rate) * align_coast_time_;
+        if (std::abs(heading_err) > heading_tolerance_ && !coasting_in)
+        {
+            desired_velocity.twist.angular.z = std::copysign(
+                std::clamp(align_heading_gain_ * std::abs(heading_err), align_min_heading_rate_, heading_speed_), heading_err);
+            return false;
+        }
+        align_waiting_ = true;
+        align_still_ = false;
+    }
+
+    // Wait with zero command (the velocity controller's heading hold brakes the turn) until the yaw has been at rest
+    // for align_still_time, then check where the heading ended up: within align_heading_tolerance it is aligned,
+    // otherwise turn again from rest. Waiting for rest makes this robust to delays between odometry and command.
+    const float still_yaw_rate = 0.005;  // rad/s
+    if (std::abs(yaw_rate) > still_yaw_rate)
+    {
+        align_still_ = false;
+        return false;
+    }
+    if (!align_still_)
+    {
+        align_still_ = true;
+        align_still_since_ = now();
+        return false;
+    }
+    if ((now() - align_still_since_).seconds() < align_still_time_)
+    {
+        return false;
+    }
+    if (std::abs(heading_err) < align_heading_tolerance_)
+    {
+        return true;
+    }
+    align_waiting_ = false;
+    return false;
+}
+
+void WaypointController::reset_alignment()
+{
+    heading_aligned_ = false;
+    align_waiting_ = false;
+    align_still_ = false;
+}
+
 void WaypointController::station_keep(const nav_msgs::msg::Odometry::SharedPtr msg)
 {
     // Check all degrees of freedom compared to the stationary waypoint and run correction
@@ -206,7 +273,15 @@ void WaypointController::station_keep(const nav_msgs::msg::Odometry::SharedPtr m
     desired_velocity.twist.linear.x = clamp_command(station_keep_speed_ * x_err, station_keep_speed_);
     desired_velocity.twist.linear.y = clamp_command(-station_keep_speed_ * y_err, station_keep_speed_);
     desired_velocity.twist.linear.z = clamp_command(heave_speed_ * z_err, heave_speed_);
-    desired_velocity.twist.angular.z = clamp_command(heading_speed_ * heading_err, heading_speed_);
+    // Turn at least station_keep_min_heading_rate (above the velocity controller's heading-hold deadband) until
+    // the heading is within station_keep_heading_tolerance; smaller commands would let the heading hold lock the
+    // vehicle on its current heading, short of the target.
+    float yaw_rate = clamp_command(heading_speed_ * heading_err, heading_speed_);
+    if (std::abs(heading_err) > station_keep_heading_tolerance_ && std::abs(yaw_rate) < station_keep_min_heading_rate_)
+    {
+        yaw_rate = std::copysign(station_keep_min_heading_rate_, heading_err);
+    }
+    desired_velocity.twist.angular.z = yaw_rate;
     desired_velocity_pub_->publish(desired_velocity);
 }
 
@@ -265,6 +340,14 @@ void WaypointController::get_ros_parameters()
     declare_parameter("max_heading_rate", 0.1);
     declare_parameter("max_heave_rate", 0.3);
     declare_parameter("max_station_keep_rate", 0.3);
+    declare_parameter("station_keep_min_heading_rate", 0.06);
+    declare_parameter("station_keep_heading_tolerance", 0.035);
+    declare_parameter("realign_heading_error", 0.26);
+    declare_parameter("align_heading_tolerance", 0.026);
+    declare_parameter("align_heading_gain", 0.5);
+    declare_parameter("align_min_heading_rate", 0.06);
+    declare_parameter("align_coast_time", 1.0);
+    declare_parameter("align_still_time", 1.0);
 
     // Get parameters
     get_parameter("odometry_topic", odometry_topic_);
@@ -282,6 +365,14 @@ void WaypointController::get_ros_parameters()
     get_parameter("max_heading_rate", heading_speed_);
     get_parameter("max_heave_rate", heave_speed_);
     get_parameter("max_station_keep_rate", station_keep_speed_);
+    get_parameter("station_keep_min_heading_rate", station_keep_min_heading_rate_);
+    get_parameter("station_keep_heading_tolerance", station_keep_heading_tolerance_);
+    get_parameter("realign_heading_error", realign_heading_error_);
+    get_parameter("align_heading_tolerance", align_heading_tolerance_);
+    get_parameter("align_heading_gain", align_heading_gain_);
+    get_parameter("align_min_heading_rate", align_min_heading_rate_);
+    get_parameter("align_coast_time", align_coast_time_);
+    get_parameter("align_still_time", align_still_time_);
 }
 
 void WaypointController::add_waypoint(const std::shared_ptr<mundus_mir_msgs::srv::AddWaypoint::Request> request,
@@ -388,7 +479,7 @@ void WaypointController::go_to_waypoints(const std::shared_ptr<mundus_mir_msgs::
     }
     go_to_waypoint_ = request->run;
     stationary_waypoint_set_ = false;
-    heading_aligned_ = false;
+    reset_alignment();
 
     // Set response
     response->accepted = true;
