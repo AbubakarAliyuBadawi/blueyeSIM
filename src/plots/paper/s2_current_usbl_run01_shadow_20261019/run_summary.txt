@@ -1,0 +1,12 @@
+bag: s2_current_usbl_run01_shadow_20261019
+takeover mode: shadow
+mission result: SUCCESS
+docking: Docking complete (final push finished)
+analysis window: 0.3 s to 858.9 s of the bag (858.6 s)
+distance travelled: 53.5 m
+battery: 100.0 % -> 91.7 %
+threshold: 0.65
+alarms (rising crossings, re-armed below 0.8 x threshold): 1
+peak urgency: 0.801 at 192.1 s (Inspection)
+evidence at peak: {"Altitude": "Safe", "BatteryLevel": "High", "CameraQuality": "Excellent", "Current": "High", "DVLStatus": "Nominal", "Fatigue": "Low", "MissionPhase": "Inspection", "RangeToTarget": "Far", "SonarRange": "Clear", "Speed": "Safe", "Stress": "Low", "USBLStrength": "Lost", "WaypointTrackingError": "High"}
+samples before mission start (excluded): 0

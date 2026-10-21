@@ -30,6 +30,7 @@ setup(
             "sim_current = blueye_takeover_bn.sim_current:main",
             "usbl_strength_monitor = blueye_takeover_bn.usbl_strength_monitor:main",
             "speed_monitor = blueye_takeover_bn.speed_monitor:main",
+            "disturbance_replay = blueye_takeover_bn.disturbance_replay:main",
         ],
     },
 )

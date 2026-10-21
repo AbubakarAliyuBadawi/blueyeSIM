@@ -1,0 +1,11 @@
+run: s1_obstacle_run02_shadow_20261020
+scenario: S1 (Transit), mode OL
+threshold: 0.65
+injection: 95.2 s mission time (first sonar echo from the rock, centre 5.14 m from it)
+t_att: 23.89 s after injection (centre 2.11 m from the rock)
+t_req: 33.39 s after injection (centre 0.88 m from the rock)
+behaviour tree shadow log: 33.41 s after injection
+t_haz: 38.65 s after injection (contact)
+lead time (t_haz - t_req): 5.26 s
+max U before injection: 0.406; after: 0.817
+closest approach (vehicle centre to the obstacle outline): 0.2 m

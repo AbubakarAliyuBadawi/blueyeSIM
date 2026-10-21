@@ -1,0 +1,12 @@
+bag: shadow_nominal_20261019_182226
+takeover mode: shadow
+mission result: not finished in the recording
+docking: no docking_complete reported
+analysis window: 0.3 s to 269.1 s of the bag (268.8 s)
+distance travelled: 18.9 m
+battery: 100.0 % -> 97.0 %
+threshold: 0.65
+alarms (rising crossings, re-armed below 0.8 x threshold): 1
+peak urgency: 0.801 at 213.9 s (Inspection)
+evidence at peak: {"Altitude": "Safe", "BatteryLevel": "High", "CameraQuality": "Excellent", "Current": "Low", "DVLStatus": "Nominal", "Fatigue": "Low", "MissionPhase": "Inspection", "RangeToTarget": "Far", "SonarRange": "Clear", "Speed": "Safe", "Stress": "Low", "USBLStrength": "Lost", "WaypointTrackingError": "High"}
+samples before mission start (excluded): 2, max urgency 0.402

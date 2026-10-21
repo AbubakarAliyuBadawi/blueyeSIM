@@ -1,0 +1,71 @@
+\subsection{Simulation study}
+\label{sec:res-sim}
+
+\paragraph{Set-up}
+The scenarios were run in the Stonefish simulator~\citep{Cieslak2019Stonefish} with its ROS~2 interface. The simulation contains the Blueye ROV with its thrusters and hydrodynamics, the docking station with its marker board, a pipeline section as the inspection target, and models of the camera, IMU, DVL, forward-looking sonar and USBL. The BT, the network node and the controllers are the same as on the real vehicle. Two differences matter for the interpretation of the results: the waypoint controller navigates on the pose of the simulator rather than on the state estimate, and the evidence monitors are adapted to the simulated sensors. The supervisor's state is supplied by a synthetic operator model in which fatigue and stress rise linearly, with noise, from 0.15 at the start of the mission to 0.55 and 0.50 after 15~min. The model exercises the cognitive part of the network but is not a validated model of an operator. Each scenario starts a complete mission and injects its disturbance in the phase where it matters most (Table~\ref{tab:scenarios}). Every hazard scenario was run in two modes. In the open-loop mode the BT logs the recommendation but does not act on it, so that the time at which the undesired event occurs, $t_{\mathrm{haz}}$, can be measured. In the closed-loop mode the BT holds the vehicle when $U$ reaches the threshold and asks the supervisor to take over; one of the authors acted as supervisor with the joystick, and the hand-back was accepted only when $U$ was below the threshold.
+
+The nominal mission (S0) was run three times, and S1 and S2 three times in open loop and twice in closed loop. In S1, a rock about 0.9~m across was placed on the transit leg at the depth of the vehicle. It is not among the known structures that the sonar monitor ignores. The rock was centred on the leg in one open-loop and one closed-loop run and moved 0.3~m to either side in the others, which kept it in the path of the vehicle. In S2, a uniform current towards the north-west was switched on 3.6~s after the start of the inspection at 0.12~m/s, raised to 0.30~m/s 13.8~s later, about twice the speed of the vehicle, and switched off after a further 18.2~s. The USBL signal was cut 20.5~s after the onset of the current, by discarding all fixes in the USBL monitor, and restored 20.4~s later. The same sequence was replayed in every S2 run, timed from the start of the inspection, so that the open-loop and closed-loop runs met the same conditions; the differences between runs arise from the simulation itself.
+
+\begin{table*}[width=\textwidth,cols=4,pos=t]
+\caption{Simulation scenarios. Each scenario is a complete mission with its disturbance injected in the phase named.}
+\label{tab:scenarios}
+\small
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{0.04\textwidth}p{0.1\textwidth}p{0.39\textwidth}p{0.39\textwidth}@{}}
+\toprule
+ID & Phase & Disturbance & Expected response \\
+\midrule
+S0 & All & None (nominal mission) & \emph{NoTakeoverRequired} most probable throughout; $U<U_{\mathrm{th}}$; no request \\
+S1 & Transit & Obstacle on the transit leg; \node{SonarRange} Clear $\rightarrow$ Near $\rightarrow$ Critical & Increased attention at Near; takeover request at Critical, before contact \\
+S2 & Inspection & Cross-current that drives the vehicle off the inspection path (\node{WaypointTrackingError} High), followed by loss of the USBL signal; no obstacle & Rise through \node{DataQuality} while \node{CollisionWithObstacle} stays Unlikely; increased attention under the current; takeover request when the USBL signal is lost \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+\paragraph{Nominal missions}
+Fig.~\ref{fig:sim-nominal} shows a nominal mission. In the three nominal missions (39~min in total), $U$ remained below the threshold throughout and no takeover request occurred. With no request in 39~min, the 95\,\% upper bound on the rate of false requests is 4.6 per hour; the nominal runs therefore exclude frequent false requests rather than establish a low rate. The highest values of $U$ were 0.41 in undocking, 0.28 in transit, 0.44 in inspection, 0.49 in homing and 0.54 in docking. $U$ was highest in homing and docking, late in the mission, when the operator model had reached medium fatigue and stress; the maximum occurred in docking with \node{SonarRange} Near close to the station. \emph{IncreasedAttentionRequired} was the most probable recommendation for $14\pm4$\,\% of the mission time, never in undocking and transit but in parts of inspection, homing and docking. The expectation that \emph{NoTakeoverRequired} is most probable throughout (Table~\ref{tab:scenarios}) thus held in the first two phases only, although no request was raised.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/results/sim_nominal_mission.pdf}
+    \caption{A nominal simulated mission (S0). Top: active phase. Middle: posterior of the three recommendations. Bottom: urgency $U$ and threshold $U_{\mathrm{th}}$.}
+    \label{fig:sim-nominal}
+\end{figure*}
+
+\paragraph{Hazard scenarios}
+Fig.~\ref{fig:sim-traces} shows one open-loop run of each hazard scenario, and Table~\ref{tab:sim-results} summarises all runs. For each run, $t_{\mathrm{att}}$ is the time from the injection until \emph{IncreasedAttentionRequired} or \emph{TakeoverRequested} first becomes the most probable recommendation, $t_{\mathrm{req}}$ is the time until $U\geq U_{\mathrm{th}}$, and the lead time is $t_{\mathrm{haz}}-t_{\mathrm{req}}$ in the open-loop runs. In the closed-loop runs, a run is counted as successful if the vehicle held before the undesired event and resumed the mission after the hand-back.
+
+In all five runs of S1, the response followed Table~\ref{tab:scenarios}. \emph{IncreasedAttentionRequired} became the most probable recommendation in the update in which \node{SonarRange} changed to Near, $23.7\pm0.1$\,s after the first sonar echo from the rock, and $U$ reached the threshold in the update in which it changed to Critical, $33.6\pm0.2$\,s after the echo, with the centre of the vehicle about 0.85\,m from the rock. In open loop, the vehicle hit the rock in all three runs, $5.2\pm0.2$\,s after the request. The lead time is short because the request is raised at close range: at about 0.13\,m/s, the remaining 0.65\,m took about 5\,s. In closed loop it was nevertheless sufficient, because the BT held the vehicle as soon as $U$ reached the threshold. In both closed-loop runs the supervisor accepted the takeover after $3.2\pm0.7$\,s, steered round the rock (closest approach $0.58\pm0.13$\,m, no contact) and handed back after $23.8\pm2.3$\,s of manual control, after which the mission resumed and ended with docking (Fig.~\ref{fig:sim-closed-loop}a).
+
+In S2 the response differed from Table~\ref{tab:scenarios} in one respect. When the vehicle had drifted more than 1.5\,m from the inspection leg and \node{WaypointTrackingError} became High, $18.4\pm0.3$\,s after the onset of the current and before the USBL signal was cut, the most probable recommendation changed directly from \emph{NoTakeoverRequired} to \emph{TakeoverRequested}, with a probability of 0.40. $U$ was 0.55, below the threshold, so no request was raised, but \emph{IncreasedAttentionRequired} was never the most probable recommendation. The request followed in the update in which the USBL monitor reported Weak, $2.2\pm0.2$\,s after the cut and before the signal was classed as Lost. At the request, the probability of an inadequate \node{DataQuality} was 0.49 and that of an inadequate \node{NavigationSystemPerformance} 0.60; they rose to 0.73 and 0.92 when the signal was classed as Lost, while the probability of a likely \node{CollisionWithObstacle} stayed below 0.2. The network thus requested a takeover without an imminent collision, through the navigation and data-quality pathway. In open loop the vehicle drifted up to $3.39\pm0.02$\,m from the leg and returned to it after the current stopped. In closed loop the supervisor accepted the takeover after $4.2\pm2.6$\,s and handed back after $22.9\pm5.4$\,s (Fig.~\ref{fig:sim-closed-loop}b); the hand-back was possible only after the USBL signal had been restored, since $U$ stayed above the threshold while it was lost. Because the simulated vehicle navigates on the pose of the simulator, the loss of the USBL signal degraded the evidence but not the navigation. S2 therefore demonstrates the warning and the takeover procedure, but not a consequence that the takeover averted: under manual control the vehicle drifted at least as far as in open loop (up to 4.3\,m), because the current exceeded its speed.
+
+In every run of S1 and S2, the recommendation changed in the update in which the decisive evidence was entered: \node{SonarRange} Near and Critical in S1, and \node{WaypointTrackingError} High and \node{USBLStrength} Weak in S2. The window of 20 slices therefore did not delay the response to these changes. The time from the disturbance to the request was set by the geometry of the approach and by the evidence monitors.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/results/sim_traces.pdf}
+    \caption{Response of the network in the hazard scenarios (one open-loop run each): (a)~S1, obstacle on the transit leg; (b)~S2, cross-current and loss of the USBL signal during inspection. In each panel, the upper strip shows the evidence that changes after the injection, and the lower plot the urgency $U$ with the threshold. Dashed lines mark the attention alert ($t_{\mathrm{att}}$) and the takeover request ($t_{\mathrm{req}}$), and the solid line in (a) the contact with the obstacle ($t_{\mathrm{haz}}$). Dotted lines mark the injection and, in (b), the later changes of the current; dash-dotted lines mark the cut and the restoration of the USBL signal.}
+    \label{fig:sim-traces}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/results/sim_closed_loop.pdf}
+    \caption{Open loop against closed loop in the hazard scenarios, with the same obstacle position in S1 and the same disturbances in S2: (a)~S1, obstacle on the transit leg; (b)~S2, cross-current and loss of the USBL signal during inspection. Left: plan view of the tracks; triangles mark the takeover request (pointing down) and the hand-back (pointing up), and the cross the contact in the open-loop run. Right: distance to the hazard (to the rock in S1, from the planned inspection leg in S2) and urgency $U$, against the time from the injection. Dashed vertical lines mark the takeover requests, and the shaded areas the manual control in the closed-loop run; in (b), dash-dotted lines mark the cut and the restoration of the USBL signal. In (b), the distance under manual control is measured from the trajectory, since the network enters no tracking error then, and it drops to zero at the hand-back because the leg restarts from the position of the vehicle.}
+    \label{fig:sim-closed-loop}
+\end{figure*}
+
+\begin{table*}[width=\textwidth,cols=9,pos=t]
+\caption{Simulation results (mean $\pm$ standard deviation over the runs). OL: open loop (the BT logs the takeover request but does not act on it); CL: closed loop (the BT holds the vehicle and the supervisor takes over). $t_{\mathrm{att}}$, $t_{\mathrm{req}}$ and $\max U$ are pooled over both modes, which behave identically until the request. Times are measured from the injection: the first sonar echo from the obstacle in S1 and the onset of the cross-current in S2. In S2 the USBL signal was cut 20.5\,s after the onset of the current, and the request followed $2.2 \pm 0.2$\,s after the cut. The lead time is $t_{\mathrm{haz}}-t_{\mathrm{req}}$ in the open-loop runs; S2 has no undesired event. Success is the number of closed-loop runs in which the vehicle held before the undesired event and resumed the mission after the hand-back. For S0, $\max U$ is taken over the whole mission; no takeover request occurred in 3 missions (39\,min).}
+\label{tab:sim-results}
+\small
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llccccccc@{}}
+\toprule
+ID & Phase & Runs (OL/CL) & $\max U$ before & $\max U$ after & $t_{\mathrm{att}}$ [s] & $t_{\mathrm{req}}$ [s] & Lead time [s] & Success (CL) \\
+\midrule
+%% Generated by src/plots/analyse_runs.py from the runs in src/rosbags/paper/
+S0 & All & 3/-- & $0.54 \pm 0.01$ & n/a & n/a & n/a & n/a & n/a \\
+S1 & Transit & 3/2 & $0.41 \pm 0.00$ & $0.82 \pm 0.00$ & $23.7 \pm 0.1$ & $33.6 \pm 0.2$ & $5.2 \pm 0.2$ & 2/2 \\
+S2 & Inspection & 3/2 & $0.41 \pm 0.00$ & $0.80 \pm 0.00$ & $18.4 \pm 0.3$ & $22.7 \pm 0.2$ & n/a & 2/2 \\
+\bottomrule
+\end{tabular*}
+\end{table*}

@@ -10,6 +10,8 @@
              (blueye_takeover_bn) switches it on and publishes its horizontal speed on /blueye/current. -->
         <current type="uniform">
             <velocity xyz="0.2 0.0 0.0"/>
+            <!-- Speed and direction are set at run time on this topic by sim_current (operator HUD, Simulation tab) -->
+            <ros_subscriber velocity="/stonefish_ros2/current_velocity"/>
         </current>
     </ocean>
     <atmosphere>

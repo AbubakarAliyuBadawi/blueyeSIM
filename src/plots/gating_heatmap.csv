@@ -1,0 +1,17 @@
+child,parent,Undocking,Transit,Inspection,Homing,Docking
+Navigation system performance,USBL strength,0.0000,0.4138,0.3656,0.4138,0.4014
+Navigation system performance,DVL status,0.9122,0.5438,0.4320,0.5438,0.5575
+Navigation system performance,Current,0.0000,0.0509,0.0507,0.0509,0.0499
+Navigation system performance,Waypoint tracking error,0.0000,0.1037,0.2779,0.1037,0.1015
+Perception system performance,Camera quality,0.5079,0.0000,0.9122,0.0000,0.5079
+Perception system performance,ArUco visibility,0.6342,0.0000,0.0000,0.9122,0.6342
+Collision with obstacle,Sonar range,0.6802,0.7571,0.7571,0.7159,0.6802
+Collision with obstacle,Navigation system performance,0.2304,0.2022,0.2022,0.2013,0.2304
+Collision with obstacle,Range to target,0.0808,0.0000,0.0000,0.0825,0.0808
+Data quality,Navigation system performance,0.0000,0.0000,0.5093,0.0000,0.0000
+Data quality,Perception system performance,0.0000,0.0000,0.5093,0.0000,0.0000
+Out-of-loop risk,Fatigue,0.2138,0.2138,0.1989,0.2138,0.2138
+Takeover request,Autonomous control performance,0.3567,0.3567,0.2653,0.3567,0.3567
+Takeover request,Human decision reliability,-0.0567,-0.0567,-0.0767,-0.0567,-0.0567
+Takeover request,Collision with obstacle,0.3567,0.3567,0.2653,0.3567,0.3567
+Takeover request,Data quality,0.0000,0.0000,0.1183,0.0000,0.0000

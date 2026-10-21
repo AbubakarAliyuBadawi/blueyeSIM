@@ -11,10 +11,14 @@ Topics consumed:
   /blueye/thrusters         std_msgs/Float64MultiArray
   /blueye/odom              nav_msgs/Odometry
   /blueye/usbl/beacon_info  stonefish_ros2/BeaconInfo
+Simulation tab (simulated disturbances, recorded on /scenario/events):
+  /blueye/sim/current_command  geometry_msgs/Vector3 (published: water current, NED m/s)
+  /blueye/usbl/set_beacon_enabled  std_srvs/SetBool (called: injected USBL loss)
 """
 
 import os
 import sys
+import json
 import math
 import threading
 import time
@@ -33,6 +37,7 @@ from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget,
     QVBoxLayout, QHBoxLayout, QFrame, QSizePolicy, QLabel,
     QTabWidget, QDialog, QPushButton, QDialogButtonBox,
+    QGroupBox, QGridLayout, QSlider, QDoubleSpinBox, QSpinBox, QPlainTextEdit,
 )
 from PyQt5.QtCore import Qt, pyqtSignal, QObject, QCoreApplication, QTimer, QPoint
 from PyQt5.QtGui import (
@@ -50,6 +55,8 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from sensor_msgs.msg import Image, Joy
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Bool, Float32, Float64, Float64MultiArray, Int32, String
+from geometry_msgs.msg import Vector3, Vector3Stamped
+from std_srvs.srv import SetBool
 from stonefish_ros2.msg import BeaconInfo
 
 
@@ -66,6 +73,10 @@ class _Signals(QObject):
     decision_pending  = pyqtSignal(bool)           # BT waits for an operator decision
     mission_state     = pyqtSignal(int)            # /mission_state (6 = takeover)
     takeover_mode     = pyqtSignal(str)            # closed_loop / shadow
+    sim_current       = pyqtSignal(float, float)   # simulator current, NED north / east [m/s]
+    bn_evidence       = pyqtSignal(str, str)       # BN evidence Current, USBLStrength
+    beacon_enabled    = pyqtSignal(bool)           # USBL beacon switch (injected USBL loss when off)
+    sim_message       = pyqtSignal(str)            # Simulation tab log line
 
 
 # ── Camera panel ──────────────────────────────────────────────────────────────
@@ -828,6 +839,213 @@ class TakeoverDialog(QDialog):
 
 # ── Main window ───────────────────────────────────────────────────────────────
 
+# ── Simulation tab: injected disturbances ─────────────────────────────────────
+
+COMPASS = (("N", 0), ("NE", 45), ("E", 90), ("SE", 135), ("S", 180), ("SW", 225), ("W", 270), ("NW", 315))
+# BN evidence Current (takeover_bn_node current_medium_ms / current_high_ms)
+CURRENT_MEDIUM_MS, CURRENT_HIGH_MS = 0.05, 0.10
+
+
+def _compass_name(direction: float) -> str:
+    return COMPASS[int(((direction % 360.0) + 22.5) // 45) % 8][0]
+
+
+class CurrentCompass(QWidget):
+    """Compass: the simulator's current (solid arrow, towards where the water flows) and the direction set below
+    but not yet applied (dashed). The arrow is full length at 0.15 m/s."""
+
+    def __init__(self):
+        super().__init__()
+        self.setMinimumSize(170, 170)
+        self._speed, self._direction, self._target = 0.0, 0.0, None
+
+    def set_current(self, speed: float, direction: float):
+        self._speed, self._direction = speed, direction
+        self.update()
+
+    def set_target(self, direction: float):
+        self._target = direction
+        self.update()
+
+    def paintEvent(self, _event):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing)
+        cx, cy = self.width() / 2, self.height() / 2
+        r = min(self.width(), self.height()) / 2 - 20
+        p.setPen(QPen(QColor("#45475a"), 2))
+        p.drawEllipse(QPoint(int(cx), int(cy)), int(r), int(r))
+        p.setFont(QFont("Monospace", 9, QFont.Bold))
+        p.setPen(QColor("#a6adc8"))
+        for name, ang in (("N", 0), ("E", 90), ("S", 180), ("W", 270)):
+            a = math.radians(ang)
+            p.drawText(int(cx + (r + 11) * math.sin(a)) - 5, int(cy - (r + 11) * math.cos(a)) + 5, name)
+
+        def arrow(direction, length, colour, dashed):
+            a = math.radians(direction)
+            tip = (cx + length * math.sin(a), cy - length * math.cos(a))
+            pen = QPen(QColor(colour), 3, Qt.DashLine if dashed else Qt.SolidLine)
+            p.setPen(pen)
+            p.drawLine(int(cx), int(cy), int(tip[0]), int(tip[1]))
+            for side in (-1, 1):
+                b = a + math.pi + side * 0.45
+                p.drawLine(int(tip[0]), int(tip[1]), int(tip[0] + 12 * math.sin(b)), int(tip[1] - 12 * math.cos(b)))
+
+        if self._target is not None:
+            arrow(self._target, r * 0.85, "#6c7086", True)
+        if self._speed > 1e-4:
+            arrow(self._direction, max(0.15, min(self._speed / 0.15, 1.0)) * r, "#89b4fa", False)
+        else:
+            p.setPen(QColor("#6c7086"))
+            p.drawText(int(cx) - 16, int(cy) + 5, "calm")
+
+
+class SimulationPanel(QWidget):
+    """Disturbances injected into the simulation during a run: the water current (speed and direction) and a USBL
+    beacon that stops replying. sim_current and usbl_strength_monitor record every change on /scenario/events."""
+
+    _LABEL = "color:#cdd6f4; font-family:Monospace; font-size:12px;"
+    _BUTTON = ("QPushButton { background:#313244; color:#cdd6f4; font-family:Monospace; font-weight:bold; "
+               "border-radius:4px; padding:6px 10px; } QPushButton:hover { background:#45475a; }")
+
+    def __init__(self, ros_node):
+        super().__init__()
+        self._node = ros_node
+        self._beacon_on = True
+        self.setStyleSheet("QGroupBox { color:#89b4fa; font-family:Monospace; font-weight:bold; border:1px solid "
+                           "#313244; border-radius:6px; margin-top:14px; padding:10px; } QGroupBox::title "
+                           "{ subcontrol-origin: margin; left:10px; }")
+        root = QVBoxLayout(self)
+
+        # ── water current ──
+        cur = QGroupBox("Water current")
+        grid = QGridLayout(cur)
+        self.speed_slider = QSlider(Qt.Horizontal)
+        self.speed_slider.setRange(0, 30)
+        self.speed_spin = QDoubleSpinBox()
+        self.speed_spin.setRange(0.0, 0.30)
+        self.speed_spin.setSingleStep(0.01)
+        self.speed_spin.setDecimals(2)
+        self.speed_spin.setSuffix(" m/s")
+        self.speed_slider.valueChanged.connect(lambda v: self.speed_spin.setValue(v / 100.0))
+        self.speed_spin.valueChanged.connect(lambda v: self.speed_slider.setValue(int(round(v * 100))))
+        self.dir_spin = QSpinBox()
+        self.dir_spin.setRange(0, 359)
+        self.dir_spin.setWrapping(True)
+        self.dir_spin.setSuffix(" deg")
+        for w in (self.speed_spin, self.dir_spin):
+            w.setStyleSheet("background:#313244; color:#cdd6f4; font-family:Monospace; padding:4px;")
+        grid.addWidget(self._label("Speed"), 0, 0)
+        grid.addWidget(self.speed_slider, 0, 1, 1, 3)
+        grid.addWidget(self.speed_spin, 0, 4)
+        grid.addWidget(self._label("Flows towards"), 1, 0)
+        compass_row = QHBoxLayout()
+        for name, ang in COMPASS:
+            b = QPushButton(name)
+            b.setStyleSheet(self._BUTTON)
+            b.clicked.connect(lambda _=False, a=ang: self.dir_spin.setValue(a))
+            compass_row.addWidget(b)
+        grid.addLayout(compass_row, 1, 1, 1, 3)
+        grid.addWidget(self.dir_spin, 1, 4)
+        quick = QHBoxLayout()
+        for name, value in (("Low 0.03", 0.03), ("Medium 0.07", 0.07), ("High 0.12", 0.12)):
+            b = QPushButton(name)
+            b.setStyleSheet(self._BUTTON)
+            b.clicked.connect(lambda _=False, v=value: self.speed_spin.setValue(v))
+            quick.addWidget(b)
+        grid.addWidget(self._label("Quick speed"), 2, 0)
+        grid.addLayout(quick, 2, 1, 1, 4)
+        apply_btn = QPushButton("APPLY CURRENT")
+        apply_btn.setStyleSheet(self._BUTTON.replace("#313244", "#89b4fa").replace("color:#cdd6f4", "color:#1e1e2e"))
+        apply_btn.clicked.connect(self._apply_current)
+        calm_btn = QPushButton("CALM WATER")
+        calm_btn.setStyleSheet(self._BUTTON)
+        calm_btn.clicked.connect(self._calm)
+        buttons = QHBoxLayout()
+        buttons.addWidget(apply_btn)
+        buttons.addWidget(calm_btn)
+        grid.addLayout(buttons, 3, 0, 1, 5)
+        self.sim_label = self._label("Simulator: —")
+        self.bn_current_label = self._label("BN evidence Current: —")
+        legend = self._label(f"BN classes: Low < {CURRENT_MEDIUM_MS:.2f} m/s  <=  Medium  <  {CURRENT_HIGH_MS:.2f} m/s  "
+                             "<=  High.  The simulated Blueye surges at about 0.08-0.13 m/s.")
+        legend.setStyleSheet("color:#6c7086; font-family:Monospace; font-size:11px;")
+        legend.setWordWrap(True)
+        grid.addWidget(self.sim_label, 4, 0, 1, 5)
+        grid.addWidget(self.bn_current_label, 5, 0, 1, 5)
+        grid.addWidget(legend, 6, 0, 1, 5)
+        self.compass = CurrentCompass()
+        grid.addWidget(self.compass, 0, 5, 7, 1)
+        self.dir_spin.valueChanged.connect(lambda v: self.compass.set_target(float(v)))
+        root.addWidget(cur)
+
+        # ── USBL ──
+        usbl = QGroupBox("USBL")
+        ul = QHBoxLayout(usbl)
+        self.beacon_btn = QPushButton()
+        self.beacon_btn.setFixedHeight(40)
+        self.beacon_btn.clicked.connect(lambda: self._node.set_beacon(not self._beacon_on))
+        self.usbl_label = self._label("BN evidence USBLStrength: —")
+        ul.addWidget(self.beacon_btn, stretch=1)
+        ul.addWidget(self.usbl_label, stretch=1)
+        root.addWidget(usbl)
+        self.on_beacon_enabled(True)
+
+        # ── log ──
+        log_box = QGroupBox("Changes (also recorded on /scenario/events)")
+        ll = QVBoxLayout(log_box)
+        self.log = QPlainTextEdit()
+        self.log.setReadOnly(True)
+        self.log.setMaximumBlockCount(300)
+        self.log.setStyleSheet("background:#11111b; color:#cdd6f4; font-family:Monospace; font-size:11px;")
+        ll.addWidget(self.log)
+        root.addWidget(log_box, stretch=1)
+
+    def _label(self, text):
+        label = QLabel(text)
+        label.setStyleSheet(self._LABEL)
+        return label
+
+    def _apply_current(self):
+        speed, direction = self.speed_spin.value(), float(self.dir_spin.value())
+        a = math.radians(direction)
+        self._node.send_current(speed * math.cos(a), speed * math.sin(a))
+        self.add_message(f"requested current {speed:.2f} m/s towards {direction:.0f} deg ({_compass_name(direction)})")
+
+    def _calm(self):
+        self._node.send_current(0.0, 0.0)
+        self.add_message("requested calm water")
+
+    def on_sim_current(self, north: float, east: float):
+        speed = math.hypot(north, east)
+        direction = math.degrees(math.atan2(east, north)) % 360.0
+        self.compass.set_current(speed, direction)
+        self.sim_label.setText(f"Simulator: {speed:.2f} m/s towards {direction:.0f} deg ({_compass_name(direction)})"
+                               if speed > 1e-4 else "Simulator: calm water")
+
+    def on_bn_evidence(self, current: str, usbl: str):
+        colours = {"Low": "#a6e3a1", "Medium": "#f9e2af", "High": "#f38ba8", "Strong": "#a6e3a1",
+                   "Moderate": "#a6e3a1", "Weak": "#f9e2af", "Lost": "#f38ba8"}
+        self.bn_current_label.setText(f"BN evidence Current: <b style='color:{colours.get(current, '#cdd6f4')}'>"
+                                      f"{current or '—'}</b>")
+        self.usbl_label.setText(f"BN evidence USBLStrength: <b style='color:{colours.get(usbl, '#cdd6f4')}'>"
+                                f"{usbl or 'not entered'}</b>")
+
+    def on_beacon_enabled(self, enabled: bool):
+        self._beacon_on = enabled
+        if enabled:
+            self.beacon_btn.setText("USBL BEACON ON  —  click to cut (USBL loss)")
+            self.beacon_btn.setStyleSheet(self._BUTTON.replace("#313244", "#a6e3a1").replace("color:#cdd6f4",
+                                                                                               "color:#1e1e2e"))
+        else:
+            self.beacon_btn.setText("USBL BEACON OFF  —  click to restore")
+            self.beacon_btn.setStyleSheet(self._BUTTON.replace("#313244", "#f38ba8").replace("color:#cdd6f4",
+                                                                                               "color:#1e1e2e"))
+
+    def add_message(self, text: str):
+        self.log.appendPlainText(f"{time.strftime('%H:%M:%S')}  {text}")
+
+
+
 class OperatorWindow(QMainWindow):
 
     def __init__(self, signals: _Signals, ros_node):
@@ -870,6 +1088,7 @@ class OperatorWindow(QMainWindow):
             "font-family:Monospace; font-weight:bold; }"
             "QTabBar::tab:selected { background:#45475a; color:#ffffff; }"
         )
+        tabs.tabBar().setElideMode(Qt.ElideNone)          # full tab names (Overview / USBL / Simulation)
         root.addWidget(tabs)
 
         overview = QWidget()
@@ -926,8 +1145,10 @@ class OperatorWindow(QMainWindow):
         overview_layout.addWidget(self.handback_btn)
 
         self.usbl_panel = USBLPanel()
+        self.sim_panel = SimulationPanel(ros_node)
         tabs.addTab(overview, "Overview")
         tabs.addTab(self.usbl_panel, "USBL")
+        tabs.addTab(self.sim_panel, "Simulation")
 
         # ── wire signals ────────────────────────────────────────────────────
         signals.camera_ready.connect(self.cam.ingest)
@@ -941,6 +1162,10 @@ class OperatorWindow(QMainWindow):
         signals.decision_pending.connect(self._on_decision_pending)
         signals.mission_state.connect(self._on_mission_state)
         signals.takeover_mode.connect(self._on_takeover_mode)
+        signals.sim_current.connect(self.sim_panel.on_sim_current)
+        signals.bn_evidence.connect(self.sim_panel.on_bn_evidence)
+        signals.beacon_enabled.connect(self.sim_panel.on_beacon_enabled)
+        signals.sim_message.connect(self.sim_panel.add_message)
 
     def _on_takeover_update(self, urgency: float, threshold: float):
         self._urgency, self._threshold = urgency, threshold
@@ -1018,6 +1243,8 @@ class OperatorHUDNode(Node):
         self._pending   = None
         self._state     = None
         self._mode      = None
+        self._beacon_enabled = True     # USBL beacon switch: while off the USBL tab gets no fixes
+        self._bn_evidence = None
 
         best_effort = QoSProfile(
             reliability=ReliabilityPolicy.BEST_EFFORT,
@@ -1048,6 +1275,18 @@ class OperatorHUDNode(Node):
         self.create_subscription(
             String, "/blueye/takeover_request/mode", self._on_mode, 10)
 
+        # Simulation tab
+        self.create_subscription(
+            Vector3Stamped, "/blueye/sim/current_state", self._on_sim_current, 10)
+        self.create_subscription(
+            Bool, "/blueye/usbl/beacon_enabled", self._on_beacon_enabled, 10)
+        self.create_subscription(
+            String, "/blueye/takeover_request/evidence", self._on_evidence, 10)
+        self.create_subscription(
+            String, "/scenario/events", self._on_scenario_event, 10)
+        self._current_pub = self.create_publisher(Vector3, "/blueye/sim/current_command", 10)
+        self._beacon_client = self.create_client(SetBool, "/blueye/usbl/set_beacon_enabled")
+
         self._decision_pub = self.create_publisher(
             Bool, "/blueye/takeover_request/human_decision", 10)
         self._handback_pub = self.create_publisher(
@@ -1077,7 +1316,57 @@ class OperatorHUDNode(Node):
         self._signals.odom_ready.emit(msg)
 
     def _on_usbl(self, msg):
-        self._signals.usbl_ready.emit(msg)
+        if self._beacon_enabled:                 # injected USBL loss: the USBL tab shows no lock either
+            self._signals.usbl_ready.emit(msg)
+
+    # Simulation tab
+    def _on_sim_current(self, msg):
+        self._signals.sim_current.emit(msg.vector.x, msg.vector.y)
+
+    def _on_beacon_enabled(self, msg):
+        if msg.data != self._beacon_enabled:
+            self._beacon_enabled = msg.data
+            self._signals.beacon_enabled.emit(msg.data)
+
+    def _on_evidence(self, msg):
+        try:
+            evidence = json.loads(msg.data).get("evidence", {})
+        except ValueError:
+            return
+        values = (evidence.get("Current", ""), evidence.get("USBLStrength", ""))
+        if values != self._bn_evidence:
+            self._bn_evidence = values
+            self._signals.bn_evidence.emit(*values)
+
+    def _on_scenario_event(self, msg):
+        try:
+            event = json.loads(msg.data)
+        except ValueError:
+            return
+        if event.get("event") == "current":
+            text = (f"simulator current {event['speed_ms']:.2f} m/s towards {event['direction_deg']:.0f} deg"
+                    if event["speed_ms"] > 0 else "simulator current: calm water")
+        elif event.get("event") == "usbl_beacon":
+            text = "USBL beacon " + ("ON" if event["enabled"] else "OFF (USBL loss)")
+        else:
+            text = msg.data
+        self._signals.sim_message.emit(text)
+
+    def send_current(self, north: float, east: float):
+        out = Vector3()
+        out.x, out.y = float(north), float(east)
+        self._current_pub.publish(out)
+
+    def set_beacon(self, enabled: bool):
+        if not self._beacon_client.service_is_ready():
+            self._signals.sim_message.emit("USBL switch not available (is the takeover_bn launch running?)")
+            return
+        request = SetBool.Request()
+        request.data = enabled
+        future = self._beacon_client.call_async(request)
+        future.add_done_callback(lambda f: self._signals.sim_message.emit(
+            f"requested USBL beacon {'ON' if enabled else 'OFF'}: "
+            + (f.result().message if f.result() is not None else "no answer")))
 
     def _on_urgency(self, msg):
         self._urgency = msg.data

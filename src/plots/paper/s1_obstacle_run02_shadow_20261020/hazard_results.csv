@@ -1,0 +1,2 @@
+ID,phase,run,mode,max_U_before,max_U_after,t_att_s,t_req_s,lead_time_s,decision_s,manual_control_s,closest_approach_m,success_CL
+S1,Transit,s1_obstacle_run02_shadow_20261020,OL,0.41,0.82,23.89,33.39,5.26,,,0.2,n/a

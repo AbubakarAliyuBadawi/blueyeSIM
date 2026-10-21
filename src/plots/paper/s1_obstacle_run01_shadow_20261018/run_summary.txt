@@ -1,0 +1,12 @@
+bag: s1_obstacle_run01_shadow_20261018
+takeover mode: shadow
+mission result: not finished in the recording
+docking: no docking_complete reported
+analysis window: 0.8 s to 134.9 s of the bag (134.1 s)
+distance travelled: 7.7 m
+battery: 100.0 % -> 98.8 %
+threshold: 0.65
+alarms (rising crossings, re-armed below 0.8 x threshold): 1
+peak urgency: 0.817 at 132.9 s (Transit)
+evidence at peak: {"Altitude": "Marginal", "BatteryLevel": "High", "CameraQuality": "Excellent", "Current": "Low", "DVLStatus": "Nominal", "Fatigue": "Low", "MissionPhase": "Transit", "RangeToTarget": "Mid", "SonarRange": "Critical", "Speed": "Safe", "Stress": "Low", "USBLStrength": "Strong", "WaypointTrackingError": "Low"}
+samples before mission start (excluded): 2, max urgency 0.406

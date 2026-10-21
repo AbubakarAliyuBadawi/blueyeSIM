@@ -156,6 +156,10 @@ class TakeoverBayesianNetwork(Node):
         self.declare_parameter("altitude_marginal_m", 0.4)
         self.declare_parameter("range_far_m", 5.0)
         self.declare_parameter("range_close_m", 1.0)
+        # Horizontal water current [m/s], relative to what the vehicle can hold: the simulated Blueye surges at about
+        # 0.08-0.13 m/s, so from 0.10 m/s the current is about as fast as the vehicle (High)
+        self.declare_parameter("current_medium_ms", 0.05)
+        self.declare_parameter("current_high_ms", 0.10)
         self.declare_parameter("tracking_low_m", 0.5)
         self.declare_parameter("tracking_high_m", 1.5)
         self.declare_parameter("expected_aruco_markers", 6)
@@ -569,9 +573,9 @@ class TakeoverBayesianNetwork(Node):
     def _current_cb(self, msg: Float32):
         self._mark_seen("current")
         current = float(msg.data)
-        if current < 0.3:
+        if current < float(self.get_parameter("current_medium_ms").value):
             state = "Low"
-        elif current < 0.7:
+        elif current < float(self.get_parameter("current_high_ms").value):
             state = "Medium"
         else:
             state = "High"

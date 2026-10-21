@@ -1,0 +1,15 @@
+run: s2_current_usbl_run01_closedloop_20261019
+scenario: S2 (Inspection), mode CL
+threshold: 0.65
+disturbances (mission time): 168.0 s current 0.12 m/s to 315 deg; 181.9 s current 0.30 m/s to 315 deg; 188.5 s USBL beacon cut; 200.1 s calm water; 208.9 s USBL beacon on
+injection (current onset): 168.0 s, 0.12 m/s to 315 deg
+t_att: 17.86 s after the current onset
+USBL cut: 20.47 s after the current onset
+t_req: 22.86 s after the current onset, 2.39 s after the USBL cut
+max distance off the leg: 2.7 m (until the operator took over); tracking error High for 7.5 s
+posteriors at t_req: DataQuality Inadequate 0.49, Navigation Inadequate 0.60, Collision Likely 0.12
+max U before the current: 0.406; after: 0.801
+mission result: SUCCESS
+operator accepted after 2.35 s
+hand-back: 52.05 s after the current onset (manual control 26.75 s); mission resumed: yes
+max distance off the leg under manual control: 4.29 m

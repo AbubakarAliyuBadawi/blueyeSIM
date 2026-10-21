@@ -83,7 +83,7 @@ TOPICS = ["/mission_state", "/rosout", "/blueye/odom", "/blueye/waypoint_goal", 
           "/blueye/takeover_request/evidence", "/blueye/takeover_request/mode",
           "/blueye/human/fatigue", "/blueye/human/stress", "/blueye/docking_controller_status",
           "/blueye/takeover_request/pending", "/blueye/takeover_request/human_decision",
-          "/blueye/takeover_request/handback"]
+          "/blueye/takeover_request/handback", "/blueye/current", "/scenario/events"]
 
 plt.rcParams.update({"font.size": 8, "axes.labelsize": 8, "axes.titlesize": 8, "legend.fontsize": 7,
                      "xtick.labelsize": 7, "ytick.labelsize": 7, "pdf.fonttype": 42, "ps.fonttype": 42})
@@ -178,6 +178,44 @@ def takeover_events(data, start, end):
     return sorted(events)
 
 
+def disturbance_events(data, start, end):
+    """[(time, label, colour, (speed, direction) or None)] of the injected disturbances: water current changes and USBL
+    beacon switches, from /scenario/events or the sim_current / usbl_strength_monitor logs in /rosout."""
+    import re
+    raw = []
+    if data.get("/scenario/events"):
+        for t, msg in data["/scenario/events"]:
+            e = json.loads(msg)
+            if e.get("event") == "current":
+                raw.append((t, "current", (e["speed_ms"], e["direction_deg"])))
+            elif e.get("event") == "usbl_beacon":
+                raw.append((t, "usbl", bool(e["enabled"])))
+    else:
+        for t, node, m in data["/rosout"]:
+            hit = re.match(r"Current set to ([\d.]+) m/s towards ([\d.]+) deg", m) if node == "sim_current" else None
+            if hit:
+                raw.append((t, "current", (float(hit[1]), float(hit[2]))))
+            elif node == "usbl_strength_monitor" and m.startswith("USBL beacon"):
+                raw.append((t, "usbl", m.split(":")[0].endswith("ON")))
+    out = []
+    for t, kind, v in sorted(raw, key=lambda e: e[0]):
+        if not start <= t <= end:
+            continue
+        if kind == "current":
+            out.append((t, f"current {v[0]:.2f} m/s to {v[1]:.0f}\u00b0" if v[0] > 0 else "calm water", "#52514e", v))
+        else:
+            out.append((t, "USBL back" if v else "USBL cut", "#9467bd", None))
+    return out
+
+
+def mark_disturbances(ax, disturbances, start, line=1.13):
+    for t, label, colour, _ in disturbances:
+        ax.axvline(t - start, color=colour, lw=0.8, ls=(0, (1, 2)))
+    if line is not None and disturbances:
+        text = "Disturbances: " + ", ".join(f"{label} {t - start:.0f} s" for t, label, _, _ in disturbances)
+        ax.text(0.0, line, text, ha="left", va="bottom", fontsize=6.3, color="#52514e", transform=ax.transAxes)
+
+
 def mark_events(ax, events, start, labels=False):
     """Vertical line per event; with labels, events closer than 10 s share one label."""
     for t, label, colour in events:
@@ -264,7 +302,7 @@ def shade_phases(ax, segs, start, labels=False):
                     va="bottom", fontsize=7, color=colour)
 
 
-def fig_mission_map(data, segs, start, end, grids, out, obstacle=None, events=()):
+def fig_mission_map(data, segs, start, end, grids, out, obstacle=None, events=(), disturbances=()):
     odom = [o for o in data["/blueye/odom"] if start <= o[0] <= end]
     fig, ax = plt.subplots(figsize=(3.6, 3.5))
     for (x0, y0, res, grid), (colour, label) in zip(grids, [("#7f7f7f", "Docking station"), ("#8c564b", "Pipeline")]):
@@ -294,6 +332,14 @@ def fig_mission_map(data, segs, start, end, grids, out, obstacle=None, events=()
     ax.plot(pts[0, 0], pts[0, 1], "D", color="black", ms=4.5, zorder=6, label="Start")
     ax.plot(pts[-1, 0], pts[-1, 1], "s", mfc="none", mec="black", ms=6, zorder=6, label="End")
     ot = [o[0] for o in odom]
+    currents = [(t, v) for t, label, colour, v in disturbances if v is not None and v[0] > 0]
+    if currents:                         # where the water current was first switched on, in its direction
+        o = odom[min(bisect.bisect_left(ot, currents[0][0]), len(odom) - 1)]
+        top = max(currents, key=lambda c: c[1][0])[1]
+        a = math.radians(currents[0][1][1])
+        ax.annotate("", xy=(o[2] + 2.2 * math.sin(a), o[1] + 2.2 * math.cos(a)), xytext=(o[2], o[1]),
+                    arrowprops=dict(arrowstyle="-|>", color="#52514e", lw=1.8, mutation_scale=11), zorder=8)
+        ax.plot([], [], color="#52514e", lw=1.8, label=f"Water current (up to {top[0]:.2f} m/s)")
     for t, label, colour in events:
         if label in ("takeover request", "hand-back"):
             o = odom[min(bisect.bisect_left(ot, t), len(odom) - 1)]
@@ -317,7 +363,7 @@ def fig_mission_map(data, segs, start, end, grids, out, obstacle=None, events=()
     save(fig, out, "fig1_mission_map")
 
 
-def fig_timeline(data, segs, start, end, threshold, alarms, out, events=()):
+def fig_timeline(data, segs, start, end, threshold, alarms, out, events=(), disturbances=()):
     urg = [(t - start, v) for t, v in data["/blueye/takeover_request/urgency"] if start <= t <= end]
     ev = [(t, e) for t, e in data["/blueye/takeover_request/evidence"] if start <= t <= end]
     fig, axes = plt.subplots(4, 1, figsize=(7.2, 6.6), sharex=True,
@@ -327,14 +373,11 @@ def fig_timeline(data, segs, start, end, threshold, alarms, out, events=()):
         shade_phases(ax, segs, start, labels=ax is a)
 
     t, v = zip(*urg)
-    a.plot(t, v, color="black", lw=1.0, label="Urgency")
+    peak = max(urg, key=lambda s: s[1])
+    a.plot(t, v, color="black", lw=1.0, label=f"Urgency (max {peak[1]:.2f})")
     a.axhline(threshold, color="#d62728", ls="--", lw=1.0, label=f"Threshold {threshold:.2f}")
     for ta in alarms:
         a.axvline(ta - start, color="#d62728", lw=0.8)
-    peak = max(urg, key=lambda s: s[1])
-    near_end = peak[0] > 0.85 * (end - start)
-    a.annotate(f"max {peak[1]:.2f}", peak, xytext=(-48, 4) if near_end else (6, -2), textcoords="offset points",
-               fontsize=7)
     a.set_ylim(0, 1)
     a.set_ylabel("Urgency")
     a.legend(loc="upper right", ncol=2, frameon=False)
@@ -378,6 +421,7 @@ def fig_timeline(data, segs, start, end, threshold, alarms, out, events=()):
     d.set_xlim(0, end - start)
     for ax in axes:
         mark_events(ax, events, start, labels=ax is a)
+        mark_disturbances(ax, disturbances, start, line=(1.24 if events else 1.13) if ax is a else None)
     save(fig, out, "fig2_timeline")
 
 
@@ -520,11 +564,12 @@ def main():
     alarms = count_alarms([(t, v) for t, v in data["/blueye/takeover_request/urgency"] if start <= t <= end],
                           threshold)
     events = takeover_events(data, start, end)
+    disturbances = disturbance_events(data, start, end)
     obstacle = rock_outline(args.obstacle_config, os.path.join(share, "data", "object_files")) \
         if args.obstacle_config else None
     print(f"Writing to {out}")
-    fig_mission_map(data, segs, start, end, grids, out, obstacle, events)
-    fig_timeline(data, segs, start, end, threshold, alarms, out, events)
+    fig_mission_map(data, segs, start, end, grids, out, obstacle, events, disturbances)
+    fig_timeline(data, segs, start, end, threshold, alarms, out, events, disturbances)
     fig_hidden_nodes(data, segs, start, end, out, events)
     summaries(data, bag, segs, start, end, result, threshold, alarms, out, events)
 

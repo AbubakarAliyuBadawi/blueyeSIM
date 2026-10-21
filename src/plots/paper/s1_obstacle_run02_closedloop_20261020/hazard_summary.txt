@@ -1,0 +1,16 @@
+run: s1_obstacle_run02_closedloop_20261020
+scenario: S1 (Transit), mode CL
+threshold: 0.65
+injection: 96.0 s mission time (first sonar echo from the rock, centre 5.14 m from it)
+t_att: 23.54 s after injection (centre 2.16 m from the rock)
+t_req: 33.54 s after injection (centre 0.86 m from the rock)
+behaviour tree shadow log:  s after injection
+t_haz: none
+lead time (t_haz - t_req):  s
+max U before injection: 0.406; after: 0.817
+closest approach (vehicle centre to the obstacle outline): 0.49 m
+popup: 33.63 s after injection
+operator accepted after 2.73 s
+hand-back: 58.56 s after injection (manual control 22.2 s, 0.91 m from the obstacle)
+mission resumed after hand-back: yes; mission result: SUCCESS
+success (no contact, resumed): yes
