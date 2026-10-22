@@ -30,38 +30,43 @@
                               x="6.50" y="-20.67" z="2.28"
                               velocity="0.15" fixed_heading="true" heading="-1.5708"/>
 
-          <!-- 2. TRANSIT TO PIPELINE -->
+          <!-- 2. TRANSIT TO PIPELINE: 37 m straight to the start of the pipe (aruco_01) -->
           <PublishState state="2"/>
           <NavigateToWaypoint name="transit_to_pipeline"
-                              x="1.0" y="-12.5" z="2.75"
+                              x="-3.0" y="15.0" z="2.58"
                               velocity="0.4" fixed_heading="false"/>
 
-          <!-- 3. PIPELINE INSPECTION: markers 05, 06, 04, 03, 02 along the pipe (aruco_01 is not visited) -->
+          <!-- 3. PIPELINE INSPECTION: straight 30 m pipe along north -3, markers aruco_01..06 every 6 m eastwards;
+               0.64 m above the top of the pipe -->
           <PublishState state="3"/>
-          <NavigateToWaypoint name="nav_aruco_05"
-                              x="1.0" y="-12.5" z="2.75"
-                              velocity="0.25" fixed_heading="false"/>
-
-          <NavigateToWaypoint name="nav_aruco_06"
-                              x="-2.0" y="-10.0" z="2.75"
-                              velocity="0.25" fixed_heading="false"/>
-
-          <NavigateToWaypoint name="nav_aruco_04"
-                              x="1.0" y="-7.0" z="2.75"
-                              velocity="0.25" fixed_heading="false"/>
-
-          <NavigateToWaypoint name="nav_aruco_03"
-                              x="2.0" y="-4.5" z="2.75"
+          <NavigateToWaypoint name="nav_aruco_01"
+                              x="-3.0" y="15.0" z="2.58"
                               velocity="0.25" fixed_heading="false"/>
 
           <NavigateToWaypoint name="nav_aruco_02"
-                              x="3.0" y="-1.8" z="2.75"
+                              x="-3.0" y="21.0" z="2.58"
                               velocity="0.25" fixed_heading="false"/>
 
-          <!-- 4. HOMING: join the dock centre line (north 6.5), then straight to the dock approach -->
+          <NavigateToWaypoint name="nav_aruco_03"
+                              x="-3.0" y="27.0" z="2.58"
+                              velocity="0.25" fixed_heading="false"/>
+
+          <NavigateToWaypoint name="nav_aruco_04"
+                              x="-3.0" y="33.0" z="2.58"
+                              velocity="0.25" fixed_heading="false"/>
+
+          <NavigateToWaypoint name="nav_aruco_05"
+                              x="-3.0" y="39.0" z="2.58"
+                              velocity="0.25" fixed_heading="false"/>
+
+          <NavigateToWaypoint name="nav_aruco_06"
+                              x="-3.0" y="45.0" z="2.58"
+                              velocity="0.25" fixed_heading="false"/>
+
+          <!-- 4. HOMING: join the dock centre line (north 6.5), then 39 m along it to the dock approach -->
           <PublishState state="4"/>
           <NavigateToWaypoint name="homing_midpoint"
-                              x="6.5" y="-10.0" z="2.28"
+                              x="6.5" y="20.0" z="2.28"
                               velocity="0.25" fixed_heading="false"/>
 
           <NavigateToWaypoint name="dock_approach"
@@ -100,8 +105,9 @@
           <!-- Rejected: emergency return to dock -->
           <Sequence name="emergency_return">
             <PublishState state="4"/>
+            <!-- join the dock centre line clear of the transit (and of the S1 rock), then the dock approach -->
             <NavigateToWaypoint name="emergency_midpoint"
-                                x="2.0" y="-15.0" z="2.28"
+                                x="6.5" y="-10.0" z="2.28"
                                 velocity="0.4" fixed_heading="false"/>
             <NavigateToWaypoint name="emergency_dock_approach"
                                 x="6.50" y="-19.0" z="2.28"

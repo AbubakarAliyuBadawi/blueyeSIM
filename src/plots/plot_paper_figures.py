@@ -22,6 +22,7 @@ taken from each run's hazard_results.csv, so run plot_hazard_run.py on those run
 
 import argparse
 import csv
+import math
 import os
 
 import numpy as np
@@ -235,7 +236,6 @@ def fig_traces(s1_run, s2_run):
 
 
 RUNS = {"OL": ("Open loop", "#2a78d6"), "CL": ("Closed loop", "#eb6834")}       # validated categorical slots 1 and 2
-ARUCO = {(1.0, -12.5): "ArUco 05", (-2.0, -10.0): "ArUco 06"}               # S2 inspection leg (north, east)
 
 
 def run_series(run):
@@ -302,12 +302,14 @@ def fig_closed_loop(s1_ol, s1_cl, s2_ol, s2_cl):
     ol, cl = runs["OL"], runs["CL"]
     ol["t_haz"] = ol["t_req"] + float(ol["row"]["lead_time_s"])
     t1 = cl["t_hb"] + 15
+    shown = [rock]
     for key, r in runs.items():
         colour = RUNS[key][1]
         dist = H.dist_to_polygon(r["xy"], rock)
         stop = r.get("t_haz", r["t_hb"] + 40 if r["t_hb"] is not None else r["t"][-1])
         m = (r["t"] >= -20) & (r["t"] <= stop)
         ax_m.plot(r["xy"][m, 1], r["xy"][m, 0], color=colour, lw=1.5, zorder=3)
+        shown.append(r["xy"][m & (np.linalg.norm(r["xy"] - rock.mean(0), axis=1) < 3.5)])
         m = (r["t"] >= -5) & (r["t"] <= t1)
         ax_d.plot(r["t"][m], dist[m], color=colour, lw=1.2)
         x, y = at(r, r["t_req"])
@@ -325,24 +327,24 @@ def fig_closed_loop(s1_ol, s1_cl, s2_ol, s2_cl):
     ax_d.set_ylim(0, 5.4)
     ax_d.set_ylabel("Distance to\nrock [m]")
     ax_u.set_xlabel("Time from the first sonar echo of the rock [s]")
-    ax_m.set_xlim(-18.6, -13.4)
-    ax_m.set_ylim(2.2, 6.4)
+    e0, e1, n0, n1 = H.view_box(shown, margin=0.5, min_span=4.0)
+    ax_m.set_xlim(e0, e1)
+    ax_m.set_ylim(n0, n1)
 
     # (b) S2: the same disturbances, open loop drifts on, closed loop hands control to the supervisor
     runs = {"OL": run_series(s2_ol), "CL": run_series(s2_cl)}
-    known, _ = H.footprints(os.path.join(H.SIM, "config", "blueye_config.yaml"))
+    known, _ = H.footprints(H.run_config(os.path.join(PAPER, s2_ol)))
     ax_m, ax_d, ax_u = rows[1]
     for poly in known:
         ax_m.fill(poly[:, 1], poly[:, 0], color="#d9d4cc", lw=0, zorder=1)
-    (n0, e0), (n1, e1) = list(ARUCO)
-    ax_m.plot([e0, e1], [n0, n1], color=INK, lw=0.8, ls=(0, (4, 2)), zorder=2)
-    for (n, e), label in ARUCO.items():
-        ax_m.plot(e, n, "o", mfc="white", mec=INK, mew=0.8, ms=6, zorder=6)
-        ax_m.text(e + 0.45, n - 0.05, label, fontsize=6.5, color=INK, va="center", zorder=6)
-    ax_m.annotate("", xy=(-9.4 - 1.0, 2.6 + 1.0), xytext=(-9.4, 2.6),
-                  arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.4, mutation_scale=9))
-    ax_m.text(-9.4, 2.4, "current", fontsize=6.5, color=INK, ha="center", va="top")
     ol, cl = runs["OL"], runs["CL"]
+    leg = [p for p in H.leg_at(ol["data"], ol["start"], ol["t_inj"] + 0.5) if p is not None]
+    if len(leg) == 2:
+        ax_m.plot([leg[0][1], leg[1][1]], [leg[0][0], leg[1][0]], color=INK, lw=0.8, ls=(0, (4, 2)), zorder=2)
+    for n, e in leg:
+        ax_m.plot(e, n, "o", mfc="white", mec=INK, mew=0.8, ms=6, zorder=6)
+        ax_m.text(e + 0.45, n - 0.05, H.waypoint_label((n, e)), fontsize=6.5, color=INK, va="center", zorder=6)
+    shown = list(leg) + [(n, e + 2.8) for n, e in leg]          # room for the marker labels on the right
     events = [(t - ol["t_inj"], kind, v) for t, kind, v in H.s2_events(ol["data"], ol["start"]) if t >= ol["t_inj"] - 1]
     t1 = max(t for t, *_ in events) + 40
     for key, r in runs.items():
@@ -351,6 +353,7 @@ def fig_closed_loop(s1_ol, s1_cl, s2_ol, s2_cl):
         ax_d.plot([t for t, _ in xt], [d for _, d in xt], color=colour, lw=1.2)
         m = (r["t"] >= -10) & (r["t"] <= t1 + 30)
         ax_m.plot(r["xy"][m, 1], r["xy"][m, 0], color=colour, lw=1.5, zorder=3)
+        shown.append(r["xy"][m])
         x, y = at(r, r["t_req"])
         ax_m.plot(y, x, "v", color=colour, mec=INK, mew=0.6, ms=6, zorder=5)
         if r["t_hb"] is not None:
@@ -373,8 +376,15 @@ def fig_closed_loop(s1_ol, s1_cl, s2_ol, s2_cl):
     ax_d.set_ylim(0, top)
     ax_d.set_ylabel("Off the\nleg [m]")
     ax_u.set_xlabel("Time from the onset of the current [s]")
-    ax_m.set_xlim(-16.5, -8.5)
-    ax_m.set_ylim(-3.2, 4.8)
+    e0, e1, n0, n1 = H.view_box(shown, margin=0.8, min_span=6.0)
+    ax_m.set_xlim(e0, e1)
+    ax_m.set_ylim(n0, n1)
+    size = 0.15 * min(e1 - e0, n1 - n0)
+    direction = math.radians(next(v[1] for t, kind, v in events if kind == "current" and v[0] > 0))
+    tail = (e1 - 0.14 * (e1 - e0), n1 - 0.3 * (n1 - n0))
+    ax_m.annotate("", xy=(tail[0] + size * math.sin(direction), tail[1] + size * math.cos(direction)), xytext=tail,
+                  arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.4, mutation_scale=9))
+    ax_m.text(tail[0], tail[1] - 0.04 * (n1 - n0), "current", fontsize=6.5, color=INK, ha="center", va="top")
 
     for (ax_m, ax_d, _), title in zip(rows, ("(a) S1: obstacle on the transit leg",
                                             "(b) S2: cross-current and loss of the USBL signal during inspection")):

@@ -137,6 +137,7 @@ class TakeoverBayesianNetwork(Node):
         # while the vehicle is within this distance of where the Critical echo was last seen (0 disables)
         self.declare_parameter("sonar_blind_hold_m", 1.0)
         # Known structures are not obstacles: "<mesh>:<key>", placed by <key>_position/_orientation in structures_config
+        # (a <key>_mesh entry there, e.g. pipeline_mesh, replaces the mesh named here)
         self.declare_parameter("mask_known_structures", True)
         self.declare_parameter("known_structures", ["docking_station_rig:docking_rig", "pipe2:pipeline"])
         self.declare_parameter("structures_config", "")      # default: stonefish_sim/config/blueye_config.yaml
@@ -196,6 +197,7 @@ class TakeoverBayesianNetwork(Node):
             polygons = []
             for entry in self.get_parameter("known_structures").value:
                 mesh, key = entry.split(":")
+                mesh = str(config.get(f"{key}_mesh", mesh))          # the scenario config may name the mesh
                 polygons += self._mesh_footprint(os.path.join(meshes, f"{mesh}.obj"), *self._config_pose(config, key))
         except (OSError, KeyError, ValueError) as exc:
             self.get_logger().warning(f"Known structures not loaded, sonar returns are not masked: {exc}")

@@ -19,7 +19,10 @@ blueye_orientation: "0.0 0.0 3.1416"
 # blueye_position: "2.11 -15.35 2.48"
 # blueye_orientation: "0.0 0.0 0.68"
 
-pipeline_position: "1.0 0.5 3.5"
+# Straight 30 m pipe along +east from (-3, 15) to (-3, 45), resting on the shallowest seabed point under it
+# (centre 3.37 m, top 3.22 m); markers every 6 m. Earlier layout: pipe2, "1.0 0.5 3.5".
+pipeline_mesh: "pipe_straight"
+pipeline_position: "-3.0 15.0 3.37"
 pipeline_orientation: "0.0 0.0 0.0"
 
 docking_rig_position: "8.0 -21.0 3.9"
@@ -40,8 +43,8 @@ oil_platform_orientation: "1.5708 0.0 0.0"
 rock_position: "0.0 -18.0 3.0"
 rock_orientation: "1.5708 3.1416 1.5708"
 
-# S1 rock on the transit leg: on the recorded transit track 5.9 m from exit_dock (3.6 m before ArUco 05), wide side
-# across the track (yaw 34 deg), depth 2.10 (top) to 3.60 (bottom, 0.1 m into the seabed).
-# Run variations: centred "3.3 -15.7 2.87"; 0.3 m to one side "3.05 -15.87 2.87"; to the other "3.55 -15.53 2.87".
-transit_rock_position: "3.3 -15.7 2.87"
-transit_rock_orientation: "0.0 0.0 0.593"
+# S1 rock on the transit leg, two thirds of the way from exit_dock to the pipeline (24.6 m), wide side across
+# the track (yaw 15 deg), depth 2.02 (top) to 3.52 (bottom, on the seabed).
+# Run variations: centred "0.10 3.08 2.79"; 0.3 m to one side "0.39 3.16 2.79"; to the other "-0.19 3.01 2.79".
+transit_rock_position: "0.10 3.08 2.79"
+transit_rock_orientation: "0.0 0.0 0.260"

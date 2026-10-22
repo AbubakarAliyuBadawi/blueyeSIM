@@ -141,7 +141,7 @@ def footprints(config_path):
         w = np.stack([x + c * v[:, 0] - s * v[:, 1], y + s * v[:, 0] + c * v[:, 1]], axis=1)
         return [w[f] for f in fs]
 
-    known = faces("docking_station_rig", "docking_rig") + faces("pipe2", "pipeline")
+    known = faces("docking_station_rig", "docking_rig") + faces(str(config.get("pipeline_mesh", "pipe2")), "pipeline")
     rock = None
     if "transit_rock_position" in config:
         pts = mesh_xy("rock", "transit_rock", 0.15)
@@ -252,6 +252,59 @@ def leg_cross_track(data, start):
         t = 0.0 if ab @ ab < 1e-9 else float(np.clip((ap @ ab) / (ab @ ab), 0.0, 1.0))
         out.append((o[0] - start, float(np.linalg.norm(p - (a + t * ab)))))
     return out
+
+
+def run_config(plot_dir):
+    """Scenario config a run was recorded with, stored next to its results (obstacle_config.yaml for S1 runs,
+    scenario_config.yaml otherwise); the current simulator config if neither is there."""
+    for name in ("obstacle_config.yaml", "scenario_config.yaml"):
+        if os.path.exists(os.path.join(plot_dir, name)):
+            return os.path.join(plot_dir, name)
+    return os.path.join(SIM, "config", "blueye_config.yaml")
+
+
+# inspection waypoints of the earlier layout (zig-zag pipe), for plan views of the runs recorded with it
+LAYOUT_V3_WAYPOINTS = {(1.0, -12.5): "nav_aruco_05", (-2.0, -10.0): "nav_aruco_06", (1.0, -7.0): "nav_aruco_04",
+                       (2.0, -4.5): "nav_aruco_03", (3.0, -1.8): "nav_aruco_02"}
+
+
+def waypoint_names():
+    """{(north, east) rounded to 0.1 m: name} of the waypoints in TestMission.xml and of the earlier layout;
+    inspection waypoints (nav_aruco_*) win where two share a position."""
+    xml = open(os.path.join(SRC, "blueye_stonefish_bt", "behavior_trees", "TestMission.xml"), encoding="utf-8").read()
+    out = dict(LAYOUT_V3_WAYPOINTS)
+    for m in re.finditer(r"<NavigateToWaypoint([^>]*)/?>", xml):
+        a = dict(re.findall(r'(\w+)="([^"]*)"', m.group(1)))
+        if "x" in a and "y" in a:
+            key = (round(float(a["x"]), 1), round(float(a["y"]), 1))
+            if key not in out or a.get("name", "").startswith("nav_aruco"):
+                out[key] = a.get("name", "")
+    return out
+
+
+def waypoint_label(point):
+    name = waypoint_names().get((round(point[0], 1), round(point[1], 1)), "")
+    return f"ArUco {name[-2:]}" if name.startswith("nav_aruco") else (name.replace("_", " ") or "waypoint")
+
+
+def leg_at(data, start, t):
+    """(start, goal) as (north, east) of the waypoint leg the vehicle was on at mission time t."""
+    goals = [(ts - start, (g[0], g[1])) for ts, *g in data["/blueye/waypoint_goal"]]
+    k = max((i for i, (ts, _) in enumerate(goals) if ts <= t), default=None)
+    if k is None:
+        return None, None
+    return (goals[k - 1][1] if k > 0 else None), goals[k][1]
+
+
+def view_box(points, margin=0.8, min_span=4.0):
+    """(east_min, east_max, north_min, north_max) around arrays of (north, east) points."""
+    pts = np.concatenate([np.atleast_2d(np.asarray(p, float)) for p in points if p is not None and len(p)])
+    (n0, e0), (n1, e1) = pts.min(0) - margin, pts.max(0) + margin
+    if n1 - n0 < min_span:
+        n0, n1 = (n0 + n1 - min_span) / 2, (n0 + n1 + min_span) / 2
+    if e1 - e0 < min_span:
+        e0, e1 = (e0 + e1 - min_span) / 2, (e0 + e1 + min_span) / 2
+    return e0, e1, n0, n1
 
 
 def s2_results(args, data, name, out, start, end_bag, thr, mode):

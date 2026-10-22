@@ -1,7 +1,7 @@
 # Plots
 
 Scripts stay in this folder; their output goes into one folder per run, named exactly like the run in
-`src/rosbags/`.
+`src/rosbags/`. A run's folder also keeps the simulator config it was recorded with (`scenario_config.yaml`, or `obstacle_config.yaml` for S1); the scripts use it, so runs of the earlier layout are drawn in their own layout.
 
 | Folder | What is in it |
 |---|---|
@@ -19,7 +19,8 @@ Scripts stay in this folder; their output goes into one folder per run, named ex
 | Script | Use |
 |---|---|
 | `plot_nominal_run.py` | Paper figures and tables for one run. |
-| `plot_mission_plan.py` | Plan view of the mission: waypoints read from the behaviour tree, markers from `pipe.scn`. Rerun after changing the mission. |
+| `plot_mission_plan.py` | Plan view of the mission: waypoints read from the behaviour tree, markers from `pipe.scn`, structures placed by the simulator config (the pipe mesh from its `pipeline_mesh` key). The view follows the route. Rerun after changing the mission. |
+| `plot_layout_proposal.py` | The v4 layout as proposed, over the seabed depth of the Stonefish world, with the estimated mission timeline (`paper/mission_plan/layout_proposal`). |
 | `plot_hazard_run.py` | Results of one hazard-scenario run: `hazard_timeline` (Fig. 9 panel), `hazard_results.csv/.md` (one row of the results table), `hazard_summary.txt`. Run with `--scenario S1` (injection found automatically from the first sonar echo off the rock), `--scenario S2` (injection = first current onset, read from `/scenario/events` or the `sim_current` log; also reports the time from the USBL cut and the distance off the leg; the S2 window ends 40 s after the last disturbance, or 30 s after the hand-back when that is later) or `--injection <s>`. |
 | `plot_paper_figures.py` | The two simulation figures of the paper, in `paper/sim_results/`: `sim_nominal_mission` (phase, recommendation posteriors, U for one nominal run) `sim_traces` (S1 and S2 open-loop traces: evidence strip and U), `sim_closed_loop` (open against closed loop, S1 and S2) and `explanation_example` (the S1 and S2 requests traced through the network with the rows of the arc trace). `--only <figure>` makes one of them. Run `plot_hazard_run.py` on the S1 and S2 runs first. |
 | `analyse_runs.py` | The results table (mean ± SD over all runs in `rosbags/paper/`) and the S0 numbers for the text, in `paper/sim_results/`. Run `plot_hazard_run.py` on every hazard run first; S1 runs with a moved rock keep their rock config in `paper/<run>/obstacle_config.yaml`, pass it with `--config`. |

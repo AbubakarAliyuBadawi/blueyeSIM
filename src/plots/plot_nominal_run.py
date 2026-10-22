@@ -539,8 +539,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("bag_path", help="rosbag2 directory")
     parser.add_argument("--out", default=None, help="output directory (default: src/plots/paper/<bag_name>/)")
-    parser.add_argument("--config", default=None, help="scenario config with the structure poses "
-                        "(default: stonefish_sim/config/blueye_config.yaml)")
+    parser.add_argument("--config", default=None, help="scenario config with the structure poses (default: the run's stored "
+                        "scenario_config.yaml or obstacle_config.yaml, else stonefish_sim/config/blueye_config.yaml)")
     parser.add_argument("--obstacle-config", default=None, help="scenario config with transit_rock_position/"
                         "orientation (e.g. stonefish_sim/config/blueye_obstacle_config.yaml) to draw the rock")
     args = parser.parse_args()
@@ -551,9 +551,16 @@ def main():
 
     from ament_index_python.packages import get_package_share_directory
     share = get_package_share_directory("stonefish_sim")
-    config = args.config or os.path.join(share, "config", "blueye_config.yaml")
+    # the layout the run was recorded in: its stored config if there is one, else the current simulator config
+    stored = [os.path.join(out, n) for n in ("scenario_config.yaml", "obstacle_config.yaml")
+              if os.path.exists(os.path.join(out, n))]
+    config = args.config or (stored[0] if stored else os.path.join(share, "config", "blueye_config.yaml"))
+    if args.obstacle_config is None and os.path.exists(os.path.join(out, "obstacle_config.yaml")):
+        args.obstacle_config = os.path.join(out, "obstacle_config.yaml")
+    with open(config) as fh:                                  # the scenario config may name the pipeline mesh
+        pipe_mesh = str(yaml.safe_load(fh).get("pipeline_mesh", "pipe2"))
     grids = structure_grid(config, os.path.join(share, "data", "object_files"),
-                           [("docking_station_rig", "docking_rig"), ("pipe2", "pipeline")])
+                           [("docking_station_rig", "docking_rig"), (pipe_mesh, "pipeline")])
 
     print(f"Reading {bag} ...")
     data = load_bag(bag)

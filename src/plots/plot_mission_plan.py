@@ -116,11 +116,13 @@ def main():
     start_n, start_e, _ = pose(config, "blueye")
     tags = markers(share, config)
 
-    fig, ax = plt.subplots(figsize=(7.2, 3.7))
+    fig, ax = plt.subplots(figsize=(7.2, 3.4))
+    structures = []
     for faces, colour in [(footprint(share, config, "docking_station_rig", "docking_rig"), DOCK_FILL),
-                          (footprint(share, config, "pipe2", "pipeline"), PIPE_FILL)]:
+                          (footprint(share, config, str(config.get("pipeline_mesh", "pipe2")), "pipeline"), PIPE_FILL)]:
         for f in faces:
             ax.add_patch(Polygon(f[:, ::-1], closed=True, color=colour, lw=0, zorder=1))
+            structures.append(f)
 
     # waypoints in order; consecutive steps at the same position (transit end = first marker, heading hold) merge
     points = []
@@ -152,54 +154,67 @@ def main():
         h, c, s = 0.09, math.cos(yaw), math.sin(yaw)
         sq = np.array([[-h, -h], [h, -h], [h, h], [-h, h]]) @ np.array([[c, s], [-s, c]]) + [n, e]
         ax.add_patch(Polygon(sq[:, ::-1], closed=True, color=INK if name in visited else "#9b9a95", zorder=3))
-        if name not in visited:
-            ax.annotate(f"ArUco {name[-2:]}\n(not visited)", (e, n), xytext=(4, -22), textcoords="offset points",
-                        fontsize=6.5, color=INK_MUTED)
 
+    # waypoint circles; inspection waypoints get the marker number below the pipe, the others name and position
     for i, p in enumerate(points, 1):
-        ax.plot(p["e"], p["n"], "o", mfc="white", mec=INK, mew=1.0, ms=12, zorder=5)
-        ax.text(p["e"], p["n"], str(i), ha="center", va="center", fontsize=7, fontweight="bold", color=INK, zorder=6)
-        key = next((nm for nm in p["names"] if nm in OFFSETS), p["names"][0])
-        label = next((NAMES[nm] for nm in p["names"] if nm in NAMES), None) or \
-            next((f"ArUco {nm[-2:]}" for nm in p["names"] if nm.startswith("nav_aruco")), p["names"][0])
-        text = f"{label}\n({p['n']:.1f}, {p['e']:.1f}), z {p['z']:.2f} m"
-        if p["hold"]:
-            text += "\nface the dock, 30 s"
-        ax.annotate(text, (p["e"], p["n"]), xytext=OFFSETS.get(key, (8, 6)), textcoords="offset points",
-                    fontsize=6.5, color=INK)
-    ax.plot(start_e, start_n, "D", color=INK, ms=5.5, zorder=6)
+        ax.plot(p["e"], p["n"], "o", mfc="white", mec=INK, mew=1.0, ms=10, zorder=5)
+        ax.text(p["e"], p["n"], str(i), ha="center", va="center", fontsize=6.5, fontweight="bold", color=INK, zorder=6)
+        aruco = next((nm for nm in p["names"] if nm.startswith("nav_aruco")), None)
+        if aruco:
+            text = f"ArUco {aruco[-2:]}"
+            if aruco.endswith("01"):
+                text += f"\n({p['n']:.1f}, {p['e']:.1f})\nz {p['z']:.2f} m"
+            ax.annotate(text, (p["e"], p["n"]), xytext=(0, -11), textcoords="offset points", ha="center", va="top",
+                        fontsize=6.3, color=INK)
+            continue
+        label = next((NAMES[nm] for nm in p["names"] if nm in NAMES), p["names"][0])
+        text = f"{label}\n({p['n']:.1f}, {p['e']:.1f}), z {p['z']:.2f} m" + ("\nface the dock, 30 s" if p["hold"] else "")
+        below = p["names"][0] == "exit_dock"
+        ax.annotate(text, (p["e"], p["n"]), xytext=(4, -11) if below else (4, 9), textcoords="offset points",
+                    ha="left", va="top" if below else "bottom", fontsize=6.3, color=INK)
+    ax.plot(start_e, start_n, "D", color=INK, ms=5, zorder=6)
 
-    # phase names on the route (text in ink; the colour is only on the arrows)
-    def mid(i, j, dn=0.0, de=0.0):
-        return (points[i]["e"] + points[j]["e"]) / 2 + de, (points[i]["n"] + points[j]["n"]) / 2 + dn
-    phase_idx = {}
+    # leg lengths and phase names along the route (text in ink; the colour is only on the arrows)
+    def along(a, b, label, dn=0.0, rotate=True):
+        angle = math.degrees(math.atan2(b["n"] - a["n"], b["e"] - a["e"])) if rotate else 0.0
+        if angle > 90 or angle < -90:
+            angle -= 180 * (1 if angle > 0 else -1)
+        ax.text((a["e"] + b["e"]) / 2, (a["n"] + b["n"]) / 2 + dn, label, fontsize=6.8, color=INK, ha="center",
+                va="bottom", rotation=angle, rotation_mode="anchor", fontstyle="italic")
+    first = {}
     for i, p in enumerate(points):
-        phase_idx.setdefault(p["phase"], []).append(i)
-    if 2 in phase_idx and 1 in phase_idx:
-        e, n = mid(phase_idx[1][-1], phase_idx[2][0], dn=-0.9, de=-0.8)
-        ax.text(e, n, "Transit", fontsize=7, color=INK, rotation=-34, ha="center", fontstyle="italic")
-    if 3 in phase_idx:
-        e, n = mid(phase_idx[3][0], phase_idx[3][-1], dn=-2.2)
-        ax.text(e, n, "Inspection", fontsize=7, color=INK, ha="center", fontstyle="italic")
-    if 4 in phase_idx:
-        e, n = mid(phase_idx[4][0], phase_idx[4][-1], dn=0.35)
-        ax.text(e, n, "Homing", fontsize=7, color=INK, ha="center", fontstyle="italic")
+        first.setdefault(p["phase"], i)
+    last = {ph: max(i for i, p in enumerate(points) if p["phase"] == ph) for ph in first}
+    if 1 in first and 3 in first:                                  # transit: dock exit -> first inspection point
+        a, b = points[last[1]], points[first[3] if first.get(2) is None else first[2]]
+        along(a, b, f"Transit {math.hypot(b['n'] - a['n'], b['e'] - a['e']):.0f} m", dn=0.6)
+    if 3 in first:                                                 # from the transit end, which is the first marker
+        a, b = points[last[2]] if 2 in last else points[first[3]], points[last[3]]
+        along(a, b, f"Inspection {math.hypot(b['n'] - a['n'], b['e'] - a['e']):.0f} m", dn=1.4)
+    if 4 in first:
+        prev_p = points[last[3]] if 3 in last else points[first[4]]
+        for i in range(first[4], last[4] + 1):
+            a, b = (prev_p if i == first[4] else points[i - 1]), points[i]
+            along(a, b, f"{'Homing ' if i == first[4] else ''}{math.hypot(b['n'] - a['n'], b['e'] - a['e']):.0f} m",
+                  dn=0.5)
 
     handles = [Line2D([], [], color=PHASES[p][1], lw=2, ls="--" if p == 5 else "-", label=PHASES[p][0])
                for p in sorted(PHASES)]
     handles += [Patch(color=DOCK_FILL, label="Docking station"), Patch(color=PIPE_FILL, label="Pipeline"),
                 Line2D([], [], marker="s", color=INK, ls="", ms=5, label="ArUco marker (inspected)"),
-                Line2D([], [], marker="s", color="#9b9a95", ls="", ms=5, label="ArUco marker (not visited)"),
-                Line2D([], [], marker="D", color=INK, ls="", ms=5.5, label="Start / end (docked)"),
-                Line2D([], [], marker="o", mfc="white", mec=INK, ls="", ms=9, label="Waypoint (order)")]
-    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(1.01, 1.0), frameon=False)
+                Line2D([], [], marker="D", color=INK, ls="", ms=5, label="Start / end (docked)"),
+                Line2D([], [], marker="o", mfc="white", mec=INK, ls="", ms=8, label="Waypoint (order)")]
+    if len(visited) < len(tags):
+        handles.insert(-2, Line2D([], [], marker="s", color="#9b9a95", ls="", ms=5, label="ArUco marker (not visited)"))
+    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=5, frameon=False)
     ax.set_aspect("equal")
     ax.set_xlabel("East [m]", color=INK)
     ax.set_ylabel("North [m]", color=INK)
     ax.grid(color=GRID, lw=0.6)
     ax.set_axisbelow(True)
-    ax.set_xlim(-24.5, 1.8)
-    ax.set_ylim(-3.2, 9.2)
+    allpts = np.concatenate([np.array([[p["n"], p["e"]] for p in points] + [[start_n, start_e]])] + structures)
+    ax.set_xlim(allpts[:, 1].min() - 2.5, allpts[:, 1].max() + 4.5)
+    ax.set_ylim(allpts[:, 0].min() - 7.0, allpts[:, 0].max() + 5.5)
     for ext in ("pdf", "png"):
         fig.savefig(os.path.join(args.out, f"mission_plan.{ext}"), dpi=300, bbox_inches="tight")
     print(f"Saved {os.path.join(args.out, 'mission_plan')}.pdf/.png")

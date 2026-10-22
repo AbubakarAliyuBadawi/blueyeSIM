@@ -4,14 +4,16 @@
     <aruco_z_offset>-0.11</aruco_z_offset>
   </variables>
 
+  <!-- Straight 30 m pipe (pipe_straight.obj, along +y from the pipeline origin), markers aruco_01..06 every 6 m
+       on its top. The zig-zag pipe2.obj of the earlier layout is kept in object_files. -->
   <robot name="pipeline_new" fixed="true" self_collisions="false">
     <base_link name="pipe_base" type="model" physics="submerged">
       <physical>
-        <mesh filename="object_files/pipe2.obj" scale="1.0"/>
+        <mesh filename="object_files/pipe_straight.obj" scale="1.0"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </physical>
       <visual>
-        <mesh filename="object_files/pipe2.obj" scale="1.0"/>
+        <mesh filename="object_files/pipe_straight.obj" scale="1.0"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
       <material name="Neutral"/>
@@ -22,7 +24,7 @@
       <dimensions xyz="0.15 0.15 0.002"/>
       <material name="Neutral"/>
       <look name="Aruco5x5_21" uv_mode="1"/>
-      <origin xyz="0.0 -1.0 -0.15" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0.0 0.0 -0.16" rpy="0.0 0.0 0.0"/>
     </link>
     <joint name="aruco_01_joint" type="fixed">
       <parent name="pipe_base"/>
@@ -34,7 +36,7 @@
       <dimensions xyz="0.15 0.15 0.002"/>
       <material name="Neutral"/>
       <look name="Aruco5x5_22" uv_mode="1"/>
-      <origin xyz="2.0 -2.3 -0.15" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0.0 6.0 -0.16" rpy="0.0 0.0 0.0"/>
     </link>
     <joint name="aruco_02_joint" type="fixed">
       <parent name="pipe_base"/>
@@ -46,7 +48,7 @@
       <dimensions xyz="0.15 0.15 0.002"/>
       <material name="Neutral"/>
       <look name="Aruco5x5_23" uv_mode="1"/>
-      <origin xyz="1.0 -5.0 -0.15" rpy="0.0 0.0 0.7854"/>
+      <origin xyz="0.0 12.0 -0.16" rpy="0.0 0.0 0.0"/>
     </link>
     <joint name="aruco_03_joint" type="fixed">
       <parent name="pipe_base"/>
@@ -58,7 +60,7 @@
       <dimensions xyz="0.15 0.15 0.002"/>
       <material name="Neutral"/>
       <look name="Aruco5x5_24" uv_mode="1"/>
-      <origin xyz="0.0 -7.5 -0.15" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0.0 18.0 -0.16" rpy="0.0 0.0 0.0"/>
     </link>
     <joint name="aruco_04_joint" type="fixed">
       <parent name="pipe_base"/>
@@ -70,7 +72,7 @@
       <dimensions xyz="0.15 0.15 0.002"/>
       <material name="Neutral"/>
       <look name="Aruco5x5_25" uv_mode="1"/>
-      <origin xyz="0.0 -13.0 -0.15" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0.0 24.0 -0.16" rpy="0.0 0.0 0.0"/>
     </link>
     <joint name="aruco_05_joint" type="fixed">
       <parent name="pipe_base"/>
@@ -82,7 +84,7 @@
       <dimensions xyz="0.15 0.15 0.002"/>
       <material name="Neutral"/>
       <look name="Aruco5x5_26" uv_mode="1"/>
-      <origin xyz="-3.0 -10.5 -0.15" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0.0 30.0 -0.16" rpy="0.0 0.0 0.0"/>
     </link>
     <joint name="aruco_06_joint" type="fixed">
       <parent name="pipe_base"/>

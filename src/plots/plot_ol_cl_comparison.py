@@ -86,10 +86,12 @@ def compare_s1(args):
     # (a) plan view around the rock (east horizontal, north vertical)
     ax_map.fill(rock[:, 1], rock[:, 0], color=MUTED, lw=0, zorder=2)
     ax_map.text(rock[:, 1].mean() + 0.35, rock[:, 0].mean() - 0.35, "rock", fontsize=7, color=MUTED)
+    shown = [rock]
     for key, r in runs.items():
         label, colour = RUNS[key]
         m = (r["t"] >= r["t_inj"] - 20) & (r["t"] <= (r["t_haz"] if r["t_haz"] is not None else (r["t_hb"] or r["t"][-1]) + 45))
         ax_map.plot(r["xy"][m, 1], r["xy"][m, 0], color=colour, lw=1.6, label=label, zorder=3)
+        shown.append(r["xy"][m & (np.linalg.norm(r["xy"] - rock.mean(0), axis=1) < 3.5)])
         k_req = int(np.searchsorted(r["t"], r["t_req"]))
         ax_map.plot(r["xy"][k_req, 1], r["xy"][k_req, 0], "v", color=colour, mec=INK, mew=0.6, ms=6, zorder=5)
         if r["t_haz"] is not None:
@@ -104,8 +106,9 @@ def compare_s1(args):
         Line2D([], [], marker="^", color="white", mec=INK, ls="", ms=6, label="Hand-back (closed loop)")]
     ax_map.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=2, frameon=False, fontsize=6.5)
     ax_map.set_aspect("equal")
-    ax_map.set_xlim(-18.6, -13.4)
-    ax_map.set_ylim(2.2, 6.4)
+    e0, e1, n0, n1 = H.view_box(shown, margin=0.5, min_span=4.0)
+    ax_map.set_xlim(e0, e1)
+    ax_map.set_ylim(n0, n1)
     ax_map.set_xlabel("East [m]")
     ax_map.set_ylabel("North [m]")
     ax_map.grid(color="#e4e3df", lw=0.6)
@@ -177,7 +180,6 @@ def compare_s1(args):
 
 # ── S2: water current and USBL loss during inspection ─────────────────────────
 
-ARUCO = {(1.0, -12.5): "ArUco 05", (-2.0, -10.0): "ArUco 06"}      # inspection waypoints inside the S2 view (N, E)
 
 
 def analyse_s2(bag):
@@ -192,7 +194,8 @@ def analyse_s2(bag):
     t = np.array([o[0] - start for o in odom])
     ev = [(ts - start, e) for ts, e in data["/blueye/takeover_request/evidence"]]
     urg = [(ts - start, v) for ts, v in data["/blueye/takeover_request/urgency"]]
-    r = {"name": os.path.basename(os.path.normpath(bag)), "t": t, "xy": np.array([[o[1], o[2]] for o in odom]),
+    r = {"name": os.path.basename(os.path.normpath(bag)), "data": data, "start": start,
+         "t": t, "xy": np.array([[o[1], o[2]] for o in odom]),
          "urg": urg, "thr": thr, "t_inj": t_inj, "t_cut": t_cut, "t_back": t_back, "end": float(t[-1]),
          "xt": H.leg_cross_track(data, start), "goals": [(g[1], g[2]) for g in data["/blueye/waypoint_goal"]],
          "currents": [(ts, v[0], v[1]) for ts, kind, v in events if kind == "current"]}
@@ -239,7 +242,7 @@ def same_disturbances(a, b, tol=1.0):
 
 
 def compare_s2(args):
-    known, _ = H.footprints(args.config or os.path.join(H.SIM, "config", "blueye_config.yaml"))   # pipe and dock
+    known, _ = H.footprints(args.config or H.run_config(os.path.join(HERE, "paper", os.path.basename(os.path.normpath(args.ol)))))
     runs = {"OL": analyse_s2(os.path.abspath(args.ol)), "CL": analyse_s2(os.path.abspath(args.cl))}
     ol, cl = runs["OL"], runs["CL"]
     t_max = max(r["t_end"] - r["t_inj"] for r in runs.values())
@@ -254,24 +257,29 @@ def compare_s2(args):
     # (a) plan view of the inspection leg (east horizontal, north vertical)
     for poly in known:
         ax_map.fill(poly[:, 1], poly[:, 0], color="#d9d4cc", lw=0, zorder=1)
-    (n0, e0), (n1, e1) = list(ARUCO)
-    ax_map.plot([e0, e1], [n0, n1], color=INK, lw=0.8, ls=(0, (4, 2)), zorder=2)
-    for (n, e), label in ARUCO.items():
+    leg = [p for p in H.leg_at(ol["data"], ol["start"], ol["t_inj"] + 0.5) if p is not None]
+    if len(leg) == 2:
+        ax_map.plot([leg[0][1], leg[1][1]], [leg[0][0], leg[1][0]], color=INK, lw=0.8, ls=(0, (4, 2)), zorder=2)
+    for n, e in leg:
         ax_map.plot(e, n, "o", mfc="white", mec=INK, mew=0.8, ms=7, zorder=6)
-        ax_map.text(e + 0.45, n - 0.05, label, fontsize=6.5, color=INK, va="center", zorder=6)
+        ax_map.text(e + 0.45, n - 0.05, H.waypoint_label((n, e)), fontsize=6.5, color=INK, va="center", zorder=6)
+    shown = list(leg) + [(n, e + 2.8) for n, e in leg]          # room for the marker labels on the right
     for key, r in runs.items():
         label, colour = RUNS[key]
         stop = r["t_end"] + 30
         m = (r["t"] >= r["t_inj"] - 10) & (r["t"] <= stop)
         ax_map.plot(r["xy"][m, 1], r["xy"][m, 0], color=colour, lw=1.5, label=label, zorder=3)
+        shown.append(r["xy"][m])
         for ts, marker in ((r["t_cut"], "X"), (r["t_req"], "v"), (r["t_hb"], "^")):
             if ts is not None:
                 k = min(int(np.searchsorted(r["t"], ts)), len(r["t"]) - 1)
                 ax_map.plot(r["xy"][k, 1], r["xy"][k, 0], marker, color=colour, mec=INK, mew=0.6, ms=6, zorder=5)
-    direction = math.radians(ol["currents"][0][2])
-    ax_map.annotate("", xy=(-9.4 + 1.4 * math.sin(direction), 2.6 + 1.4 * math.cos(direction)), xytext=(-9.4, 2.6),
+    e0, e1, n0, n1 = H.view_box(shown, margin=0.8, min_span=6.0)
+    size, direction = 0.15 * min(e1 - e0, n1 - n0), math.radians(ol["currents"][0][2])
+    tail = (e1 - 0.14 * (e1 - e0), n1 - 0.3 * (n1 - n0))
+    ax_map.annotate("", xy=(tail[0] + size * math.sin(direction), tail[1] + size * math.cos(direction)), xytext=tail,
                     arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.6, mutation_scale=10))
-    ax_map.text(-9.4, 2.4, "water\ncurrent", fontsize=6.5, color=MUTED, ha="center", va="top")
+    ax_map.text(tail[0], tail[1] - 0.04 * (n1 - n0), "water\ncurrent", fontsize=6.5, color=MUTED, ha="center", va="top")
     handles = [Line2D([], [], color=RUNS[k][1], lw=1.5, label=RUNS[k][0]) for k in RUNS] + [
         Line2D([], [], color=INK, lw=0.8, ls=(0, (4, 2)), label="Planned leg"),
         Line2D([], [], marker="X", color="white", mec=INK, ls="", ms=6, label="USBL cut"),
@@ -279,8 +287,8 @@ def compare_s2(args):
         Line2D([], [], marker="^", color="white", mec=INK, ls="", ms=6, label="Hand-back (closed loop)")]
     ax_map.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=2, frameon=False, fontsize=6.5)
     ax_map.set_aspect("equal")
-    ax_map.set_xlim(-16.5, -8.5)
-    ax_map.set_ylim(-3.2, 4.8)
+    ax_map.set_xlim(e0, e1)
+    ax_map.set_ylim(n0, n1)
     ax_map.set_xlabel("East [m]")
     ax_map.set_ylabel("North [m]")
     ax_map.grid(color="#e4e3df", lw=0.6)
@@ -385,8 +393,8 @@ def main():
     args = parser.parse_args()
     args.out = args.out or os.path.join(HERE, "paper", {"S1": "s1_obstacle_comparison", "S2": "s2_current_usbl_comparison"}[args.scenario])
     os.makedirs(args.out, exist_ok=True)
-    if args.scenario == "S1":
-        args.config = args.config or os.path.join(H.SIM, "config", "blueye_obstacle_config.yaml")
+    if args.scenario == "S1":                       # the rock of the open-loop run, as it was recorded
+        args.config = args.config or H.run_config(os.path.join(HERE, "paper", os.path.basename(os.path.normpath(args.ol))))
         compare_s1(args)
     else:
         compare_s2(args)

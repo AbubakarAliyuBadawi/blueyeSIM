@@ -1,0 +1,38 @@
+# blueye position for probAI
+# blueye_position: "2.69 -17.68 2.7"
+
+# blueye position for pipeline test
+# blueye_position: "7.0 -10.14 2.48"
+
+# blueye position for docking test
+# blueye_position: "7.0 -19.0 2.7"
+
+# blueye docked (full mission, TestMission.xml)
+blueye_position: "6.6 -22.51 2.50"
+blueye_orientation: "0.0 0.0 3.1416"
+
+# blueye at the homing midpoint (2.0, -15.0, 2.28), facing back towards the pipeline (heading +129 deg),
+# for the docking test (DockingFromHoming.xml)
+# blueye_position: "2.11 -15.35 2.48"
+# blueye_orientation: "0.0 0.0 0.68"
+
+pipeline_position: "1.0 0.5 3.5"
+pipeline_orientation: "0.0 0.0 0.0"
+
+docking_rig_position: "8.0 -21.0 3.9"
+docking_rig_orientation: "0.0 0.0 3.14"
+
+pier_position: "0.0 0.0 0.0"
+pier_orientation: "0.0 0.0 0.0"
+
+underwater_terreain_position: "0.0 0.0 3.0"
+underwater_terreain_orientation: "0.0 0.0 0.0"
+
+pier_pillers_position: "3.0 -2.0 2.8"
+pier_pillers_orientation: "1.5708 3.1416 0.0"
+
+oil_platform_position: "20.0 -10.0 0.0"
+oil_platform_orientation: "1.5708 0.0 0.0"
+
+rock_position: "0.0 -18.0 3.0"
+rock_orientation: "1.5708 3.1416 1.5708"
