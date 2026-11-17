@@ -147,10 +147,16 @@ def main():
         rclpy.spin(node)
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
+    except Exception:
+        if rclpy.ok():           # at Ctrl+C the context can be gone before spin returns: not an error then
+            raise
     finally:
-        node.destroy_node()
-        if rclpy.ok():
-            rclpy.shutdown()
+        try:                     # Ctrl+C reaches this node twice under ros2 launch: the second one lands here
+            node.destroy_node()
+            if rclpy.ok():
+                rclpy.shutdown()
+        except KeyboardInterrupt:
+            pass
 
 
 if __name__ == "__main__":

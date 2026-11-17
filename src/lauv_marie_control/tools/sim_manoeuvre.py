@@ -113,10 +113,10 @@ def commands_from_log(path, t0, t1, elevator_trim=0.0, elevators=True):
         d[name] = d[name] - elevator_trim if elevators else 0.0
     t = np.arange(0.0, t1 - t0, 0.05)
     col = lambda name: np.interp(t, d.t.to_numpy() - t0, d[name].to_numpy())          # noqa: E731
-    # vehicle: servos 0 and 3 the rudders (positive: to port), 1 and 2 the elevators (positive: nose down).
-    # Which servo of a pair is the upper or the port fin is not known: 0 is taken as top, 1 as port.
+    # vehicle (DUNE, etc/common/vsim-models.ini): servo 0 the lower and 3 the upper rudder (positive: to port), 1 the port
+    # and 2 the starboard elevator (positive: nose down); simulator order: top, bottom, port, starboard
     return [(float(a), float(b), [float(-c), float(-d_), float(e), float(f)])
-            for a, b, c, d_, e, f in zip(t, col("rpm"), col("fin0"), col("fin3"), col("fin1"), col("fin2"))], d
+            for a, b, c, d_, e, f in zip(t, col("rpm"), col("fin3"), col("fin0"), col("fin1"), col("fin2"))], d
 
 
 def main():
@@ -164,7 +164,8 @@ def main():
     sim = subprocess.Popen(
         ["ros2", "run", "stonefish_ros2", "stonefish_simulator_nogpu", os.path.join(share, "data"), scenario_path,
          "100.0", "--ros-args", "-r", "__ns:=/stonefish_ros2",
-         "-p", f"lauv_marie_position:=0.0 0.0 {changes.get('depth', '10.0')}", "-p", "lauv_marie_orientation:=0.0 0.0 0.0"],
+         "-p", f"lauv_marie_position:=0.0 0.0 {changes.get('depth', '10.0')}", "-p", "lauv_marie_orientation:=0.0 0.0 0.0",
+         "-p", "lauv_marie_seabed_depth:=100.0"],
         stdout=open(os.path.join(work, "sim.log"), "w"), stderr=subprocess.STDOUT, start_new_session=True)
     try:
         rclpy.init()

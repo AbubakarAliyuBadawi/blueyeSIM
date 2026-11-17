@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<!-- LAUV Marie in open water: flat seabed at 30 m, no current, no waves -->
+<!-- LAUV Marie in open water: flat seabed (depth lauv_marie_seabed_depth of the scenario config, 30 m; 100 m
+     when DUNE flies her, the depth of DUNE's own simulated sea), no current, no waves -->
 <scenario>
   <environment>
     <ned latitude="63.446827" longitude="10.421906"/>
@@ -23,6 +24,6 @@
   <static name="Seabed" type="plane">
     <material name="Rock"/>
     <look name="Brown"/>
-    <world_transform xyz="0.0 0.0 30.0" rpy="0.0 0.0 0.0"/>
+    <world_transform xyz="0.0 0.0 $(param lauv_marie_seabed_depth)" rpy="0.0 0.0 0.0"/>
   </static>
 </scenario>

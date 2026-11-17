@@ -8,8 +8,11 @@
 
   What is from the vehicle, and what is assumed:
     geometry        the AUR-Lab Blender model (hull 2.05 m long, 0.184 m diameter)
-    mass            47.8 kg = displaced volume (mesh_info) x 1025 kg/m3, i.e. neutrally buoyant. Assumed: the MSS model
-                    (lauvMarie.m) uses the published 34 kg with a 0.15 m hull
+    mass            47.4 kg: 0.4 kg (0.8 %) less than the displaced volume (mesh_info) x 1025 kg/m3, so she floats up when
+                    the propeller stops, as the LAUV is ballasted ("some extra buoyancy, for safety", LAUV operator
+                    manual 3.8.3; the amount is assumed). DUNE's diving, pop-up and recovery logic count on it. The real
+                    Marie is 30 kg in air with a 0.15 m hull (AUR-Lab practical guide); this hull is the 0.184 m of the
+                    Blender model
     inertia         radii of gyration 0.053 / 0.622 / 0.622 m, from the MSS model
     thrust          quadratic in the propeller speed, set so that the speed follows Marie's logs (September 2026):
                     1.15e-3 m/s per rpm at the surface, 1.13e-3 under water; here 1.25 m/s at 1150 rpm
@@ -56,7 +59,7 @@
       </visual>
       <material name="Neutral"/>
       <look name="LauvMariePalette"/>
-      <mass value="47.79"/>
+      <mass value="47.4"/>
       <inertia xyz="0.134 18.48 18.48"/>
       <hydrodynamics viscous_drag="0.0 0.0 0.0" quadratic_drag="0.42 0.3 0.3"/>
       <cg xyz="0.0 0.0 0.007" rpy="0.0 0.0 0.0"/>

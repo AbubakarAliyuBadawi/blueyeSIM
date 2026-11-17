@@ -1,0 +1,6 @@
+# Stonefish scenario settings when DUNE flies Marie (lauv_marie_dune.launch.py): she starts at the surface, as a
+# LAUV does before a plan, and the seabed is at the depth of DUNE's own simulated sea (lauv-marie-stonefish.ini:
+# Out Of Bounds Depth). NED position in m, roll pitch yaw in rad.
+lauv_marie_position: "0.0 0.0 0.0"
+lauv_marie_orientation: "0.0 0.0 0.0"
+lauv_marie_seabed_depth: "100.0"

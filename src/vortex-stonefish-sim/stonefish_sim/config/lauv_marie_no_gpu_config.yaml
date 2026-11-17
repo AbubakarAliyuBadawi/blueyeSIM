@@ -1,3 +1,5 @@
 # LAUV Marie: start 2 m deep, heading north (NED position in m, roll pitch yaw in rad)
 lauv_marie_position: "0.0 0.0 2.0"
 lauv_marie_orientation: "0.0 0.0 0.0"
+# seabed depth in m
+lauv_marie_seabed_depth: "30.0"
