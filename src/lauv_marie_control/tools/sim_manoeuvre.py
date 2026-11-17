@@ -2,7 +2,7 @@
 """
 Open-loop manoeuvre of LAUV Marie in a headless Stonefish, logged to CSV: for tuning drones/lauv_marie.scn.
 
-  python3 tools/sim_manoeuvre.py --out run.csv 25,1150,0,0 15,1150,0.342,0        # steps: duration,rpm,rudder,elevator
+  python3 tools/sim_manoeuvre.py --out run.csv 25,1150,0,0 15,1150,0.342,0        # steps: duration,rpm,rudder,elevator[,roll]
   python3 tools/sim_manoeuvre.py --out run.csv --replay field_data/<log>.csv.gz --window 300 420
   ... --set fin_lift=2.5 --set hull_lift_area=0.3       # try values without editing the vehicle file
 
@@ -95,11 +95,14 @@ def vehicle_file(source, changes):
 
 
 def commands_from_steps(steps):
-    """[(t, rpm, [top, bottom, port, starboard])] at 20 Hz"""
+    """[(t, rpm, [top, bottom, port, starboard])] at 20 Hz; an optional fifth value of a step is a roll command: top
+    and starboard fins +roll, bottom and port -roll (the pattern DUNE's allocator uses for a negative roll moment)"""
     out, t = [], 0.0
-    for duration, rpm, rudder, elevator in steps:
+    for step in steps:
+        duration, rpm, rudder, elevator = step[:4]
+        roll = step[4] if len(step) > 4 else 0.0
         for _ in range(int(round(duration * 20))):
-            out.append((t, rpm, [rudder, rudder, elevator, elevator]))
+            out.append((t, rpm, [rudder + roll, rudder - roll, elevator - roll, elevator + roll]))
             t += 0.05
     return out
 
@@ -130,6 +133,7 @@ def main():
                         help="--replay: degrees taken off the measured elevator angles (Marie's logs: about -7.9, "
                              "the elevator angle she holds in level flight)")
     parser.add_argument("--no-elevators", action="store_true", help="--replay: rudders only, elevators at zero")
+    parser.add_argument("--drone", help="vehicle file to use instead of the installed drones/lauv_marie.scn")
     parser.add_argument("--domain", type=int, default=80)
     parser.add_argument("--warmup", type=float, default=0.0,
                         help="--replay: seconds at the window's first propeller speed with zero fins before it")
@@ -145,7 +149,7 @@ def main():
     share = get_package_share_directory("stonefish_sim")
     work = tempfile.mkdtemp(prefix="lauv_marie_")
     drone = os.path.join(work, "lauv_marie.scn")
-    open(drone, "w").write(vehicle_file(os.path.join(share, "drones", "lauv_marie.scn"), changes))
+    open(drone, "w").write(vehicle_file(args.drone or os.path.join(share, "drones", "lauv_marie.scn"), changes))
     scenario = open(os.path.join(share, "scenarios", "lauv_marie_no_gpu.scn")).read()
     scenario = scenario.replace("$(find stonefish_sim)/drones/lauv_marie.scn", drone)
     assert drone in scenario
@@ -165,7 +169,7 @@ def main():
         ["ros2", "run", "stonefish_ros2", "stonefish_simulator_nogpu", os.path.join(share, "data"), scenario_path,
          "100.0", "--ros-args", "-r", "__ns:=/stonefish_ros2",
          "-p", f"lauv_marie_position:=0.0 0.0 {changes.get('depth', '10.0')}", "-p", "lauv_marie_orientation:=0.0 0.0 0.0",
-         "-p", "lauv_marie_seabed_depth:=100.0"],
+         "-p", "lauv_marie_seabed_depth:='100.0'"],                     # quoted: the scenario reads it as text
         stdout=open(os.path.join(work, "sim.log"), "w"), stderr=subprocess.STDOUT, start_new_session=True)
     try:
         rclpy.init()

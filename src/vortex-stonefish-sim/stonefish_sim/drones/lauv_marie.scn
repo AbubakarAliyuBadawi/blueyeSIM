@@ -83,13 +83,17 @@
       </thrust_model>
     </actuator>
 
-    <!-- Fins, in the order of the /lauv_marie/rudders array. Each turns about its span axis (the actuator's z). -->
+    <!-- Fins, in the order of the /lauv_marie/rudders array. Each turns about its span axis (the actuator's z). The
+         actuator sits at the middle of the fin's exposed span (0.114 m from the axis), where Stonefish applies its lift
+         and drag; on the hull axis they gave no roll moment, so no roll damping (Marie rolled up to 64 deg at the
+         surface) and no roll control for DUNE. The visual mesh is moved back by the same distance. -->
     <actuator name="FinTop" type="rudder">
       <link name="Base"/>
-      <origin xyz="-0.823 0.0 0.0" rpy="3.14159 0.0 0.0"/>
+      <origin xyz="-0.823 0.0 -0.114" rpy="3.14159 0.0 0.0"/>
       <specs drag_coeff="0.1" lift_coeff="2.0" max_angle="0.436" area="0.014" stall_angle="0.6" max_angular_rate="5.2" inverted="false"/>
       <visual>
         <mesh filename="lauv_marie/fin.obj" scale="1.0"/>
+        <origin xyz="0.0 0.0 -0.114" rpy="0.0 0.0 0.0"/>
         <material name="Neutral"/>
         <look name="LauvMarieYellow"/>
       </visual>
@@ -97,10 +101,11 @@
 
     <actuator name="FinBottom" type="rudder">
       <link name="Base"/>
-      <origin xyz="-0.823 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <origin xyz="-0.823 0.0 0.114" rpy="0.0 0.0 0.0"/>
       <specs drag_coeff="0.1" lift_coeff="2.0" max_angle="0.436" area="0.014" stall_angle="0.6" max_angular_rate="5.2" inverted="true"/>
       <visual>
         <mesh filename="lauv_marie/fin.obj" scale="1.0"/>
+        <origin xyz="0.0 0.0 -0.114" rpy="0.0 0.0 0.0"/>
         <material name="Neutral"/>
         <look name="LauvMarieYellow"/>
       </visual>
@@ -108,10 +113,11 @@
 
     <actuator name="FinPort" type="rudder">
       <link name="Base"/>
-      <origin xyz="-0.823 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+      <origin xyz="-0.823 -0.114 0.0" rpy="1.5708 0.0 0.0"/>
       <specs drag_coeff="0.1" lift_coeff="2.0" max_angle="0.436" area="0.014" stall_angle="0.6" max_angular_rate="5.2" inverted="true"/>
       <visual>
         <mesh filename="lauv_marie/fin.obj" scale="1.0"/>
+        <origin xyz="0.0 0.0 -0.114" rpy="0.0 0.0 0.0"/>
         <material name="Neutral"/>
         <look name="LauvMarieYellow"/>
       </visual>
@@ -119,10 +125,11 @@
 
     <actuator name="FinStarboard" type="rudder">
       <link name="Base"/>
-      <origin xyz="-0.823 0.0 0.0" rpy="-1.5708 0.0 0.0"/>
+      <origin xyz="-0.823 0.114 0.0" rpy="-1.5708 0.0 0.0"/>
       <specs drag_coeff="0.1" lift_coeff="2.0" max_angle="0.436" area="0.014" stall_angle="0.6" max_angular_rate="5.2" inverted="false"/>
       <visual>
         <mesh filename="lauv_marie/fin.obj" scale="1.0"/>
+        <origin xyz="0.0 0.0 -0.114" rpy="0.0 0.0 0.0"/>
         <material name="Neutral"/>
         <look name="LauvMarieYellow"/>
       </visual>
