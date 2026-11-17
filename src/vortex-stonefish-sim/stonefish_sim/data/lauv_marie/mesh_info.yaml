@@ -1,0 +1,16 @@
+# written by make_lauv_marie_meshes.py; body frame x forward, y starboard, z down, origin at the
+# centre of buoyancy of hull_physics.obj
+hull_length_m: 2.054
+hull_radius_m: 0.092
+displaced_volume_m3: 0.04662
+origin_station_from_tail_m: 1.15
+nose_x_m: 0.939
+tail_x_m: -1.115
+fin_pivot_x_m: -0.8228
+fin_chord_m: 0.175
+fin_root_radius_m: 0.0365
+fin_tip_radius_m: 0.1365
+fin_area_m2: 0.0175
+propeller_x_m: -1.1093
+propeller_diameter_m: 0.1
+palette_materials: ['BlackPlastic.035', 'CreamPlastic.036', 'MastClearTint.036', 'MastRedTint.036', 'MetallicScrew', 'YellowMetal.035', 'unnamed']

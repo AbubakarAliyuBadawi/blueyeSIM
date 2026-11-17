@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+<!--
+  LAUV Marie (NTNU AUR-Lab, OceanScan LAUV): base model.
+
+  Body frame: x forward, y starboard, z down, origin on the hull axis at the centre of buoyancy.
+  Meshes and the numbers below marked "mesh_info" come from scripts/make_lauv_marie_meshes.py
+  (data/lauv_marie/mesh_info.yaml).
+
+  What is from the vehicle, and what is assumed:
+    geometry        the AUR-Lab Blender model (hull 2.05 m long, 0.184 m diameter)
+    mass            47.8 kg = displaced volume (mesh_info) x 1025 kg/m3, i.e. neutrally buoyant. Assumed: the MSS model
+                    (lauvMarie.m) uses the published 34 kg with a 0.15 m hull
+    inertia         radii of gyration 0.053 / 0.622 / 0.622 m, from the MSS model
+    thrust          quadratic in the propeller speed, set so that the speed follows Marie's logs (September 2026):
+                    1.15e-3 m/s per rpm at the surface, 1.13e-3 under water; here 1.25 m/s at 1150 rpm
+    fins            25 deg travel (DUNE: Maximum Fin Rotation), area from the mesh (exposed part)
+    Tuned on replays of Marie's measured fin angles and propeller speed (lauv_marie_control/tools, September 2026
+    logs), each checked on windows that were not used for the tuning:
+      fin lift slope 2.0 /rad, hull lift (see HullLiftYaw below)
+                    yaw rate under water: correlation 0.97-0.98 with the logs, amplitude 0.93-1.05 of theirs
+      CG 0.7 cm below the CB
+                    pitch in dives and climbs of 15-20 deg: correlation 0.88-0.97, error 3.5-6 deg rms after 2-3 min
+                    of open-loop replay
+    Known differences:
+      speed in a hard turn    drops 24 % at 20 deg of rudder; Marie's logs suggest about 12 %. The fin drag of this
+                              Stonefish version cannot be set (drag_coeff is read but not used)
+      elevator trim           Marie holds about -7.5 deg of elevator in level flight in every log; the cause is not
+                              known (servo zero, or a pitching moment of the mast and sonars). The model needs none
+      at the surface          Marie's upper rudder is out of the water there and she turns about 30 % less for the
+                              same rudder than under water; not checked in the simulator
+      buoyancy                neutral here; Marie is trimmed light, by an amount the logs do not give
+
+  Commands (std_msgs/Float64MultiArray):
+    /lauv_marie/thrusters   [propeller speed in rpm], up to +-2500
+    /lauv_marie/rudders     [top, bottom, port, starboard, 0, 0]: fin angles in rad, up to +-0.436, and two ignored
+                            entries for the hull-lift surfaces. Top and bottom positive: turn to starboard.
+                            Port and starboard positive: nose down (dive).
+  The lauv_marie_control package has an autopilot (heading, depth, rpm) on top of these.
+-->
+<scenario>
+  <looks>
+    <look name="LauvMariePalette" gray="1.0" roughness="0.4" texture="lauv_marie/palette.png"/>
+    <look name="LauvMarieYellow" rgb="0.96 0.80 0.06" roughness="0.4" metalness="0.2"/>
+    <look name="LauvMarieMetal" rgb="0.66 0.66 0.66" roughness="0.3" metalness="0.8"/>
+  </looks>
+
+  <robot name="LauvMarie" fixed="false" self_collisions="false">
+    <base_link name="Base" type="model" physics="submerged">
+      <physical>
+        <mesh filename="lauv_marie/hull_physics.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </physical>
+      <visual>
+        <mesh filename="lauv_marie/hull_visual.obj" scale="1.0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      </visual>
+      <material name="Neutral"/>
+      <look name="LauvMariePalette"/>
+      <mass value="47.79"/>
+      <inertia xyz="0.134 18.48 18.48"/>
+      <hydrodynamics viscous_drag="0.0 0.0 0.0" quadratic_drag="0.42 0.3 0.3"/>
+      <cg xyz="0.0 0.0 0.007" rpy="0.0 0.0 0.0"/>
+    </base_link>
+
+    <!-- Propeller. The setpoint is the propeller speed in rpm; thrust = thrust_coeff * rpm * |rpm| -->
+    <actuator name="Propeller" type="thruster">
+      <link name="Base"/>
+      <origin xyz="-1.109 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <specs max_setpoint="2500.0" inverted_setpoint="false" normalized_setpoint="false"/>
+      <propeller diameter="0.1" right="true">
+        <mesh filename="lauv_marie/propeller.obj" scale="1.0"/>
+        <material name="Neutral"/>
+        <look name="LauvMarieMetal"/>
+      </propeller>
+      <rotor_dynamics type="first_order">
+        <time_constant value="0.5"/>
+      </rotor_dynamics>
+      <thrust_model type="quadratic">
+        <thrust_coeff value="8.4e-6"/>
+      </thrust_model>
+    </actuator>
+
+    <!-- Fins, in the order of the /lauv_marie/rudders array. Each turns about its span axis (the actuator's z). -->
+    <actuator name="FinTop" type="rudder">
+      <link name="Base"/>
+      <origin xyz="-0.823 0.0 0.0" rpy="3.14159 0.0 0.0"/>
+      <specs drag_coeff="0.1" lift_coeff="2.0" max_angle="0.436" area="0.014" stall_angle="0.6" max_angular_rate="5.2" inverted="false"/>
+      <visual>
+        <mesh filename="lauv_marie/fin.obj" scale="1.0"/>
+        <material name="Neutral"/>
+        <look name="LauvMarieYellow"/>
+      </visual>
+    </actuator>
+
+    <actuator name="FinBottom" type="rudder">
+      <link name="Base"/>
+      <origin xyz="-0.823 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <specs drag_coeff="0.1" lift_coeff="2.0" max_angle="0.436" area="0.014" stall_angle="0.6" max_angular_rate="5.2" inverted="true"/>
+      <visual>
+        <mesh filename="lauv_marie/fin.obj" scale="1.0"/>
+        <material name="Neutral"/>
+        <look name="LauvMarieYellow"/>
+      </visual>
+    </actuator>
+
+    <actuator name="FinPort" type="rudder">
+      <link name="Base"/>
+      <origin xyz="-0.823 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+      <specs drag_coeff="0.1" lift_coeff="2.0" max_angle="0.436" area="0.014" stall_angle="0.6" max_angular_rate="5.2" inverted="true"/>
+      <visual>
+        <mesh filename="lauv_marie/fin.obj" scale="1.0"/>
+        <material name="Neutral"/>
+        <look name="LauvMarieYellow"/>
+      </visual>
+    </actuator>
+
+    <actuator name="FinStarboard" type="rudder">
+      <link name="Base"/>
+      <origin xyz="-0.823 0.0 0.0" rpy="-1.5708 0.0 0.0"/>
+      <specs drag_coeff="0.1" lift_coeff="2.0" max_angle="0.436" area="0.014" stall_angle="0.6" max_angular_rate="5.2" inverted="false"/>
+      <visual>
+        <mesh filename="lauv_marie/fin.obj" scale="1.0"/>
+        <material name="Neutral"/>
+        <look name="LauvMarieYellow"/>
+      </visual>
+    </actuator>
+
+    <!-- Hull lift. Stonefish gives a hull drag but no lift when it moves at an angle to the flow, and without it a
+         torpedo hull slides sideways instead of turning. Two fixed, invisible surfaces just aft of the CG stand in
+         for it: one for sway and yaw, one for heave and pitch. Their area and positions are tuned on the replays (see
+         the top of the file). They take no command (max_angle 0), but they are rudders to Stonefish, so the
+         /lauv_marie/rudders array has six entries; the last two are ignored. -->
+    <actuator name="HullLiftYaw" type="rudder">
+      <link name="Base"/>
+      <origin xyz="-0.15 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <specs drag_coeff="0.0" lift_coeff="3.0" max_angle="0.0" area="0.40" stall_angle="0.6" inverted="false"/>
+      <visual>
+        <mesh filename="lauv_marie/fin.obj" scale="0.01"/>
+        <material name="Neutral"/>
+        <look name="Invisible"/>
+      </visual>
+    </actuator>
+
+    <actuator name="HullLiftPitch" type="rudder">
+      <link name="Base"/>
+      <origin xyz="-0.28 0.0 0.0" rpy="-1.5708 0.0 0.0"/>
+      <specs drag_coeff="0.0" lift_coeff="3.0" max_angle="0.0" area="0.40" stall_angle="0.6" inverted="false"/>
+      <visual>
+        <mesh filename="lauv_marie/fin.obj" scale="0.01"/>
+        <material name="Neutral"/>
+        <look name="Invisible"/>
+      </visual>
+    </actuator>
+
+    <!-- Ground truth -->
+    <sensor name="odom" type="odometry" rate="50.0">
+      <link name="Base"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <ros_publisher topic="/lauv_marie/odom"/>
+    </sensor>
+
+    <!-- Microstrain IMU -->
+    <sensor name="IMU" rate="100.0" type="imu">
+      <range angular_velocity="10.0 10.0 5.0" linear_acceleration="10.0"/>
+      <noise angle="0.01 0.01 0.01" angular_velocity="0.01" yaw_drift="0.001" linear_acceleration="0.01"/>
+      <history samples="1"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <link name="Base"/>
+      <ros_publisher topic="/lauv_marie/imu"/>
+    </sensor>
+
+    <!-- Nortek DVL, 0.602 m forward of the navigation reference (lauv-marie.ini: Lever Arm DVL), looking down -->
+    <sensor name="DVL" rate="8.0" type="dvl">
+      <specs beam_angle="25.0" beam_positive_z="true"/>
+      <range velocity="10.0 10.0 5.0" altitude_min="0.3" altitude_max="200.0"/>
+      <water_layer minimum_layer_size="10.0" boundary_near="10.0" boundary_far="30.0"/>
+      <noise velocity_percent="0.3" velocity="0.01" altitude="0.03" water_velocity_percent="0.1" water_velocity="0.01"/>
+      <history samples="1"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.602 0.0 0.092"/>
+      <link name="Base"/>
+      <ros_publisher topic="/lauv_marie/dvl"/>
+    </sensor>
+
+    <sensor name="Pressure" rate="10.0" type="pressure">
+      <range pressure="3000000.0"/>
+      <noise pressure="50.0"/>
+      <history samples="1"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+      <link name="Base"/>
+      <ros_publisher topic="/lauv_marie/pressure"/>
+    </sensor>
+
+    <!-- GPS antenna on the mast: a fix only at the surface -->
+    <sensor name="GPS" rate="1.0" type="gps">
+      <noise ned_position="1.0"/>
+      <history samples="1"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.38 0.0 -0.38"/>
+      <link name="Base"/>
+      <ros_publisher topic="/lauv_marie/gps"/>
+    </sensor>
+
+    <world_transform xyz="$(param lauv_marie_position)" rpy="$(param lauv_marie_orientation)"/>
+
+    <ros_subscriber thrusters="/lauv_marie/thrusters" rudders="/lauv_marie/rudders"/>
+    <ros_publisher thrusters="/lauv_marie/thruster_state" rudders="/lauv_marie/rudder_state"/>
+  </robot>
+</scenario>
