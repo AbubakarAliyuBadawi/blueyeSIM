@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>bn_state_viewer_real</name>
+  <version>0.1.0</version>
+  <description>Live view of the takeover Bayesian network on the real Blueye, with the input of every evidence node.</description>
+  <maintainer email="abubakaraliyubadawi@gmail.com">Badawi</maintainer>
+  <license>MIT</license>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>marine_acoustic_msgs</depend>
+  <depend>blueye_interfaces</depend>
+  <exec_depend>bn_state_viewer</exec_depend>
+  <exec_depend>python3-tk</exec_depend>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

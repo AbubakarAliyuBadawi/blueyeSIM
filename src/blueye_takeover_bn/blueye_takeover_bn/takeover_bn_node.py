@@ -19,6 +19,7 @@ import rclpy
 import yaml
 from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import Point, PointStamped, Pose, PoseWithCovarianceStamped
+from marine_acoustic_msgs.msg import Dvl
 from mundus_mir_msgs.msg import BatteryStatus
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
@@ -73,6 +74,7 @@ class TakeoverBayesianNetwork(Node):
         self.goal_start: Optional[Point] = None             # the leg starts where the vehicle was
         self.sonar_frame: Optional[Image] = None
         self.critical_point: Optional[Tuple[float, float]] = None   # world (x, y) of the last Critical echo
+        self.aruco_acquired_in: Optional[str] = None       # phase in which the markers were last detected
         self.structure_map = self._load_structure_map()
         self.usbl_beacon = self._load_usbl_beacon()
 
@@ -117,6 +119,12 @@ class TakeoverBayesianNetwork(Node):
         self.declare_parameter("usbl_strength_topic", "/blueye/usbl_strength")
         self.declare_parameter("fatigue_topic", "/blueye/human/fatigue")
         self.declare_parameter("stress_topic", "/blueye/human/stress")
+        # Message types: the defaults are the simulator's, the alternatives those of the real Blueye
+        self.declare_parameter("battery_message", "battery_status")   # or "pose": handler Pose, SoC in position.y
+        self.declare_parameter("dvl_message", "stonefish")             # or "marine_acoustic": Water Linked driver
+        self.declare_parameter("dvl_degraded_good_beams", 4)           # marine_acoustic: fewer good beams = Degraded
+        self.declare_parameter("sonar_source", "image")                # or "state": Clear/Near/Critical on a String
+        self.declare_parameter("sonar_state_topic", "/blueye/sonar_range_state")
 
         self.declare_parameter("use_dvl_altitude", True)
         self.declare_parameter("dvl_timeout_s", 2.0)
@@ -143,7 +151,11 @@ class TakeoverBayesianNetwork(Node):
         self.declare_parameter("structures_config", "")      # default: stonefish_sim/config/blueye_config.yaml
         self.declare_parameter("structure_meshes_dir", "")   # default: stonefish_sim/data/object_files
         self.declare_parameter("structure_margin_m", 0.5)
-        # ArUco evidence only while the dock markers are expected in the camera view
+        # ArUco evidence only while the dock markers are expected in the camera view: "view" from the dock position
+        # (dock_markers_xy); "acquired" where that position is not known, in aruco_phases once the markers have been
+        # detected in the current phase
+        self.declare_parameter("aruco_gating", "view")
+        self.declare_parameter("aruco_phases", ["Undocking", "Docking"])
         self.declare_parameter("dock_markers_xy", [6.5, -22.7])
         self.declare_parameter("aruco_min_range_m", 0.5)
         self.declare_parameter("aruco_max_range_m", 10.0)
@@ -151,7 +163,7 @@ class TakeoverBayesianNetwork(Node):
         # USBL evidence not used close to the dock, where its structure blocks the acoustic path
         self.declare_parameter("usbl_beacon_frame", "docking_rig")        # scenario object carrying the beacon
         self.declare_parameter("usbl_beacon_offset", [1.3, 2.18])         # beacon in that object's frame [m]
-        self.declare_parameter("usbl_shadow_radius_m", 3.0)
+        self.declare_parameter("usbl_shadow_radius_m", 3.0)               # 0 disables
         # Altitude states [m above the seabed]
         self.declare_parameter("altitude_safe_m", 0.6)
         self.declare_parameter("altitude_marginal_m", 0.4)
@@ -215,6 +227,8 @@ class TakeoverBayesianNetwork(Node):
 
     def _load_usbl_beacon(self):
         """World (x, y) of the dock's USBL beacon: its offset in the dock frame, placed by the scenario config."""
+        if float(self.get_parameter("usbl_shadow_radius_m").value) <= 0.0:
+            return None
         try:
             x, y, yaw = self._config_pose(self._scenario_config(), str(self.get_parameter("usbl_beacon_frame").value))
         except (OSError, KeyError, ValueError) as exc:
@@ -254,9 +268,19 @@ class TakeoverBayesianNetwork(Node):
     def _setup_subscribers(self):
         self.create_subscription(String, self.get_parameter("mission_phase_topic").value, self._mission_phase_cb, 10)
         self.create_subscription(Int32, self.get_parameter("mission_state_topic").value, self._mission_state_cb, 10)
-        self.create_subscription(BatteryStatus, self.get_parameter("battery_topic").value, self._battery_cb, 10)
-        self.create_subscription(DVL, self.get_parameter("dvl_topic").value, self._dvl_cb, 10)
-        self.create_subscription(Image, self.get_parameter("sonar_image_topic").value, self._sonar_cb, 10)
+        battery_topic = self.get_parameter("battery_topic").value
+        if self.get_parameter("battery_message").value == "pose":
+            self.create_subscription(Pose, battery_topic, lambda msg: self._battery_soc(msg.position.y), 10)
+        else:
+            self.create_subscription(BatteryStatus, battery_topic, lambda msg: self._battery_soc(msg.state_of_charge), 10)
+        if self.get_parameter("dvl_message").value == "marine_acoustic":
+            self.create_subscription(Dvl, self.get_parameter("dvl_topic").value, self._marine_dvl_cb, 10)
+        else:
+            self.create_subscription(DVL, self.get_parameter("dvl_topic").value, self._dvl_cb, 10)
+        if self.get_parameter("sonar_source").value == "state":
+            self.create_subscription(String, self.get_parameter("sonar_state_topic").value, self._sonar_state_cb, 10)
+        else:
+            self.create_subscription(Image, self.get_parameter("sonar_image_topic").value, self._sonar_cb, 10)
         self.create_subscription(String, self.get_parameter("pipeline_marker_ids_topic").value, self._marker_ids_cb, 10)
         self.create_subscription(String, self.get_parameter("aruco_visibility_topic").value, self._aruco_visibility_cb, 10)
         self.create_subscription(Pose, self.get_parameter("current_waypoint_topic").value, self._waypoint_cb, 10)
@@ -344,9 +368,9 @@ class TakeoverBayesianNetwork(Node):
         self._mark_seen("mission_phase")
         self._set_evidence("MissionPhase", phase, "mission_state")
 
-    def _battery_cb(self, msg: BatteryStatus):
+    def _battery_soc(self, soc: float):
         self._mark_seen("battery")
-        soc = float(msg.state_of_charge)
+        soc = float(soc)
         if soc > 1.5:
             soc = soc / 100.0
         if soc > 0.75:
@@ -369,9 +393,27 @@ class TakeoverBayesianNetwork(Node):
         else:
             state = "Nominal"
         self._set_evidence("DVLStatus", state, "dvl")
-        if bool(self.get_parameter("use_dvl_altitude").value) and msg.altitude >= 0.0:   # -1: no bottom lock
+        self._dvl_altitude(msg.altitude)
+
+    def _marine_dvl_cb(self, msg: Dvl):
+        """Water Linked driver: published only with a valid velocity, so a lost bottom lock reads as Failed (timeout)."""
+        self._mark_seen("dvl")
+        if msg.num_good_beams < int(self.get_parameter("dvl_degraded_good_beams").value):
+            state = "Degraded"
+        else:
+            state = "Nominal"
+        self._set_evidence("DVLStatus", state, "dvl")
+        self._dvl_altitude(msg.altitude)
+
+    def _dvl_altitude(self, altitude: float):
+        if bool(self.get_parameter("use_dvl_altitude").value) and altitude >= 0.0:   # -1: no bottom lock
             self._mark_seen("altitude")
-            self._set_evidence("Altitude", self._altitude_state(float(msg.altitude)), "dvl_altitude")
+            self._set_evidence("Altitude", self._altitude_state(float(altitude)), "dvl_altitude")
+
+    def _sonar_state_cb(self, msg: String):
+        """SonarRange state from another node (sonar_source "state"), e.g. the operator's injected sonar."""
+        self._mark_seen("sonar")
+        self._set_evidence("SonarRange", msg.data, "sonar_state")
 
     def _sonar_cb(self, msg: Image):
         """Keep the latest frame; it is evaluated at each BN update with the pose at that time."""
@@ -486,7 +528,7 @@ class TakeoverBayesianNetwork(Node):
             state = "Some"
         else:
             state = "None"
-        self._set_evidence("ArUcoVisibility", state, "pipeline_marker_ids")
+        self._set_aruco_evidence(state, "pipeline_marker_ids")
 
     def _aruco_visibility_cb(self, msg: String):
         self._mark_seen("aruco")
@@ -497,7 +539,12 @@ class TakeoverBayesianNetwork(Node):
             state = "None"
         else:
             state = "Some"
-        self._set_evidence("ArUcoVisibility", state, "aruco_visibility")
+        self._set_aruco_evidence(state, "aruco_visibility")
+
+    def _set_aruco_evidence(self, state: str, source: str):
+        if state != "None":
+            self.aruco_acquired_in = self.evidence.get("MissionPhase")
+        self._set_evidence("ArUcoVisibility", state, source)
 
     def _waypoint_cb(self, msg: Pose):
         self._mark_seen("controller")
@@ -606,7 +653,11 @@ class TakeoverBayesianNetwork(Node):
         return "Unsafe"
 
     def _dock_markers_in_view(self) -> Optional[bool]:
-        """Whether the dock markers can be expected in the camera view (range and bearing); None without a pose."""
+        """Whether the dock markers can be expected in the camera view (range and bearing); None without a pose.
+        With aruco_gating "acquired": in aruco_phases, once they have been detected in the current phase."""
+        if self.get_parameter("aruco_gating").value == "acquired":
+            phase = self.evidence.get("MissionPhase")
+            return phase in self.get_parameter("aruco_phases").value and self.aruco_acquired_in == phase
         if self.world_pose is None:
             return None
         markers = self.get_parameter("dock_markers_xy").value

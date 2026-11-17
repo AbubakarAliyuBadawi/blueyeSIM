@@ -1,0 +1,4 @@
+ID,phase,injected,t_injection_s,max_U_before,max_U_after,t_att_s,t_req_s,t_req_after_trigger_s,decision,decision_s,manual_control_s,handback_after_cleared_s
+TO1,Transit,"sonar Near (168 s), sonar Critical (179 s)",168.01,0.41,0.82,0.5,10.5,0.0,accepted,1.56,46.11,23.19
+TO2,Transit,"USBL Weak (334 s), sonar Near (344 s), sonar Critical (354 s)",333.65,0.25,0.82,9.86,20.36,0.0,accepted,1.99,24.92,1.42
+TO3,Inspection,"USBL Lost (438 s), sonar Near (438 s), sonar Clear (439 s), sonar Near (440 s)",437.82,0.31,0.71,0.2,2.2,0.0,accepted,2.33,40.39,12.93

@@ -1,33 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Full autonomous mission: undocking → inspection → docking, with takeover guard.
 
-     Mission states published to /mission_state:
+     Mission states published to /mission_state, the same numbers as in the simulator and the takeover network:
        1 = UNDOCKING
-       2 = TRANSIT          (BT publishes on LaunchMission start)
-       3 = INSPECTION       (mission.py publishes when first waypoint reached)
-       4 = DOCKING
-       5 = EMERGENCY ABORT
-       6 = EMERGENCY DOCKING
-       7 = TAKEOVER REQUESTED
+       2 = TRANSIT          (BT publishes before LaunchMission)
+       3 = INSPECTION       (mission.py publishes when the first pipeline waypoint is reached)
+       4 = HOMING           (mission.py, after the last pipeline waypoint; the BT on the emergency return)
+       5 = DOCKING
+       6 = TAKEOVER         (operator deciding, then manual control)
 
      Normal flow:
-       PublishState(1) → LaunchUndocking → ActivateAutoModes
-       PublishState(2) → LaunchMission
-       PublishState(3) → LaunchDocking → charging confirmed → SUCCESS
+       PublishState(1) → LaunchUndocking
+       PublishState(2) → ActivateAutoModes → LaunchMission (mission.py publishes 3 and 4)
+       PublishState(5) → LaunchDocking (EKF + docking controller, engaged once the markers give a pose)
+                       → charging confirmed → SUCCESS
 
-     Takeover triggered (urgency >= threshold):
-       LaunchMissionProcedure::onHalted() publishes "pause" → drone holds depth.
-       LaunchDockingProcedure::onHalted()  stops docking nodes cleanly.
+     blueye_handler is the only process connected to the drone: the undocking, the onboard missions and the holds all
+     go through it, so it keeps control and the holds last between the steps. The undocking ends in station keeping.
 
-       ACCEPT — EnableJoystick (sets g_mission_paused=true) → WaitForHandback
+     Site layout (mission_sites.py): the environment variable MISSION_SITE (pool by default, or pier), set for
+     reset_position.py and for the tree; the tree's scripts inherit it.
+
+     takeover_mode (parameter of blueye_real_bt): closed_loop (default) or shadow — in shadow mode urgency crossings
+     are only logged ("Shadow mode: takeover would be requested") and the mission continues.
+
+     Takeover triggered (urgency >= threshold, closed loop):
+       LaunchMissionProcedure::onHalted() publishes "pause" → the paused mission station-keeps.
+       LaunchDockingProcedure::onHalted()  stops the docking nodes, zeroes the thrusters, holds depth and heading and
+                                           station-keeps.
+
+       ACCEPT — EnableJoystick (station keeping, depth and heading hold off; sets g_mission_paused=true) → WaitForHandback
                 → AlwaysFail → tree fails with g_mission_paused=true
                 → main.cpp resets tree → LaunchUndocking skips (already_done_=true)
-                → LaunchMission resumes paused script from where it left off.
-       REJECT — emergency surface waypoint → LaunchDocking (operator manually docks). -->
+                → LaunchMission resumes paused script from where it left off, or, once the survey has
+                  finished (blackboard survey_done), the survey is skipped and docking starts again.
+       REJECT — back to the stop point S in front of the dock (site layout; the dock's axis is saved by mission.py,
+                so before the mission has started the step fails and the operator gets the joystick) → LaunchDocking.
+
+     A failed step (e.g. docking without a marker pose) also ends in the takeover handler: the operator decides. -->
 
 <root BTCPP_format="4"
       main_tree_to_execute="FullMission">
+
+  <!-- survey_done: set once, when the tree is created, and kept when main.cpp resets the tree after a takeover -->
   <BehaviorTree ID="FullMission">
+    <SubTree ID="GuardedMission" survey_done="no"/>
+  </BehaviorTree>
+
+  <BehaviorTree ID="GuardedMission">
 
     <Fallback name="mission_with_takeover_guard">
 
@@ -42,24 +62,29 @@
           <LaunchUndockingProcedure name="undocking_procedure"
                                     script_path="/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/bash_scripts/launch_undocking_real.sh"
                                     drone_ip="192.168.1.101"
-                                    reverse_duration="10"
-                                    reverse_power="0.8"/>
+                                    reverse_duration="6"
+                                    reverse_power="0.4"/>
+          <!-- 0.8 for 10 s (until 2026-10-23) took the drone 3.4 m back (up to 0.44 m/s) and the dock markers out of
+               view before Transit; 0.4 for 6 s is meant to stop about 1.2-1.5 m out, still in view (to be checked) -->
 
-          <!-- Stabilise before starting inspection -->
-          <ActivateAutoModes name="post_undocking_stabilization"
-                             depth_hold="true"
-                             heading_hold="true"
-                             hold_duration="5"/>
+          <!-- Phase 2: Transit, then inspection and homing (published by mission.py). The stabilisation
+               comes after PublishState 2: after a takeover the tree restarts from the top, and phase 1
+               would otherwise be held for the 5 s of the hold. Station keeping, as the undocking ends: depth and
+               heading hold alone let the drone drift (and rise) before the mission started, 2026-10-23. -->
+          <Sequence name="survey" _skipIf="survey_done == 'yes'">
+            <PublishState state="2"/>
+            <ActivateAutoModes name="post_undocking_stabilization"
+                               station_keeping="true"
+                               hold_duration="5"/>
+            <LaunchMissionProcedure name="pipeline_inspection_mission"
+                                    script_path="/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/bash_scripts/launch_mission.sh"
+                                    drone_ip="192.168.1.101"
+                                    max_retries="10"/>
+            <Script code="survey_done := 'yes'"/>
+          </Sequence>
 
-          <!-- Phase 2: Transit / Inspection -->
-          <PublishState state="2"/>
-          <LaunchMissionProcedure name="pipeline_inspection_mission"
-                                  script_path="/home/badawi/Desktop/auto-pilot/src/blueye_real_bt/bash_scripts/launch_mission.sh"
-                                  drone_ip="192.168.1.101"
-                                  max_retries="10"/>
-
-          <!-- Phase 4: Docking -->
-          <PublishState state="4"/>
+          <!-- Phase 5: Docking -->
+          <PublishState state="5"/>
           <LaunchDockingProcedure name="launch_integrated_docking"/>
 
         </Sequence>
@@ -70,7 +95,7 @@
       <!-- published "pause" before this sequence started.                     -->
       <Sequence name="takeover_handler">
 
-        <PublishState state="7"/>
+        <PublishState state="6"/>
 
         <!-- Wait for operator decision. Always returns SUCCESS.
              Writes result to blackboard key "human_decision" (true=accept). -->
@@ -78,17 +103,16 @@
 
         <Fallback name="decision_branch">
 
-          <!-- REJECT: operator aborts mission — go to surface, then dock.
+          <!-- REJECT: operator aborts mission — back to the stop point in front of the dock, then dock.
                takeover_handler succeeds → outer Fallback succeeds → tree done. -->
           <Sequence name="reject_path">
             <CheckBlackboardBool key="human_decision" expected_value="false"/>
-            <PublishState state="5"/>
-            <GoToWaypoint name="emergency_surface_waypoint"
-                          waypoint_lat="63.4406996"
-                          waypoint_lon="10.3489307"
-                          depth="1.5"
+            <PublishState state="4"/>
+            <!-- was a fixed harbour coordinate (63.4406996, 10.3489307, 1.5 m), 75 m from the pool dock -->
+            <GoToWaypoint name="return_to_stop_point"
+                          site_point="S"
                           drone_ip="192.168.1.101"/>
-            <PublishState state="6"/>
+            <PublishState state="5"/>
             <LaunchDockingProcedure name="emergency_docking"/>
           </Sequence>
 
@@ -113,6 +137,7 @@
     <Action ID="ActivateAutoModes">
       <input_port name="depth_hold"    default="true" type="Bool">Enable depth hold</input_port>
       <input_port name="heading_hold"  default="true" type="Bool">Enable heading hold</input_port>
+      <input_port name="station_keeping" default="false" type="Bool">Station keeping instead</input_port>
       <input_port name="hold_duration" default="10"   type="Int">Hold duration in seconds</input_port>
     </Action>
     <Condition ID="CheckBlackboardBool">
@@ -127,6 +152,7 @@
       <input_port name="waypoint_lon" type="Double">Target longitude</input_port>
       <input_port name="depth"        default="1.0"           type="Double">Target depth in metres</input_port>
       <input_port name="drone_ip"     default="192.168.1.101" type="String">Drone IP</input_port>
+      <input_port name="site_point"   default=""              type="String">Site layout waypoint instead, e.g. S</input_port>
     </Action>
     <Action ID="LaunchDockingProcedure" editable="true"/>
     <Action ID="LaunchMissionProcedure">

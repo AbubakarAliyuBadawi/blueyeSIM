@@ -1,0 +1,9 @@
+Offline replay of the recorded network evidence (plot_field_run.py --replay)
+corrections: {"aruco_in_phases": {"Undocking": "All"}, "restart_operator_model": true}
+check, uncorrected replay against the recorded urgency: max difference 0.0210, mean 0.00007 (2623 updates)
+alarms in the corrected replay (rising crossings): 1
+  Undocking  mean U 0.265, max U 0.285
+  Transit    mean U 0.239, max U 0.270
+  Inspection mean U 0.252, max U 0.274
+  Homing     mean U 0.405, max U 0.740
+  Docking    mean U 0.426, max U 0.490

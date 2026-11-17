@@ -1,0 +1,6 @@
+# A command to blueye_handler, the only process connected to the drone, with its parameters as a JSON object
+# ("{}" for none), e.g. /blueye/undock {"power": 0.4, "duration": 6.0}
+string params_json
+---
+bool success
+string message

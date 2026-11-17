@@ -4,6 +4,7 @@
 #include "behaviortree_cpp/bt_factory.h"
 #include "behaviortree_cpp/loggers/groot2_publisher.h"
 #include <std_msgs/msg/int32.hpp>
+#include <std_msgs/msg/string.hpp>
 #include <memory>
 #include <chrono>
 #include <thread>
@@ -31,6 +32,7 @@ int g_current_mission_state = 0;
 // Set by LaunchMissionProcedure::onHalted when mission is paused for takeover;
 // cleared by the main loop after it resets the tree so the mission can resume.
 bool g_mission_paused = false;
+bool g_shadow_mode = false;                    // takeover_mode: closed_loop (default) or shadow
 
 void signalHandler(int signum) {
     if (g_node) {
@@ -47,7 +49,29 @@ int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
     g_node = rclcpp::Node::make_shared("blueye_real_bt");
     g_node->declare_parameter("behavior_tree_path", "");
+    g_node->declare_parameter("takeover_mode", "closed_loop");
     g_mission_state_pub = g_node->create_publisher<std_msgs::msg::Int32>("/mission_state", 10);
+
+    const std::string takeover_mode = g_node->get_parameter("takeover_mode").as_string();
+    if (takeover_mode != "closed_loop" && takeover_mode != "shadow") {
+        RCLCPP_ERROR(g_node->get_logger(), "takeover_mode must be 'closed_loop' or 'shadow', got '%s'",
+                     takeover_mode.c_str());
+        rclcpp::shutdown();
+        return 1;
+    }
+    g_shadow_mode = takeover_mode == "shadow";
+    RCLCPP_INFO(g_node->get_logger(), "Takeover mode: %s", g_shadow_mode
+        ? "SHADOW (urgency crossings are logged, the mission never stops)"
+        : "CLOSED LOOP (urgency crossing holds the vehicle and asks the operator)");
+
+    // Takeover mode for the operator HUD and the recordings, as in the simulator
+    auto mode_pub = g_node->create_publisher<std_msgs::msg::String>("/blueye/takeover_request/mode", 10);
+    auto mode_timer = g_node->create_wall_timer(std::chrono::seconds(1), [mode_pub, takeover_mode]() {
+        std_msgs::msg::String mode;
+        mode.data = takeover_mode;
+        mode_pub->publish(mode);
+    });
+
     BT::BehaviorTreeFactory factory;
 
     // Register basic BT nodes

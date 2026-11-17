@@ -31,6 +31,8 @@ setup(
             "usbl_strength_monitor = blueye_takeover_bn.usbl_strength_monitor:main",
             "speed_monitor = blueye_takeover_bn.speed_monitor:main",
             "disturbance_replay = blueye_takeover_bn.disturbance_replay:main",
+            "virtual_sensors = blueye_takeover_bn.virtual_sensors:main",
+            "field_twin_events = blueye_takeover_bn.field_twin_events:main",
         ],
     },
 )

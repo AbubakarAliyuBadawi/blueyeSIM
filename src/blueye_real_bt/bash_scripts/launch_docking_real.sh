@@ -1,16 +1,88 @@
 #!/bin/bash
 
-source ~/blueye_ws/install/setup.bash
+source ~/Desktop/auto-pilot/install/setup.bash
 
 echo "Starting docking procedure..."
 
-# Launch only the docking-specific nodes (ArUco detection, EKF, DVL, TF).
+# TF, the DVL driver and the ArUco detection normally run from the start of the mission
+# (ros2 launch mundus_mir_docking_controller real_sensors.launch.py) so the takeover network has their
+# evidence throughout; start them here only if they are not running yet.
+NODES=$(ros2 node list 2>/dev/null)
+if echo "$NODES" | grep -q "/waterlinked_dvl$" && echo "$NODES" | grep -q "/pose_estimation_aruco_real_life$"; then
+    WITH_SENSORS=false
+    echo "DVL and ArUco detection already running: starting the EKF only"
+else
+    WITH_SENSORS=true
+fi
+
+# Launch only the docking-specific nodes (EKF and docking controller, and TF, DVL and ArUco detection if needed).
 # blueye_handler, joy_node, and joystick_controller remain running so the
 # operator can take over via joystick at any point during docking.
-ros2 launch mundus_mir_docking_controller docking_bt.launch.py &
+# A takeover halts this script: the tree stops this process group, then zeroes the thrusters and holds.
+ros2 launch mundus_mir_docking_controller docking_bt.launch.py with_sensors:=$WITH_SENSORS &
 DOCKING_PID=$!
 
-echo "Docking controller started (PID: $DOCKING_PID)"
+echo "Docking nodes started (PID: $DOCKING_PID)"
+
+# DOCKING_ENGAGE=0 (in the environment of the behaviour tree) leaves the docking controller idle: the operator docks
+# with the joystick and the step still ends on charging. For tests while the dock-board pose is not trusted.
+if [ "${DOCKING_ENGAGE:-1}" = "0" ]; then
+    echo "Automatic docking disabled (DOCKING_ENGAGE=0): dock with the joystick"
+else
+
+# Engage the docking controller as the joystick's docking-mode button does: depth and heading hold off, docking
+# mode on — once the EKF has a pose (it needs the dock markers in view).
+python3 - <<'EOF'
+import sys
+import time
+
+import rclpy
+from nav_msgs.msg import Odometry
+from std_srvs.srv import SetBool
+
+POSE_TIMEOUT = 30.0   # s for the first EKF pose
+
+rclpy.init()
+node = rclpy.create_node('docking_engage')
+poses = []
+node.create_subscription(Odometry, '/odometry/filtered', poses.append, 1)
+start = time.time()
+while rclpy.ok() and not poses and time.time() - start < POSE_TIMEOUT:
+    rclpy.spin_once(node, timeout_sec=0.2)
+if not poses:
+    node.get_logger().error(f'No EKF pose on /odometry/filtered after {POSE_TIMEOUT:.0f} s: dock markers not in view?')
+    sys.exit(1)
+
+
+def call(name, value):
+    client = node.create_client(SetBool, name)
+    if not client.wait_for_service(timeout_sec=10.0):
+        node.get_logger().error(f'{name} not available')
+        return False
+    future = client.call_async(SetBool.Request(data=value))
+    rclpy.spin_until_future_complete(node, future, timeout_sec=5.0)
+    if future.result() is None:
+        node.get_logger().error(f'{name} {value}: no response')
+        return False
+    node.get_logger().info(f'{name} {value}')
+    return True
+
+
+# station keeping first: the mission or the undocking may have left it on, and it would fight the docking controller
+engaged = call('/blueye/stationkeep', False) and call('/blueye/depth_hold', False) and \
+    call('/blueye/heading_hold', False) and call('/blueye/docking_mode', True)
+sys.exit(0 if engaged else 1)
+EOF
+
+if [ $? -ne 0 ]; then
+    echo "Docking controller could not be engaged"
+    kill $DOCKING_PID 2>/dev/null
+    wait $DOCKING_PID 2>/dev/null
+    exit 1
+fi
+
+echo "Docking controller engaged"
+fi
 echo "Monitoring /blueye/battery for charging signal..."
 
 # Block until charging_current (position.x) > 0 for CONFIRM_SECS consecutive
@@ -79,7 +151,7 @@ EOF
 
 MONITOR_RESULT=$?
 
-# Stop the docking controller
+# Stop the docking nodes (the tree then zeroes the thrusters)
 kill $DOCKING_PID 2>/dev/null
 wait $DOCKING_PID 2>/dev/null
 

@@ -6,8 +6,9 @@ Simulation figures of the paper (Results, Simulation study).
                                 recommendations; bottom: urgency U with the threshold.
   sim_closed_loop.pdf/.png      Fig. sim-closed-loop: open loop against closed loop for (a) S1 and (b) S2, the matched
                                 run01 pairs: plan view, distance to the hazard and U, takeover and hand-back marked.
-  explanation_example.pdf/.png  Fig. explanation: the S1 and S2 takeover requests traced through the network, arcs
-                                labelled with rule, row of the arc trace (Table S2) and source in the task analysis.
+  explanation_example.pdf/.png  Fig. explanation: the TO1 and TO3 takeover requests of the field run FC
+                                (--explanation-bag) traced through the network, arcs labelled with rule, row of the arc
+                                trace (Table S2) and source in the task analysis; written to src/plots/field/field_results/.
   sim_traces.pdf/.png           Fig. sim-traces: one open-loop run of each hazard scenario, (a) S1 and (b) S2. Each panel:
                                 the evidence that changes after the injection (state names in the bars) and U with the
                                 threshold; injection, t_att, t_req, the other disturbances and t_haz marked.
@@ -422,14 +423,37 @@ def states_at(run):
     return out
 
 
+def states_field(bag, change):
+    """As states_at, for a takeover of a field run (plot_field_run.py's reader): the injection is the first change
+    labelled `change` (e.g. "sonar Critical", "USBL Lost") on /scenario/events, the request the first U at the
+    threshold after it."""
+    import plot_field_run as pfr
+    data, _ = pfr.load_bag(bag)
+    start, end, _ = pfr.mission_window(data)
+    t_inj = next(t for t, label, _, _ in pfr.injections(data, start, end) if label == change)
+    urg = data["/blueye/takeover_request/urgency"]
+    thr = float(data["/blueye/takeover_request/threshold"][-1][1])
+    t_req = next(t for t, v in urg if t >= t_inj and v >= thr)
+    ev = data["/blueye/takeover_request/evidence"]
+    out = {}
+    for key, t in (("before", t_inj - 5.0), ("request", t_req)):
+        e = min(ev, key=lambda x: abs(x[0] - t))[1]
+        out[key] = {"evidence": e["evidence"], "post": e["posteriors"], "p_req": e["probabilities"]["TakeoverRequested"],
+                    "U": min(urg, key=lambda x: abs(x[0] - t))[1]}
+    return out
+
+
 WORST = {"NavigationSystemPerformance": ("NSP", "Inadequate"), "DataQuality": ("DQ", "Inadequate"),
          "AutonomousControlPerformance": ("ACP", "Inadequate"), "CollisionWithObstacle": ("COL", "Likely"),
          "HumanDecisionReliability": ("HDR", "Low")}
 
 
-def fig_explanation(s1_run, s2_run):
+def fig_explanation(st_a, st_b, title_a="(a) S1: obstacle on the transit leg",
+                    title_b="(b) S2: cross-current and loss of the USBL signal during inspection"):
     """Two takeover requests explained: active path in ink, unchanged nodes in grey; arcs labelled with the mapping
-    rule and the row of the arc trace (Table S2), whose source in the task analysis is listed under each panel."""
+    rule and the row of the arc trace (Table S2), whose source in the task analysis is listed under each panel.
+    st_a: a request through the collision pathway, st_b: one through the navigation pathway (states_at or
+    states_field); in (b) an evidence node in its nominal state at the request is drawn as unchanged."""
     from matplotlib.patches import FancyArrowPatch
     fig, axes = plt.subplots(2, 1, figsize=(7.2, 6.6), gridspec_kw={"height_ratios": [1.0, 1.65], "hspace": 0.08})
     sev = {"Critical": CRITICAL, "High": CRITICAL, "Lost": CRITICAL, "Weak": AMBER, "Moderate": AMBER, "Near": AMBER,
@@ -468,9 +492,9 @@ def fig_explanation(s1_run, s2_run):
         b, r = st["before"], st["request"]
         return f"TR TakeoverRequested\n{b['p_req']:.2f} → {r['p_req']:.2f}\n$U$ {b['U']:.2f} → {r['U']:.2f}"
 
-    # (a) S1: the collision pathway
+    # (a) the collision pathway
     ax = axes[0]
-    st = states_at(s1_run)
+    st = st_a
     sr = st["request"]["evidence"]["SonarRange"]
     n_sr = node(ax, 0.9, 2.3, f"SR\n{sr}", "evidence", sev.get(sr, GOOD))
     n_col = node(ax, 4.4, 2.3, worst(st, "CollisionWithObstacle"), "active")
@@ -484,25 +508,38 @@ def fig_explanation(s1_run, s2_run):
         arc(ax, n, n_tr, active=False)
     sources(ax, ["(26) SR → COL: return in the safety box (C6, C8) on the path to collision (C3); transit task AT3",
                  "(39) COL → TR: collision pathway to the takeover constraint C1"], 0.45)
-    ax.text(0.0, 4.15, "(a) S1: obstacle on the transit leg", fontsize=8, fontweight="bold", va="center")
+    ax.text(0.0, 4.15, title_a, fontsize=8, fontweight="bold", va="center")
     ax.set_ylim(-0.25, 4.4)
 
-    # (b) S2: the navigation and data-quality pathway
+    # (b) the navigation and data-quality pathway; evidence still in its nominal state is drawn as unchanged
     ax = axes[1]
-    st = states_at(s2_run)
+    st = st_b
     ev = st["request"]["evidence"]
-    n_usbl = node(ax, 0.9, 4.6, f"USBL\n{ev['USBLStrength']}", "evidence", sev.get(ev["USBLStrength"], GOOD))
-    n_wte = node(ax, 0.9, 3.4, f"WTE\n{ev['WaypointTrackingError']}", "evidence", sev.get(ev["WaypointTrackingError"], GOOD))
-    n_cur = node(ax, 0.9, 2.2, f"Current\n{ev['Current']}", "evidence", sev.get(ev["Current"], GOOD))
+
+    def evidence(y, name, abbr, nominal):
+        state = ev[name]
+        changed = state != nominal
+        return node(ax, 0.9, y, f"{abbr}\n{state}", "evidence" if changed else "idle", sev.get(state, GOOD)), changed
+
+    n_usbl, usbl_on = evidence(4.6, "USBLStrength", "USBL", "Strong")
+    n_wte, wte_on = evidence(3.4, "WaypointTrackingError", "WTE", "Low")
+    n_cur, cur_on = evidence(2.2, "Current", "Current", "Low")
     n_nsp = node(ax, 3.5, 3.4, worst(st, "NavigationSystemPerformance"), "active")
     n_dq = node(ax, 6.2, 4.6, worst(st, "DataQuality"), "active")
     n_acp = node(ax, 6.2, 3.4, worst(st, "AutonomousControlPerformance"), "active")
     n_col = node(ax, 6.2, 2.2, worst(st, "CollisionWithObstacle"), "idle")
     n_hdr = node(ax, 8.9, 2.0, worst(st, "HumanDecisionReliability"), "idle")
     n_tr = node(ax, 8.9, 3.4, output(st), "output")
-    arc(ax, n_usbl, n_nsp, "A1, A2 (15)", frac=0.42)
-    arc(ax, n_wte, n_nsp, "A1, A2 (18)", frac=0.42)
-    arc(ax, n_cur, n_nsp, "N4 (17)", frac=0.42)
+    lines = []
+    for n, on, label, source in (
+            (n_usbl, usbl_on, "A1, A2 (15)", "(15) USBL → NSP: position fix AI1.1 feeds the navigation decision AI1.2 (C5)"),
+            (n_wte, wte_on, "A1, A2 (18)", "(18) WTE → NSP: tracking error read in AI1.1 for the on-track decision "
+                                           "AI1.2 (I-2)"),
+            (n_cur, cur_on, "N4 (17)", "(17) Current → NSP: read with the vehicle state (AI2.1); degrades position "
+                                       "keeping")):
+        arc(ax, n, n_nsp, label if on else None, active=on, frac=0.42)
+        if on:
+            lines.append(source)
     arc(ax, n_nsp, n_dq, "A5 (34)", frac=0.48)
     arc(ax, n_nsp, n_acp, "A1 (30)", frac=0.5)
     arc(ax, n_dq, n_tr, "A5, N7, A4 (40, 41)", frac=0.5)
@@ -510,20 +547,26 @@ def fig_explanation(s1_run, s2_run):
     arc(ax, n_nsp, n_col, active=False)
     for n in (n_col, n_hdr):
         arc(ax, n, n_tr, active=False)
-    sources(ax, ["(15) USBL → NSP: position fix AI1.1 feeds the navigation decision AI1.2 (C5)",
-                 "(18) WTE → NSP: tracking error read in AI1.1 for the on-track decision AI1.2 (I-2)",
-                 "(17) Current → NSP: read with the vehicle state (AI2.1); degrades position keeping",
-                 "(30) NSP → ACP: estimation precedes execution (AU2.3, AT1.3, AH1.3, AD3.3 publish the state "
-                 "used by AU3, AT2, AH2, AD5)",
-                 "(34) NSP → DQ: valid position required for adequate data (I-2, I-4 → I-6 → I-X3)",
-                 "(40, 41) DQ → TR: data-quality pathway to C1, active in inspection only",
-                 "(37) ACP → TR: request-and-confirm interaction A-TO.3 → H-TO.1"], 1.3)
-    ax.text(0.0, 5.3, "(b) S2: cross-current and loss of the USBL signal during inspection", fontsize=8,
-            fontweight="bold", va="center")
+    sources(ax, lines + ["(30) NSP → ACP: estimation precedes execution (AU2.3, AT1.3, AH1.3, AD3.3 publish the state "
+                         "used by AU3, AT2, AH2, AD5)",
+                         "(34) NSP → DQ: valid position required for adequate data (I-2, I-4 → I-6 → I-X3)",
+                         "(40, 41) DQ → TR: data-quality pathway to C1, active in inspection only",
+                         "(37) ACP → TR: request-and-confirm interaction A-TO.3 → H-TO.1"], 1.3)
+    ax.text(0.0, 5.3, title_b, fontsize=8, fontweight="bold", va="center")
     ax.set_ylim(-0.45, 5.55)
     for ax in axes:
         ax.set_xlim(-0.1, 10.1)
         ax.axis("off")
+    # end panel (b) at its last source line, at the same scale, so no empty band is left below it when fewer evidence
+    # arcs are active (the saved figure is cropped to the axes box)
+    ax = axes[1]
+    fig.canvas.draw()
+    y0, y1 = ax.get_ylim()
+    bottom = min(t.get_window_extent().transformed(ax.transData.inverted()).y0 for t in ax.texts) - 0.1
+    pos = ax.get_position()
+    height = pos.height * (y1 - bottom) / (y1 - y0)
+    ax.set_position([pos.x0, pos.y1 - height, pos.width, height])
+    ax.set_ylim(bottom, y1)
     return fig
 
 
@@ -535,20 +578,29 @@ def main():
     parser.add_argument("--s1-cl", default="s1_obstacle_run01_closedloop_20261018")
     parser.add_argument("--s2-cl", default="s2_current_usbl_run01_closedloop_20261019")
     parser.add_argument("--only", choices=["nominal", "traces", "closed_loop", "explanation"], default=None)
+    parser.add_argument("--explanation-bag", default=os.path.join(H.SRC, "rosbags", "field",
+                                                                  "pier_faults_run01_closedloop_20261025"),
+                        help="field run whose TO1 (first sonar Critical) and TO3 (first USBL Lost) the explanation "
+                             "figure traces; written to src/plots/field/field_results/")
     args = parser.parse_args()
     os.makedirs(OUT, exist_ok=True)
-    figures = {"nominal": ("sim_nominal_mission", lambda: fig_nominal(os.path.join(BAGS, args.nominal))),
-               "traces": ("sim_traces", lambda: fig_traces(args.s1, args.s2)),
-               "closed_loop": ("sim_closed_loop", lambda: fig_closed_loop(args.s1, args.s1_cl, args.s2, args.s2_cl)),
-               "explanation": ("explanation_example", lambda: fig_explanation(args.s1, args.s2))}
-    for key, (name, make) in figures.items():
+    field_out = os.path.join(HERE, "field", "field_results")
+    figures = {"nominal": ("sim_nominal_mission", OUT, lambda: fig_nominal(os.path.join(BAGS, args.nominal))),
+               "traces": ("sim_traces", OUT, lambda: fig_traces(args.s1, args.s2)),
+               "closed_loop": ("sim_closed_loop", OUT,
+                               lambda: fig_closed_loop(args.s1, args.s1_cl, args.s2, args.s2_cl)),
+               "explanation": ("explanation_example", field_out, lambda: fig_explanation(
+                   states_field(args.explanation_bag, "sonar Critical"), states_field(args.explanation_bag, "USBL Lost"),
+                   "(a) TO1: critical sonar range in transit",
+                   "(b) TO3: loss of the USBL signal during inspection"))}
+    for key, (name, out, make) in figures.items():
         if args.only and key != args.only:
             continue
         fig = make()
         for ext in ("pdf", "png"):
-            fig.savefig(os.path.join(OUT, f"{name}.{ext}"), dpi=300, bbox_inches="tight")
+            fig.savefig(os.path.join(out, f"{name}.{ext}"), dpi=300, bbox_inches="tight")
         plt.close(fig)
-        print(f"saved {os.path.join(OUT, name)}.pdf/.png")
+        print(f"saved {os.path.join(out, name)}.pdf/.png")
 
 
 if __name__ == "__main__":

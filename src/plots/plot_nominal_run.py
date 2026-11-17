@@ -9,7 +9,7 @@ Usage:
 Output (default src/plots/paper/<bag_name>/), each figure as PDF (paper) and PNG (viewing):
   fig1_mission_map     track coloured by mission phase, waypoints, dock and pipeline footprints
   fig2_timeline        (a) urgency against the threshold, (b) TakeoverRequest posterior,
-                       (c) evidence entered in the BN, coloured by severity, (d) operator fatigue and stress
+                       (c) operator fatigue and stress, (d) evidence entered in the BN, coloured by severity
   fig3_hidden_nodes    posteriors of the intermediate BN nodes (the explanation layer)
   phase_summary.csv/.md  per phase: duration, urgency statistics, time above threshold, alarms
   run_summary.txt        mission result, docking result, alarms, peak urgency, battery, distance
@@ -247,18 +247,28 @@ def count_alarms(samples, threshold):
     return alarms
 
 
-def rock_outline(config_path, meshes_dir, scale=0.15):
-    """Horizontal outline (N, E) of the transit rock of the obstacle scenario (objects/transit_rock.scn)."""
+ROCK_KEYS = ("transit_rock_a", "transit_rock")      # objects/transit_rock_a.scn (SF only), objects/transit_rock.scn
+
+
+def rock_outline(config_path, meshes_dir, scale=0.15, key="transit_rock"):
+    """Horizontal outline (N, E) of a transit rock (objects/transit_rock.scn, placed by <key>_position/_orientation)."""
     from scipy.spatial import ConvexHull
     with open(config_path) as f:
         config = yaml.safe_load(f)
-    x, y, _ = (float(v) for v in str(config["transit_rock_position"]).split())
-    yaw = float(str(config["transit_rock_orientation"]).split()[2])
+    x, y, _ = (float(v) for v in str(config[f"{key}_position"]).split())
+    yaw = float(str(config[f"{key}_orientation"]).split()[2])
     v = np.array([[float(t) for t in l.split()[1:3]] for l in open(os.path.join(meshes_dir, "rock.obj"))
                   if l.startswith("v ")]) * scale
     c, s = math.cos(yaw), math.sin(yaw)
     w = np.stack([x + c * v[:, 0] - s * v[:, 1], y + s * v[:, 0] + c * v[:, 1]], axis=1)
     return w[ConvexHull(w).vertices]
+
+
+def rocks(config_path, meshes_dir):
+    """Outlines of the transit rocks the scenario config places (none, rock B of S1, or rocks A and B of SF)."""
+    with open(config_path) as f:
+        config = yaml.safe_load(f)
+    return [rock_outline(config_path, meshes_dir, key=k) for k in ROCK_KEYS if f"{k}_position" in config]
 
 
 def structure_grid(config_path, meshes_dir, structures, resolution=0.05):
@@ -302,7 +312,7 @@ def shade_phases(ax, segs, start, labels=False):
                     va="bottom", fontsize=7, color=colour)
 
 
-def fig_mission_map(data, segs, start, end, grids, out, obstacle=None, events=(), disturbances=()):
+def fig_mission_map(data, segs, start, end, grids, out, obstacles=(), events=(), disturbances=()):
     odom = [o for o in data["/blueye/odom"] if start <= o[0] <= end]
     fig, ax = plt.subplots(figsize=(3.6, 3.5))
     for (x0, y0, res, grid), (colour, label) in zip(grids, [("#7f7f7f", "Docking station"), ("#8c564b", "Pipeline")]):
@@ -312,8 +322,9 @@ def fig_mission_map(data, segs, start, end, grids, out, obstacle=None, events=()
         ax.imshow(masked, origin="lower", extent=(y0, y0 + ny * res, x0, x0 + nx * res),
                   cmap=matplotlib.colors.ListedColormap([colour]), alpha=0.55, interpolation="nearest")
         ax.plot([], [], "s", color=colour, alpha=0.55, label=label)
-    if obstacle is not None:
-        ax.fill(obstacle[:, 1], obstacle[:, 0], color="#52514e", alpha=0.9, lw=0, zorder=3, label="Obstacle (rock)")
+    for i, rock in enumerate(obstacles):
+        ax.fill(rock[:, 1], rock[:, 0], color="#52514e", alpha=0.9, lw=0, zorder=3,
+                label=("Obstacle (rock)" if len(obstacles) == 1 else "Obstacles (rocks)") if i == 0 else None)
     pts = np.array([[o[2], o[1]] for o in odom])
     phase = [phase_at(segs, o[0]) for o in odom]
     lines = np.stack([pts[:-1], pts[1:]], axis=1)
@@ -340,11 +351,13 @@ def fig_mission_map(data, segs, start, end, grids, out, obstacle=None, events=()
         ax.annotate("", xy=(o[2] + 2.2 * math.sin(a), o[1] + 2.2 * math.cos(a)), xytext=(o[2], o[1]),
                     arrowprops=dict(arrowstyle="-|>", color="#52514e", lw=1.8, mutation_scale=11), zorder=8)
         ax.plot([], [], color="#52514e", lw=1.8, label=f"Water current (up to {top[0]:.2f} m/s)")
+    shown = set()                        # one legend entry per marker, also with several takeovers
     for t, label, colour in events:
         if label in ("takeover request", "hand-back"):
             o = odom[min(bisect.bisect_left(ot, t), len(odom) - 1)]
             ax.plot(o[2], o[1], "v" if label == "takeover request" else "^", color=colour, ms=5.5, mec="white",
-                    mew=0.5, zorder=7, label=label.capitalize())
+                    mew=0.5, zorder=7, label=None if label in shown else label.capitalize())
+            shown.add(label)
     for p in sorted(set(phase) - {None}):
         ax.plot([], [], color=PHASES[p][1], lw=2, label=PHASES[p][0])
     ax.set_xlabel("East [m]")
@@ -367,7 +380,7 @@ def fig_timeline(data, segs, start, end, threshold, alarms, out, events=(), dist
     urg = [(t - start, v) for t, v in data["/blueye/takeover_request/urgency"] if start <= t <= end]
     ev = [(t, e) for t, e in data["/blueye/takeover_request/evidence"] if start <= t <= end]
     fig, axes = plt.subplots(4, 1, figsize=(7.2, 6.6), sharex=True,
-                             gridspec_kw={"height_ratios": [1.1, 1.0, 2.2, 0.8], "hspace": 0.22})
+                             gridspec_kw={"height_ratios": [1.1, 1.0, 0.8, 2.2], "hspace": 0.22})
     a, b, c, d = axes
     for ax in axes:
         shade_phases(ax, segs, start, labels=ax is a)
@@ -391,32 +404,38 @@ def fig_timeline(data, segs, start, end, threshold, alarms, out, events=(), dist
     b.legend(loc="upper right", ncol=3, frameon=False)
     b.text(0.005, 0.9, "(b)", transform=b.transAxes, fontweight="bold")
 
-    for row, (node, states) in enumerate(EVIDENCE_ROWS):
-        colours = severity_colours(len(states))
-        y = len(EVIDENCE_ROWS) - 1 - row
-        for i, (te, e) in enumerate(ev):
-            t1 = ev[i + 1][0] if i + 1 < len(ev) else end
-            state = e["evidence"].get(node)
-            colour = colours[states.index(state)] if state in states else "#e0e0e0"
-            c.broken_barh([(te - start, t1 - te)], (y - 0.42, 0.84), facecolors=colour, lw=0)
-    c.set_yticks(range(len(EVIDENCE_ROWS)))
-    c.set_yticklabels([n for n, _ in reversed(EVIDENCE_ROWS)], fontsize=6.5)
-    c.set_ylim(-0.6, len(EVIDENCE_ROWS) - 0.4)
-    sev = severity_colours(3)
-    c.legend(handles=[Patch(color=sev[0], label="nominal"), Patch(color=sev[1], label="degraded"),
-                      Patch(color=sev[2], label="worst state"), Patch(color="#e0e0e0", label="not entered")],
-             loc="lower right", bbox_to_anchor=(1.0, 0.99), ncol=4, frameon=False, borderaxespad=0.1)
-    c.text(0.005, 1.02, "(c) evidence", transform=c.transAxes, fontweight="bold")
-
     for topic, label, colour in [("/blueye/human/fatigue", "Fatigue", "#8c564b"),
                                  ("/blueye/human/stress", "Stress", "#e377c2")]:
         s = [(t - start, v) for t, v in data[topic] if start <= t <= end]
         if s:
-            d.plot(*zip(*s), color=colour, lw=1.0, label=label)
-    d.set_ylim(0, 1)
-    d.set_ylabel("Operator")
-    d.legend(loc="upper right", ncol=2, frameon=False)
-    d.text(0.005, 0.85, "(d)", transform=d.transAxes, fontweight="bold")
+            c.plot(*zip(*s), color=colour, lw=1.0, label=label)
+    c.set_ylim(0, 1)
+    c.set_ylabel("Operator")
+    c.legend(loc="upper right", ncol=2, frameon=False)
+    c.text(0.005, 0.85, "(c)", transform=c.transAxes, fontweight="bold")
+
+    for row, (node, states) in enumerate(EVIDENCE_ROWS):
+        colours = severity_colours(len(states))
+        y = len(EVIDENCE_ROWS) - 1 - row
+        bars = []                    # consecutive updates in the same state as one bar (a long run has thousands)
+        for i, (te, e) in enumerate(ev):
+            t1 = ev[i + 1][0] if i + 1 < len(ev) else end
+            state = e["evidence"].get(node)
+            colour = colours[states.index(state)] if state in states else "#e0e0e0"
+            if bars and bars[-1][2] == colour:
+                bars[-1][1] = t1
+            else:
+                bars.append([te, t1, colour])
+        for te, t1, colour in bars:
+            d.broken_barh([(te - start, t1 - te)], (y - 0.42, 0.84), facecolors=colour, lw=0)
+    d.set_yticks(range(len(EVIDENCE_ROWS)))
+    d.set_yticklabels([n for n, _ in reversed(EVIDENCE_ROWS)], fontsize=6.5)
+    d.set_ylim(-0.6, len(EVIDENCE_ROWS) - 0.4)
+    sev = severity_colours(3)
+    d.legend(handles=[Patch(color=sev[0], label="nominal"), Patch(color=sev[1], label="degraded"),
+                      Patch(color=sev[2], label="worst state"), Patch(color="#e0e0e0", label="not entered")],
+             loc="lower right", bbox_to_anchor=(1.0, 0.99), ncol=4, frameon=False, borderaxespad=0.1)
+    d.text(0.005, 1.02, "(d) evidence", transform=d.transAxes, fontweight="bold")
     d.set_xlabel("Mission time [s]")
     d.set_xlim(0, end - start)
     for ax in axes:
@@ -572,10 +591,9 @@ def main():
                           threshold)
     events = takeover_events(data, start, end)
     disturbances = disturbance_events(data, start, end)
-    obstacle = rock_outline(args.obstacle_config, os.path.join(share, "data", "object_files")) \
-        if args.obstacle_config else None
+    obstacles = rocks(args.obstacle_config or config, os.path.join(share, "data", "object_files"))
     print(f"Writing to {out}")
-    fig_mission_map(data, segs, start, end, grids, out, obstacle, events, disturbances)
+    fig_mission_map(data, segs, start, end, grids, out, obstacles, events, disturbances)
     fig_timeline(data, segs, start, end, threshold, alarms, out, events, disturbances)
     fig_hidden_nodes(data, segs, start, end, out, events)
     summaries(data, bag, segs, start, end, result, threshold, alarms, out, events)

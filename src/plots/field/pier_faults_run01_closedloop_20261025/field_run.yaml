@@ -1,0 +1,4 @@
+# Field run: injected faults at the pier, takeover_mode closed_loop (bag src/rosbags/field/pier_faults_run01_closedloop_20261025)
+site: pier
+# TO1 sonar Critical (transit), TO2 USBL Weak + sonar Near/Critical (transit), TO3 USBL Lost (inspection)
+takeovers: [TO1, TO2, TO3]

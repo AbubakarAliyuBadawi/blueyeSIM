@@ -7,17 +7,31 @@ ActivateAutoModes::ActivateAutoModes(const std::string& name, const BT::NodeConf
     node_ = rclcpp::Node::make_shared("activate_auto_modes");
     depth_client_ = node_->create_client<std_srvs::srv::SetBool>("/blueye/depth_hold");
     heading_client_ = node_->create_client<std_srvs::srv::SetBool>("/blueye/heading_hold");
+    stationkeep_client_ = node_->create_client<std_srvs::srv::SetBool>("/blueye/stationkeep");
 }
 
 BT::NodeStatus ActivateAutoModes::onStart()
 {
     bool depth_hold = true;
     bool heading_hold = true;
+    bool station_keeping = false;
     
     // Get values from ports
     getInput("depth_hold", depth_hold);
     getInput("heading_hold", heading_hold);
+    getInput("station_keeping", station_keeping);
     getInput("hold_duration", hold_duration_);
+
+    if (station_keeping) {
+        // Includes depth and heading hold; the depth and heading services are not called, so station keeping (on
+        // since the undocking) is not disturbed
+        RCLCPP_INFO(node_->get_logger(), "Station keeping for %d seconds", hold_duration_);
+        services_activated_ = callAutoService(stationkeep_client_, true, "station keeping");
+        if (!services_activated_)
+            return BT::NodeStatus::FAILURE;
+        start_time_ = std::chrono::steady_clock::now();
+        return BT::NodeStatus::RUNNING;
+    }
     
     RCLCPP_INFO(node_->get_logger(), "Setting auto modes - Depth hold: %s, Heading hold: %s for %d seconds", 
                 depth_hold ? "true" : "false", heading_hold ? "true" : "false", hold_duration_);

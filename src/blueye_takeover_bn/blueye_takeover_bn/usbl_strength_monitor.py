@@ -14,6 +14,11 @@ USBL loss can be injected with /blueye/usbl/set_beacon_enabled (std_srvs/SetBool
 operator HUD): while the beacon is off its fixes are ignored, as if it stopped replying, so the strength degrades by the
 rule above and reaches Lost after lost_age_s. The switch is published on /blueye/usbl/beacon_enabled (the HUD's USBL tab
 follows it) and every change on /scenario/events.
+
+The strength can also be set directly on /blueye/virtual/usbl_command (std_msgs/String: Strong, Moderate, Weak or
+Lost; Real goes back to the rule above), as the virtual USBL of the field trial is: field_twin_events uses it to replay
+the field run's USBL changes. Each change goes on /scenario/events as {"event": "usbl", "state": ..., "source":
+"command"}, the format of the field runs.
 """
 
 import json
@@ -42,7 +47,9 @@ class UsblStrengthMonitor(Node):
         self.declare_parameter("beacon_service", "/blueye/usbl/set_beacon_enabled")
         self.declare_parameter("beacon_state_topic", "/blueye/usbl/beacon_enabled")
         self.declare_parameter("events_topic", "/scenario/events")
+        self.declare_parameter("override_topic", "/blueye/virtual/usbl_command")
 
+        self._override = None                              # state set on override_topic; None: the rule above
         self._last_fix = None
         self._range = None
         self._beacon_enabled = True
@@ -52,6 +59,7 @@ class UsblStrengthMonitor(Node):
 
         self._pub = self.create_publisher(String, self.get_parameter("strength_topic").value, 10)
         self.create_subscription(BeaconInfo, self.get_parameter("beacon_topic").value, self._beacon_cb, 10)
+        self.create_subscription(String, self.get_parameter("override_topic").value, self._override_cb, 10)
         rate = max(float(self.get_parameter("publish_rate_hz").value), 0.1)
         self.create_timer(1.0 / rate, self._publish)
 
@@ -73,7 +81,23 @@ class UsblStrengthMonitor(Node):
         response.message = "USBL beacon " + ("on" if request.data else "off")
         return response
 
+    def _override_cb(self, msg: String):
+        state = msg.data.strip().capitalize()
+        state = None if state in ("", "Real") else state
+        if state not in (None, "Strong", "Moderate", "Weak", "Lost"):
+            self.get_logger().warning(f"Unknown USBL state '{msg.data}' ignored")
+            return
+        if state == self._override:
+            return
+        self._override = state
+        self.get_logger().info(f"USBL {state}" if state else "USBL back to the simulated strength")
+        event = String()
+        event.data = json.dumps({"event": "usbl", "state": state or "Real", "source": "command"})
+        self._event_pub.publish(event)
+
     def _state(self) -> str:
+        if self._override is not None:
+            return self._override
         age = float("inf") if self._last_fix is None else time.monotonic() - self._last_fix
         if age > self._param("lost_age_s"):
             return "Lost"

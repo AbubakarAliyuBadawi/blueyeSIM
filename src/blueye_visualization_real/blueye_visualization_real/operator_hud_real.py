@@ -9,19 +9,30 @@ Topics consumed:
   /blueye/commands                   geometry_msgs/WrenchStamped
   /blueye/pose                       geometry_msgs/PoseStamped
   /blueye/battery                    geometry_msgs/Pose  (packed)
-  /blueye/takeover_request/takeover_requested_prob   std_msgs/Float32
-  /blueye/takeover_request/attention_required_prob   std_msgs/Float32
+  /blueye/takeover_request/urgency                   std_msgs/Float64
   /blueye/takeover_request/threshold                 std_msgs/Float32
+  /blueye/takeover_request/evidence                  std_msgs/String (JSON)
+  /blueye/sonar_range_state          std_msgs/String  (virtual_sensors)
+  /blueye/usbl_strength              std_msgs/String  (virtual_sensors)
+  /blueye/virtual/aruco_mode         std_msgs/String  (virtual_sensors: Real = camera, or the injected state)
+  /scenario/events                   std_msgs/String  (JSON)
+  /mission_state                     std_msgs/Int32   (6: the tree waits for the operator's decision)
+  /blueye/takeover_request/mode      std_msgs/String  (closed_loop | shadow: no popup, crossings only logged)
 
 Topics published:
   /blueye/takeover_request/human_decision   std_msgs/Bool
-  /blueye/takeover_request/handback         std_msgs/Bool
+  /blueye/takeover_request/handback         std_msgs/Bool   (only while urgency < threshold)
+  /blueye/virtual/sonar_command             std_msgs/String (Injected Evidence tab)
+  /blueye/virtual/usbl_command              std_msgs/String (Injected Evidence tab)
+  /blueye/virtual/aruco_command             std_msgs/String (Injected Evidence tab)
 """
 
+import json
 import math
 import os
 import sys
 import threading
+import time
 
 # PyQt5 MUST be imported before cv2.
 _SYSTEM_QT_PLUGIN_PATH = "/usr/lib/x86_64-linux-gnu/qt5/plugins"
@@ -37,9 +48,12 @@ from PyQt5.QtWidgets import (
     QApplication,
     QDialog,
     QFrame,
+    QGridLayout,
+    QGroupBox,
     QHBoxLayout,
     QLabel,
     QMainWindow,
+    QPlainTextEdit,
     QPushButton,
     QSizePolicy,
     QTabWidget,
@@ -56,7 +70,7 @@ from rclpy.qos import HistoryPolicy, QoSProfile, ReliabilityPolicy
 
 from geometry_msgs.msg import Pose, PoseStamped, WrenchStamped
 from sensor_msgs.msg import Image, Joy
-from std_msgs.msg import Bool, Float32, Float64
+from std_msgs.msg import Bool, Float32, Float64, Int32, String
 from std_srvs.srv import SetBool
 
 
@@ -72,6 +86,10 @@ class _Signals(QObject):
     battery_ready    = pyqtSignal(float, float, float, float)  # soc%, runtime_s, current_a, charging_current_a
     takeover_update  = pyqtSignal(float, float)  # urgency, threshold
     show_popup       = pyqtSignal()
+    virtual_state    = pyqtSignal(str, str)      # sensor ("sonar"/"usbl"/"aruco"), state of virtual_sensors
+    bn_evidence      = pyqtSignal(object)        # network evidence {node: state} of the injected nodes and phase
+    injection_message = pyqtSignal(str)          # Injected Evidence tab log line
+    mode_changed     = pyqtSignal(str)           # takeover mode of the behaviour tree
 
 
 # ── Camera panel ──────────────────────────────────────────────────────────────
@@ -679,6 +697,130 @@ class TakeoverDialog(QDialog):
         return self.result() == QDialog.Accepted
 
 
+# ── Injected Evidence tab: virtual sonar and USBL ─────────────────────────────
+
+# Healthy, degraded and fault states
+_STATE_COLOURS = {"Clear": "#a6e3a1", "Near": "#f9e2af", "Critical": "#f38ba8",
+                  "Strong": "#a6e3a1", "Moderate": "#a6e3a1", "Weak": "#f9e2af", "Lost": "#f38ba8",
+                  "All": "#a6e3a1", "Some": "#f9e2af", "None": "#f38ba8", "Real": "#89b4fa"}
+_BUTTON_LABELS = {"Real": "REAL (CAMERA)"}
+
+
+class InjectionPanel(QWidget):
+    """Evidence for the sensors the vehicle does not carry, set by the operator. The virtual_sensors node
+    (blueye_takeover_bn) publishes the chosen states for the takeover network and records every change on
+    /scenario/events."""
+
+    _LABEL  = "color:#cdd6f4; font-family:Monospace; font-size:12px;"
+    _NOTE   = "color:#6c7086; font-family:Monospace; font-size:11px;"
+    _BUTTON = ("QPushButton {{ background:{bg}; color:{fg}; font-family:Monospace; font-size:12px; "
+               "font-weight:bold; border:1px solid #45475a; border-radius:4px; padding:8px 10px; }}")
+    # sensor: (title, states, network node, how the network responds)
+    SENSORS = {
+        "sonar": ("Sonar (virtual)", ("Clear", "Near", "Critical"), "SonarRange",
+                  "Near raises attention, Critical requests a takeover in every phase. "
+                  "Back to Clear to allow the hand-back."),
+        "usbl":  ("USBL (virtual)", ("Strong", "Moderate", "Weak", "Lost"), "USBLStrength",
+                  "Lost alone requests a takeover in Inspection and Homing, not in Transit; "
+                  "Lost with sonar Near also requests one in Transit."),
+        "aruco": ("ArUco visibility (camera, or injected where there is no dock)", ("Real", "All", "Some", "None"),
+                  "ArUcoVisibility",
+                  "Used in Undocking and Docking only, from the first All or Some in the phase; None after that "
+                  "requests a takeover. REAL passes the camera's detection through."),
+    }
+
+    def __init__(self, ros_node):
+        super().__init__()
+        self._node = ros_node
+        self._phase = ""
+        self.setStyleSheet("QGroupBox { color:#89b4fa; font-family:Monospace; font-weight:bold; border:1px solid "
+                           "#313244; border-radius:6px; margin-top:14px; padding:10px; } QGroupBox::title "
+                           "{ subcontrol-origin: margin; left:10px; }")
+        root = QVBoxLayout(self)
+
+        self.buttons, self.sent_labels, self.bn_labels = {}, {}, {}
+        for sensor, (title, states, bn_node, note) in self.SENSORS.items():
+            box = QGroupBox(title)
+            grid = QGridLayout(box)
+            self.buttons[sensor] = {}
+            for k, state in enumerate(states):
+                btn = QPushButton(_BUTTON_LABELS.get(state, state.upper()))
+                btn.setFixedHeight(44)
+                btn.clicked.connect(lambda _=False, s=sensor, v=state: self._command(s, v))
+                grid.addWidget(btn, 0, k)
+                self.buttons[sensor][state] = btn
+            self.sent_labels[sensor] = self._label("Virtual sensor: —  (is virtual_sensors running?)")
+            self.bn_labels[sensor] = self._label(f"Network evidence {bn_node}: —")
+            grid.addWidget(self.sent_labels[sensor], 1, 0, 1, len(states))
+            grid.addWidget(self.bn_labels[sensor], 2, 0, 1, len(states))
+            hint = self._label(note, self._NOTE)
+            hint.setWordWrap(True)
+            grid.addWidget(hint, 3, 0, 1, len(states))
+            root.addWidget(box)
+            self.on_virtual_state(sensor, "")
+
+        row = QHBoxLayout()
+        healthy_btn = QPushButton("ALL HEALTHY  (sonar Clear, USBL Strong, ArUco from the camera)")
+        healthy_btn.setFixedHeight(40)
+        healthy_btn.setStyleSheet(self._BUTTON.format(bg="#89b4fa", fg="#1e1e2e"))
+        healthy_btn.clicked.connect(self._all_healthy)
+        self.network_label = self._label("Network: —")
+        row.addWidget(healthy_btn, stretch=1)
+        row.addWidget(self.network_label, stretch=1)
+        root.addLayout(row)
+
+        log_box = QGroupBox("Changes (also recorded on /scenario/events)")
+        ll = QVBoxLayout(log_box)
+        self.log = QPlainTextEdit()
+        self.log.setReadOnly(True)
+        self.log.setMaximumBlockCount(300)
+        self.log.setStyleSheet("background:#11111b; color:#cdd6f4; font-family:Monospace; font-size:11px;")
+        ll.addWidget(self.log)
+        root.addWidget(log_box, stretch=1)
+
+    def _label(self, text, style=None):
+        label = QLabel(text)
+        label.setStyleSheet(style or self._LABEL)
+        return label
+
+    def _command(self, sensor: str, state: str):
+        self._node.send_virtual(sensor, state)
+        self.add_message(f"requested {sensor} {state}")
+
+    def _all_healthy(self):
+        for sensor, (_, states, _, _) in self.SENSORS.items():
+            self._node.send_virtual(sensor, states[0])
+        self.add_message("requested all healthy")
+
+    def on_virtual_state(self, sensor: str, state: str):
+        """State virtual_sensors publishes now: its button is lit."""
+        for name, btn in self.buttons[sensor].items():
+            if name == state:
+                btn.setStyleSheet(self._BUTTON.format(bg=_STATE_COLOURS[name], fg="#1e1e2e"))
+            else:
+                btn.setStyleSheet(self._BUTTON.format(bg="#313244", fg="#cdd6f4"))
+        if state:
+            shown = "camera (relayed)" if state == "Real" else state
+            self.sent_labels[sensor].setText(
+                f"Virtual sensor: <b style='color:{_STATE_COLOURS.get(state, '#cdd6f4')}'>{shown}</b>")
+
+    def on_bn_evidence(self, evidence: dict):
+        for sensor, (_, _, bn_node, _) in self.SENSORS.items():
+            value = evidence.get(bn_node, "")
+            self.bn_labels[sensor].setText(
+                f"Network evidence {bn_node}: <b style='color:{_STATE_COLOURS.get(value, '#cdd6f4')}'>"
+                f"{value or 'not entered'}</b>")
+        self._phase = evidence.get("MissionPhase", "")
+
+    def on_takeover_update(self, urgency: float, threshold: float):
+        colour = "#f38ba8" if urgency >= threshold else "#f9e2af" if urgency > 0.6 * threshold else "#a6e3a1"
+        self.network_label.setText(f"Network: U <b style='color:{colour}'>{urgency:.2f}</b> "
+                                   f"(threshold {threshold:.2f}), phase {self._phase or '—'}")
+
+    def add_message(self, text: str):
+        self.log.appendPlainText(f"{time.strftime('%H:%M:%S')}  {text}")
+
+
 # ── Silent WebEngine page (suppresses JS console spam) ────────────────────────
 
 class _SilentPage(QWebEnginePage):
@@ -702,6 +844,9 @@ class OperatorWindow(QMainWindow):
         super().__init__()
         self._ros_node    = ros_node
         self._in_takeover = False
+        self._dialog_open = False
+        self._urgency     = 0.0
+        self._threshold   = 0.65
         self.setWindowTitle("Blueye — Real Drone Operator Interface")
         self.setStyleSheet("background:#181825;")
         self.resize(1280, 820)
@@ -713,7 +858,13 @@ class OperatorWindow(QMainWindow):
         root.setSpacing(4)
 
         self.takeover_banner = TakeoverBanner()
-        root.addWidget(self.takeover_banner)
+        self.mode_label = QLabel()
+        self._on_mode_changed("")
+        top_row = QHBoxLayout()
+        top_row.setSpacing(4)
+        top_row.addWidget(self.takeover_banner, stretch=1)
+        top_row.addWidget(self.mode_label)
+        root.addLayout(top_row)
 
         # ── tab widget ────────────────────────────────────────────────────────
         self._tabs = QTabWidget()
@@ -772,19 +923,25 @@ class OperatorWindow(QMainWindow):
             bl.addWidget(self._frame(w))
         ov.addWidget(bottom, stretch=3)
 
+        # below the tabs, so it can be used from every tab; enabled once urgency < threshold
         self.handback_btn = QPushButton("HAND BACK CONTROL TO MISSION")
         self.handback_btn.setFixedHeight(40)
         self.handback_btn.setStyleSheet(
-            "background:#89b4fa; color:#1e1e2e; font-family:Monospace; "
-            "font-size:13px; font-weight:bold; border-radius:4px;"
+            "QPushButton { background:#89b4fa; color:#1e1e2e; font-family:Monospace; "
+            "font-size:13px; font-weight:bold; border-radius:4px; }"
+            "QPushButton:disabled { background:#45475a; color:#a6adc8; }"
         )
         self.handback_btn.hide()
         self.handback_btn.clicked.connect(self._on_handback)
-        ov.addWidget(self.handback_btn)
+        root.addWidget(self.handback_btn)
 
         self._tabs.addTab(overview, "Drone View")
 
-        # ── tab 2: Docking Camera ─────────────────────────────────────────────
+        # ── tab 2: Injected Evidence (virtual sonar and USBL) ────────────────
+        self.injection_panel = InjectionPanel(ros_node)
+        self._tabs.addTab(self.injection_panel, "Injected Evidence")
+
+        # ── tab 3: Docking Camera ─────────────────────────────────────────────
         rig_tab = QWidget()
         rig_layout = QVBoxLayout(rig_tab)
         rig_layout.setContentsMargins(4, 4, 4, 4)
@@ -793,7 +950,7 @@ class OperatorWindow(QMainWindow):
         rig_layout.addWidget(self.rig_cam)
         self._tabs.addTab(rig_tab, "Docking Camera")
 
-        # ── tab 3: Sonar 3D (optional — manufacturer web UI) ─────────────────
+        # ── tab 4: Sonar 3D (optional — manufacturer web UI) ─────────────────
         if enable_sonar_3d:
             sonar_tab = QWidget()
             sonar_tab_layout = QVBoxLayout(sonar_tab)
@@ -804,7 +961,7 @@ class OperatorWindow(QMainWindow):
             sonar_tab_layout.addWidget(self.sonar_web)
             self._tabs.addTab(sonar_tab, "Sonar 3D")
 
-        # ── tab 4: USBL — Sinaps web UI (optional, full-screen) ──────────────
+        # ── tab 5: USBL — Sinaps web UI (optional, full-screen) ──────────────
         if enable_usbl:
             usbl_tab = QWidget()
             usbl_layout = QVBoxLayout(usbl_tab)
@@ -825,6 +982,11 @@ class OperatorWindow(QMainWindow):
         signals.battery_ready.connect(self.battery_panel.ingest)
         signals.takeover_update.connect(self._on_takeover_update)
         signals.show_popup.connect(self._on_show_popup)
+        signals.takeover_update.connect(self.injection_panel.on_takeover_update)
+        signals.virtual_state.connect(self.injection_panel.on_virtual_state)
+        signals.bn_evidence.connect(self.injection_panel.on_bn_evidence)
+        signals.injection_message.connect(self.injection_panel.add_message)
+        signals.mode_changed.connect(self._on_mode_changed)
 
     @staticmethod
     def _frame(widget: QWidget) -> QFrame:
@@ -859,19 +1021,42 @@ class OperatorWindow(QMainWindow):
         fl.addWidget(widget)
         return frame
 
+    def _on_mode_changed(self, mode: str):
+        text, colour = {"shadow": ("MODE: SHADOW (no takeover)", "#f9e2af"),
+                        "closed_loop": ("MODE: CLOSED LOOP", "#a6e3a1")}.get(mode, ("MODE: — (no tree)", "#6c7086"))
+        self.mode_label.setText(text)
+        self.mode_label.setFixedHeight(32)
+        self.mode_label.setStyleSheet(
+            f"background:#1e1e2e; color:{colour}; font-family:Monospace; font-size:11px; "
+            "font-weight:bold; padding:0 10px;")
+
     def _on_takeover_update(self, prob: float, threshold: float):
+        self._urgency, self._threshold = prob, threshold
         self.takeover_banner.update_values(prob, threshold)
+        self._update_handback_btn()
 
     def _on_show_popup(self):
-        if self._in_takeover:
+        if self._in_takeover or self._dialog_open:
             return
+        self._dialog_open = True
         dlg = TakeoverDialog(self)
         dlg.exec_()
+        self._dialog_open = False
         decision = dlg.result_accepted()
         self._ros_node.publish_human_decision(decision)
         if decision:
             self._in_takeover = True
+            self._update_handback_btn()
             self.handback_btn.show()
+
+    def _update_handback_btn(self):
+        if self._urgency < self._threshold:
+            self.handback_btn.setEnabled(True)
+            self.handback_btn.setText("HAND BACK CONTROL TO MISSION")
+        else:
+            self.handback_btn.setEnabled(False)
+            self.handback_btn.setText(f"HAND BACK AVAILABLE WHEN URGENCY < {self._threshold:.2f} "
+                                      f"(NOW {self._urgency:.2f})")
 
     def _on_handback(self):
         self._ros_node.publish_handback()
@@ -891,6 +1076,10 @@ class OperatorHUDNode(Node):
         self._threshold  = 0.65
         self._popup_sent = False
         self._shutdown   = False
+        self._virtual    = {}      # last state of each virtual sensor
+        self._mission_state = None
+        self._mode = ""
+        self._bn_evidence = None
 
         self.declare_parameter("drone_ip", "192.168.1.101")
         self.declare_parameter("rig_camera_url", "rtsp://192.168.1.10:554/stream1")
@@ -924,6 +1113,17 @@ class OperatorHUDNode(Node):
             Float64, "/blueye/takeover_request/urgency", self._on_urgency, 10)
         self.create_subscription(
             Float32, "/blueye/takeover_request/threshold", self._on_threshold, 10)
+        self.create_subscription(
+            String, "/blueye/takeover_request/evidence", self._on_evidence, 10)
+        self.create_subscription(
+            String, "/blueye/sonar_range_state", lambda m: self._on_virtual("sonar", m), 10)
+        self.create_subscription(
+            String, "/blueye/usbl_strength", lambda m: self._on_virtual("usbl", m), 10)
+        self.create_subscription(
+            String, "/blueye/virtual/aruco_mode", lambda m: self._on_virtual("aruco", m), 10)
+        self.create_subscription(String, "/scenario/events", self._on_scenario_event, 10)
+        self.create_subscription(Int32, "/mission_state", self._on_mission_state, 10)
+        self.create_subscription(String, "/blueye/takeover_request/mode", self._on_mode, 10)
 
         self._depth_client   = self.create_client(SetBool, "/blueye/depth_hold")
         self._heading_client = self.create_client(SetBool, "/blueye/heading_hold")
@@ -932,6 +1132,10 @@ class OperatorHUDNode(Node):
             Bool, "/blueye/takeover_request/human_decision", 10)
         self._handback_pub = self.create_publisher(
             Bool, "/blueye/takeover_request/handback", 10)
+        self._virtual_pubs = {
+            sensor: self.create_publisher(String, f"/blueye/virtual/{sensor}_command", 10)
+            for sensor in ("sonar", "usbl", "aruco")
+        }
 
         self._cam_thread = threading.Thread(
             target=self._stream_loop,
@@ -1013,12 +1217,65 @@ class OperatorHUDNode(Node):
         self._signals.takeover_update.emit(self._urgency, self._threshold)
         if self._urgency >= self._threshold and not self._popup_sent:
             self._popup_sent = True
-            self._signals.show_popup.emit()
+            if self._mode == "shadow":                  # the tree carries on: nothing to decide
+                self._signals.injection_message.emit(
+                    f"shadow mode: takeover would be requested (U {self._urgency:.2f})")
+            else:
+                self._signals.show_popup.emit()
         elif self._urgency < self._threshold * 0.8:
             self._popup_sent = False
 
+    def _on_mission_state(self, msg: Int32):
+        """The tree waits for a decision (6), also after a failed mission step or in shadow mode: popup (the window
+        does not open a second one while the urgency popup is up)."""
+        if msg.data == 6 and self._mission_state != 6:
+            self._popup_sent = True
+            self._signals.show_popup.emit()
+        self._mission_state = msg.data
+
+    def _on_mode(self, msg: String):
+        if msg.data != self._mode:
+            self._mode = msg.data
+            self._signals.mode_changed.emit(msg.data)
+
     def _on_threshold(self, msg: Float32):
         self._threshold = float(msg.data)
+
+    def _on_evidence(self, msg: String):
+        try:
+            evidence = json.loads(msg.data).get("evidence", {})
+        except ValueError:
+            return
+        values = {node: evidence.get(node, "")
+                  for node in ("SonarRange", "USBLStrength", "ArUcoVisibility", "MissionPhase")}
+        if values != self._bn_evidence:
+            self._bn_evidence = values
+            self._signals.bn_evidence.emit(values)
+
+    def _on_virtual(self, sensor: str, msg: String):
+        if self._virtual.get(sensor) != msg.data:
+            self._virtual[sensor] = msg.data
+            self._signals.virtual_state.emit(sensor, msg.data)
+
+    def _on_scenario_event(self, msg: String):
+        try:
+            event = json.loads(msg.data)
+        except ValueError:
+            return
+        if event.get("event") in ("sonar", "usbl", "aruco"):
+            text = f"virtual {event['event']} {event.get('state')}"
+        else:
+            text = msg.data
+        self._signals.injection_message.emit(text)
+
+    def send_virtual(self, sensor: str, state: str):
+        pub = self._virtual_pubs[sensor]
+        if pub.get_subscription_count() == 0:
+            self._signals.injection_message.emit(
+                f"virtual_sensors is not running: {sensor} {state} not delivered")
+        out = String()
+        out.data = state
+        pub.publish(out)
 
     def publish_human_decision(self, accepted: bool):
         out = Bool()

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot name="blueye">
+
+  <!-- Base link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <!-- point to your .dae mesh -->
+        <mesh filename="file:///home/leo/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_gz/gz_models/models/dynamic_assets/blueye/meshes/blueye.dae"
+              scale="1 1 1"/>
+      </geometry>
+      <material name="blueye_color">
+        <color rgba="0.2 0.4 0.9 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="file:///home/leo/mundus_mir_simulator/src/mundus_mir_simulator/mundus_mir_gz/gz_models/models/dynamic_assets/blueye/meshes/blueye.dae"
+              scale="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="10.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+               iyy="1.0" iyz="0.0"
+               izz="1.0"/>
+    </inertial>
+  </link>
+
+</robot>
+

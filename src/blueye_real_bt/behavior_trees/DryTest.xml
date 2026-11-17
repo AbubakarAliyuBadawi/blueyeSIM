@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Dry test on the bench: the takeover guard and operator handling of FullMission.xml, with timed phases instead
+     of motion. Nothing here commands the thrusters (EnableJoystick only switches station keeping and depth and
+     heading hold off), so the drone can stay out of the water; only the joystick moves it.
+
+     Mission states on /mission_state as in FullMission.xml: 1 undocking, 2 transit, 3 inspection, 4 homing,
+     5 docking, 6 takeover. Each phase lasts its Wait.
+
+     ACCEPT — EnableJoystick → WaitForHandback → AlwaysFail: main.cpp resets the tree, as in a real takeover. The
+              finished phases are skipped (blackboard `done`), and the interrupted phase starts again.
+     REJECT — homing and docking (timed), then the tree ends. -->
+
+<root BTCPP_format="4"
+      main_tree_to_execute="DryTest">
+
+  <!-- done: last finished phase; set once, when the tree is created, and kept when main.cpp resets the tree -->
+  <BehaviorTree ID="DryTest">
+    <SubTree ID="DryMission" done="0"/>
+  </BehaviorTree>
+
+  <BehaviorTree ID="DryMission">
+
+    <Fallback name="mission_with_takeover_guard">
+
+      <ReactiveSequence name="guarded_mission">
+        <CheckTakeoverRequest/>
+
+        <Sequence name="mission">
+          <Sequence name="undocking" _skipIf="done != '0'">
+            <PublishState state="1"/>
+            <Wait duration="30"/>
+            <Script code="done := '1'"/>
+          </Sequence>
+          <Sequence name="transit" _skipIf="done != '0' &amp;&amp; done != '1'">
+            <PublishState state="2"/>
+            <Wait duration="180"/>
+            <Script code="done := '2'"/>
+          </Sequence>
+          <Sequence name="inspection" _skipIf="done == '3' || done == '4'">
+            <PublishState state="3"/>
+            <Wait duration="180"/>
+            <Script code="done := '3'"/>
+          </Sequence>
+          <Sequence name="homing" _skipIf="done == '4'">
+            <PublishState state="4"/>
+            <Wait duration="60"/>
+            <Script code="done := '4'"/>
+          </Sequence>
+          <PublishState state="5"/>
+          <Wait duration="60"/>
+        </Sequence>
+      </ReactiveSequence>
+
+      <Sequence name="takeover_handler">
+        <PublishState state="6"/>
+        <WaitForHumanDecision decision="{human_decision}"/>
+
+        <Fallback name="decision_branch">
+          <Sequence name="reject_path">
+            <CheckBlackboardBool key="human_decision" expected_value="false"/>
+            <PublishState state="4"/>
+            <Wait duration="20"/>
+            <PublishState state="5"/>
+            <Wait duration="30"/>
+          </Sequence>
+
+          <Sequence name="accept_path">
+            <EnableJoystick/>
+            <WaitForHandback/>
+            <AlwaysFail/>
+          </Sequence>
+        </Fallback>
+      </Sequence>
+
+    </Fallback>
+  </BehaviorTree>
+
+</root>

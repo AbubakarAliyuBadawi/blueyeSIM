@@ -1,0 +1,10 @@
+Takeovers of the closed-loop field run (pier_faults_run01_closedloop_20261025) and of its simulator twin (sf_field_twin_run01_closedloop_20261027). Times in s; t_att and t_req from the first change of the takeover (field: injected; twin: USBL injected, sonar from the rocks), t_req after trigger from the change that crossed the threshold.
+
+| ID | run | phase | injected | max_U_before | max_U_after | t_att_s | t_req_s | t_req_after_trigger_s | decision | decision_s | manual_control_s | handback_after_cleared_s |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| TO1 | FC | Transit | sonar Critical (47 s) | 0.42 | 0.82 | 0.47 | 0.47 | 0.47 | accepted | 2.89 | 15.72 | 2.23 |
+| TO1 | SC | Transit | sonar Near (168 s), sonar Critical (179 s) | 0.41 | 0.82 | 0.5 | 10.5 | 0.0 | accepted | 1.56 | 46.11 | 23.19 |
+| TO2 | FC | Transit | USBL Weak (101 s), sonar Near (112 s), sonar Critical (124 s) | 0.29 | 0.82 | 10.84 | 22.84 | 0.18 | accepted | 1.91 | 47.2 | 2.17 |
+| TO2 | SC | Transit | USBL Weak (334 s), sonar Near (344 s), sonar Critical (354 s) | 0.25 | 0.82 | 9.86 | 20.36 | 0.0 | accepted | 1.99 | 24.92 | 1.42 |
+| TO3 | FC | Inspection | USBL Lost (395 s) | 0.49 | 0.7 | 0.33 | 0.83 | 0.83 | accepted | 2.28 | 30.37 | 1.67 |
+| TO3 | SC | Inspection | USBL Lost (438 s), sonar Near (438 s), sonar Clear (439 s), sonar Near (440 s) | 0.31 | 0.71 | 0.2 | 2.2 | 0.0 | accepted | 2.33 | 40.39 | 12.93 |

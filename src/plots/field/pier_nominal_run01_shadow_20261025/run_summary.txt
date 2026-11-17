@@ -1,0 +1,16 @@
+bag: pier_nominal_run01_shadow_20261025
+takeover mode: shadow
+mission result: survey completed; docking step from 467 s to the end of the run
+docking: no docking_complete reported
+analysis window: 1.7 s to 514.7 s of the bag (513.1 s)
+distance travelled: 92.9 m
+battery: 83.1 % -> 77.7 %
+threshold: 0.65
+alarms (rising crossings, re-armed below 0.8 x threshold): 2
+peak urgency: 0.761 at 19.1 s (Undocking)
+evidence at peak: {"Altitude": "Safe", "ArUcoVisibility": "None", "BatteryLevel": "High", "CameraQuality": "Excellent", "Current": "Low", "DVLStatus": "Nominal", "Fatigue": "Medium", "MissionPhase": "Undocking", "SonarRange": "Clear", "Speed": "Moderate", "Stress": "Medium", "USBLStrength": "Strong"}
+samples before mission start (excluded): 0
+site: pier
+start: -13.2 m north, -10.8 m east of the dock reference, depth -0.15 m
+positions: the drone's own estimate (DVL dead reckoning from the position reset at the dock)
+left out: 806 s at 394 s of mission time

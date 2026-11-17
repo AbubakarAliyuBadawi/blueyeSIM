@@ -1,182 +1,168 @@
 #!/usr/bin/env python3
 """
-Single Waypoint Mission Script for Blueye Drone
+Single waypoint mission for the takeover REJECT path of the behaviour tree: the drone goes to one waypoint on its
+onboard mission planner, then the tree starts the docking step.
 
-This script executes a simple mission to navigate to a single waypoint.
-It doesn't disconnect from the drone when finished.
+The mission runs through blueye_handler (mission_planner_scripts/drone_link.py), the only process connected to the
+drone; this script never connects itself. Interrupted, or failed, it pauses the mission: the drone holds position.
+
+Usage:
+  goto_waypoint.py <lat> <lon> <depth> [drone_ip]        a fixed coordinate (drone_ip is accepted and unused)
+  goto_waypoint.py --site-point S [--site pool|pier]      a waypoint of the site layout (mission_sites.py), placed with
+                                                          the dock reference and the dock's axis saved by mission.py
+                                                          (site: MISSION_SITE environment variable, else pool)
 """
 
-import sys
-import time
+import argparse
 import logging
+import sys
+import threading
+import time
+from pathlib import Path
 
-# Import required Blueye SDK components
 import blueye.protocol as bp
-from blueye.sdk import Drone
+import rclpy
 from blueye.protocol.types.mission_planning import DepthZeroReference
 from blueye.protocol.types.message_formats import LatLongPosition
+from rclpy.executors import ExternalShutdownException
+from rclpy.signals import SignalHandlerOptions
 
-# Import position reset extension
-from mission_planner_scripts.reset_drone_position import extend_ctrl_client
+sys.path.insert(0, str(Path(__file__).resolve().parent / "mission_planner_scripts"))
+import mission_sites                     # noqa: E402
+from drone_link import DroneLink         # noqa: E402
+
+MAX_DISTANCE_M = 50.0    # a fixed coordinate farther than this from the drone is refused (wrong site)
+MAX_DURATION_S = 600.0
+MAX_RETRIES = 3
+
+
+def mission_to(lat, lon, depth, speed, circle_of_acceptance):
+    depth_set_point = bp.DepthSetPoint(depth=depth, speed_to_depth=0.2,
+                                       depth_zero_reference=DepthZeroReference.DEPTH_ZERO_REFERENCE_SURFACE)
+    instructions = [
+        bp.Instruction(id=1, auto_continue=True, control_mode_command=bp.ControlModeCommand(
+            control_mode_vertical=bp.ControlModeVertical.CONTROL_MODE_VERTICAL_AUTO_DEPTH,
+            control_mode_horizontal=bp.ControlModeHorizontal.CONTROL_MODE_HORIZONTAL_AUTO_HEADING)),
+        bp.Instruction(id=2, auto_continue=True,
+                       depth_set_point_command=bp.DepthSetPointCommand(depth_set_point=depth_set_point)),
+        bp.Instruction(id=3, auto_continue=True, waypoint_command=bp.WaypointCommand(waypoint=bp.Waypoint(
+            id=3, name="Target Waypoint", global_position=LatLongPosition(latitude=lat, longitude=lon),
+            circle_of_acceptance=circle_of_acceptance, speed_to_target=speed, depth_set_point=depth_set_point))),
+    ]
+    return bp.Mission(id=1, name="Waypoint Mission", instructions=instructions, default_surge_speed=speed,
+                      default_heave_speed=0.2, default_circle_of_acceptance=circle_of_acceptance)
+
+
+def run(link, mission, logger):
+    """Load and run the mission until it completes; False on failure or timeout."""
+    ok, message = link.load_mission(mission)
+    if not ok:
+        logger.error(f"Loading the mission failed: {message}")
+        return False
+    logger.info(message)
+    if not link.wait_for_valid_position():
+        return False
+
+    retries = 0
+    ok, message = link.call("/blueye/mission/run")
+    if not ok:
+        logger.error(message)
+        return False
+    time.sleep(1.0)                 # the status topic (2 Hz) shows the result from here on
+    start = time.time()
+    while time.time() - start < MAX_DURATION_S:
+        status = link.mission_status()
+        if status is None:
+            logger.warning("No mission status from blueye_handler")
+            time.sleep(2.0)
+            continue
+        state = status["state"].replace("MISSION_STATE_", "")
+        depth = f", Depth: {link.pose[2]:.1f}m" if link.pose else ""
+        logger.info(f"Mission: {state}, Progress: {len(status['completed'])}/{status['total']} instructions{depth}")
+        if state == "COMPLETED":
+            logger.info("Mission completed successfully")
+            return True
+        if state == "ABORTED":
+            if retries >= MAX_RETRIES:
+                logger.warning("Maximum retry attempts reached")
+                return False
+            retries += 1
+            logger.info(f"Mission aborted, resuming (attempt {retries}/{MAX_RETRIES})")
+            link.call("/blueye/mission/run")
+            time.sleep(3.0)
+            continue
+        if state in ("FAILED_TO_LOAD_MISSION", "FAILED_TO_START_MISSION"):
+            logger.error(f"Mission failed with state: {state}")
+            return False
+        time.sleep(2.0)
+    logger.warning(f"Mission timeout after {MAX_DURATION_S:.0f} s")
+    return False
+
 
 def main():
-    # Command line arguments (minimal version for simplicity)
-    if len(sys.argv) < 5:
-        print("Usage: python goto_waypoint.py <waypoint_lat> <waypoint_lon> <depth> <drone_ip>")
-        return 1
-    
-    waypoint_lat = float(sys.argv[1])
-    waypoint_lon = float(sys.argv[2])
-    depth = float(sys.argv[3])
-    drone_ip = sys.argv[4] if len(sys.argv) >= 5 else "192.168.1.101"
-    
-    # Set up basic logging to console
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[logging.StreamHandler(sys.stdout)]
-    )
+    parser = argparse.ArgumentParser(description="Single waypoint mission through blueye_handler")
+    parser.add_argument("coordinates", nargs="*", help="<lat> <lon> <depth> [drone_ip]")
+    parser.add_argument("--site-point", help="waypoint of the site layout instead, e.g. S")
+    parser.add_argument("--site", choices=sorted(mission_sites.SITES), default=mission_sites.DEFAULT_SITE)
+    args = parser.parse_args()
+    if args.site_point is None and not 3 <= len(args.coordinates) <= 4:
+        parser.error("give <lat> <lon> <depth> [drone_ip], or --site-point")
+
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                        handlers=[logging.StreamHandler(sys.stdout)])
     logger = logging.getLogger("waypoint_mission")
-    
-    # Connect to the drone
-    logger.info(f"Connecting to drone at {drone_ip}")
-    drone = Drone(ip=drone_ip, auto_connect=True)
-    logger.info(f"Connected to drone: {drone.serial_number}")
-    
-    # Take control if needed
-    if not drone.in_control:
-        drone.take_control()
-        logger.info("Control of drone acquired")
-    
-    # Reset position to current position (for navigation reference)
-    drone = extend_ctrl_client(drone)
-    drone._ctrl_client.reset_position(waypoint_lat, waypoint_lon, 0.0)
-    logger.info("Position reset to current coordinates")
-    time.sleep(2)  # Brief pause
-    
-    # Create single waypoint mission
-    logger.info(f"Creating waypoint mission to ({waypoint_lat}, {waypoint_lon}) at {depth}m depth")
-    
-    # Create the instructions for the mission
-    instructions = []
-    
-    # Step 1: Configure auto-depth mode
-    control_mode = bp.Instruction(
-        id=1,
-        control_mode_command=bp.ControlModeCommand(
-            control_mode_vertical=bp.ControlModeVertical.CONTROL_MODE_VERTICAL_AUTO_DEPTH,
-            control_mode_horizontal=bp.ControlModeHorizontal.CONTROL_MODE_HORIZONTAL_AUTO_HEADING
-        ),
-        auto_continue=True
-    )
-    instructions.append(control_mode)
-    
-    # Step 2: Set depth
-    depth_set_point = bp.DepthSetPoint(
-        depth=depth,
-        speed_to_depth=0.2,
-        depth_zero_reference=DepthZeroReference.DEPTH_ZERO_REFERENCE_SURFACE
-    )
-    
-    goto_depth = bp.Instruction(
-        id=2,
-        depth_set_point_command=bp.DepthSetPointCommand(
-            depth_set_point=depth_set_point
-        ),
-        auto_continue=True
-    )
-    instructions.append(goto_depth)
-    
-    # Step 3: Navigate to waypoint
-    waypoint = bp.Waypoint(
-        id=3,
-        name="Target Waypoint",
-        global_position=LatLongPosition(
-            latitude=waypoint_lat,
-            longitude=waypoint_lon
-        ),
-        circle_of_acceptance=1.0,
-        speed_to_target=0.3,
-        depth_set_point=depth_set_point
-    )
-    
-    goto_waypoint = bp.Instruction(
-        id=3,
-        waypoint_command=bp.WaypointCommand(
-            waypoint=waypoint
-        ),
-        auto_continue=True
-    )
-    instructions.append(goto_waypoint)
-    
-    # Create the mission
-    mission = bp.Mission(
-        id=1,
-        name="Waypoint Mission",
-        instructions=instructions,
-        default_surge_speed=0.3,
-        default_heave_speed=0.2,
-        default_circle_of_acceptance=1.0
-    )
-    
-    # Clear existing missions
-    logger.info("Clearing any previous missions")
-    drone.mission.clear()
-    time.sleep(1)
-    
-    # Send and run the mission
-    logger.info("Sending and running waypoint mission")
-    drone.mission.send_new(mission)
-    time.sleep(1)
-    drone.mission.run()
-    
-    # Monitor mission progress with auto-resume
-    retry_count = 0
-    max_retries = 3
-    
-    while retry_count <= max_retries:
-        # Get mission status
-        status = drone.mission.get_status()
-        
-        # Log status
-        state_msg = f"Mission: {status.state.name}, "
-        state_msg += f"Progress: {len(status.completed_instruction_ids)}/{status.total_number_of_instructions} instructions"
+
+    if args.site_point is not None:
         try:
-            depth = drone.depth
-            state_msg += f", Depth: {depth:.1f}m"
-        except:
-            pass
-        logger.info(state_msg)
-        
-        # Check if mission completed
-        if status.state == bp.MissionState.MISSION_STATE_COMPLETED:
-            logger.info("Mission completed successfully")
-            return 0
-        
-        # Auto-resume if aborted
-        elif status.state == bp.MissionState.MISSION_STATE_ABORTED:
-            if retry_count < max_retries:
-                retry_count += 1
-                logger.info(f"Mission aborted, auto-resuming (attempt {retry_count}/{max_retries})")
-                drone.mission.run()  # Resume mission
-            else:
-                logger.warning("Maximum retry attempts reached")
-                return 1
-        
-        # Handle other failure cases
-        elif status.state in [
-            bp.MissionState.MISSION_STATE_FAILED_TO_LOAD_MISSION,
-            bp.MissionState.MISSION_STATE_FAILED_TO_START_MISSION
-        ]:
-            logger.error(f"Mission failed with state: {status.state.name}")
+            lat, lon, depth = mission_sites.site_point(args.site, args.site_point)
+        except ValueError as exc:
+            logger.error(f"No target: {exc}")
             return 1
-            
-        time.sleep(2)  # Check status every 2 seconds
-    
-    # We should never reach here, but just in case
-    return 1
+        site = mission_sites.SITES[args.site]
+        speed, circle = site["speed"], site["circle_of_acceptance"]
+        logger.info(f"Target: {args.site_point} of the {args.site} layout")
+    else:
+        lat, lon, depth = (float(v) for v in args.coordinates[:3])
+        speed, circle = 0.3, 1.0
+
+    # rclpy must not shut down on SIGINT: pausing the mission still needs it
+    rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
+    node = rclpy.create_node("goto_waypoint_client")
+    link = DroneLink(node, logger)
+    spin = threading.Thread(target=lambda: _spin(node), daemon=True)
+    spin.start()
+    started = completed = False
+    try:
+        offset = link.offset_from_dock((lat, lon))     # from the target to the drone
+        if offset is None:
+            logger.error("No valid position estimate from blueye_handler")
+            return 1
+        logger.info(f"Waypoint mission to ({lat:.7f}, {lon:.7f}) at {depth} m: {offset[0]:.1f} m away")
+        if args.site_point is None and offset[0] > MAX_DISTANCE_M:
+            logger.error(f"Not going: the target is more than {MAX_DISTANCE_M:.0f} m away (a coordinate of another "
+                         "site?)")
+            return 1
+        started = True
+        completed = run(link, mission_to(lat, lon, depth, speed, circle), logger)
+        return 0 if completed else 1
+    except KeyboardInterrupt:
+        logger.info("Waypoint mission interrupted")
+        return 130
+    finally:
+        if started and not completed:
+            ok, message = link.call("/blueye/mission/pause", timeout_s=5.0)
+            logger.info(f"Mission paused, the drone holds position ({message})" if ok
+                        else f"Pausing the mission failed: {message}")
+        rclpy.shutdown()
+        spin.join(timeout=2.0)
+
+
+def _spin(node):
+    try:
+        rclpy.spin(node)
+    except ExternalShutdownException:
+        pass
 
 
 if __name__ == "__main__":
-    exit_code = main()
-    sys.exit(exit_code)
+    sys.exit(main())

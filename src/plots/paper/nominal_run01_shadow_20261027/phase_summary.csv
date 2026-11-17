@@ -1,0 +1,6 @@
+phase,start_s,end_s,duration_s,urgency_mean,urgency_max,time_above_threshold_s,alarms,P_takeover_max
+Undocking,0.0,36.3,36.3,0.369,0.406,0,0,0.261
+Transit,36.3,388.5,352.1,0.243,0.284,0,0,0.141
+Inspection,388.5,791.7,403.2,0.3,0.332,0,0,0.17
+Homing,791.7,1795.0,1003.3,0.396,0.45,0,0,0.278
+Docking,1795.0,1863.6,68.6,0.375,0.44,0,0,0.276

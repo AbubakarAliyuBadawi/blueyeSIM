@@ -17,6 +17,8 @@ public:
         return {
             BT::InputPort<bool>("depth_hold", true, "Enable depth hold mode"),
             BT::InputPort<bool>("heading_hold", true, "Enable heading hold mode"),
+            BT::InputPort<bool>("station_keeping", false,
+                                "Station keeping instead (holds position, depth and heading; needs a valid position estimate)"),
             BT::InputPort<int>("hold_duration", 10, "Duration to hold position in seconds")
         };
     }
@@ -30,6 +32,7 @@ private:
     std::shared_ptr<rclcpp::Node> node_;
     rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr depth_client_;
     rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr heading_client_;
+    rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr stationkeep_client_;
     
     bool callAutoService(rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr client, bool enable, const std::string& service_name);
     

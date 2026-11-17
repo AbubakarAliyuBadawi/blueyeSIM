@@ -1,0 +1,6 @@
+# Simulator twin of the closed-loop field run pier_faults_run01_closedloop_20261025 (scenario SC,
+# scenario:=blueye_field_twin with field_twin_events; bag src/rosbags/paper/sf_field_twin_run01_closedloop_20261027).
+# Drawn with plot_field_run.py, like the field run, for a direct comparison.
+# TO1 rock A (sonar Near, Critical); TO2 USBL Weak (injected), then rock B (sonar Near, Critical); TO3 USBL Lost
+# (injected) in Inspection, with a sonar Near seabed echo beside the pipe 2 s later
+takeovers: [TO1, TO2, TO3]

@@ -8,12 +8,14 @@ extern rclcpp::Node::SharedPtr g_node;
 // Never set in the REJECT path, so emergency dock exits cleanly without a restart.
 extern bool g_mission_paused;
 
-// Disables depth_hold and heading_hold so the operator has full joystick control.
+// Disables station keeping (on while the onboard mission is paused), depth_hold and heading_hold so the operator has
+// full joystick control.
 class EnableJoystick : public BT::SyncActionNode {
 public:
     EnableJoystick(const std::string& name, const BT::NodeConfiguration& config)
         : BT::SyncActionNode(name, config)
     {
+        stationkeep_client_ = g_node->create_client<std_srvs::srv::SetBool>("/blueye/stationkeep");
         depth_client_   = g_node->create_client<std_srvs::srv::SetBool>("/blueye/depth_hold");
         heading_client_ = g_node->create_client<std_srvs::srv::SetBool>("/blueye/heading_hold");
     }
@@ -21,7 +23,8 @@ public:
     static BT::PortsList providedPorts() { return {}; }
 
     BT::NodeStatus tick() override {
-        bool ok = _call(depth_client_,   false, "/blueye/depth_hold")
+        bool ok = _call(stationkeep_client_, false, "/blueye/stationkeep")
+               && _call(depth_client_,   false, "/blueye/depth_hold")
                && _call(heading_client_, false, "/blueye/heading_hold");
         if (ok) {
             g_mission_paused = true;
@@ -34,6 +37,7 @@ public:
     }
 
 private:
+    rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr stationkeep_client_;
     rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr depth_client_;
     rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr heading_client_;
 

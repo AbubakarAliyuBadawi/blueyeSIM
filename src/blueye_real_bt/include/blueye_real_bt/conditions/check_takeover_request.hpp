@@ -5,7 +5,10 @@
 #include <std_msgs/msg/float32.hpp>
 
 extern rclcpp::Node::SharedPtr g_node;
+extern bool g_shadow_mode;
 
+// FAILURE (takeover requested) when the BN urgency reaches the threshold; re-armed below 0.8 x threshold.
+// In shadow mode the same crossings are only logged and the mission continues.
 class CheckTakeoverRequest : public BT::ConditionNode {
 public:
     CheckTakeoverRequest(const std::string& name, const BT::NodeConfiguration& config)
@@ -44,6 +47,12 @@ public:
 
         if (urgency_ >= threshold_) {
             takeover_armed_ = false;
+            if (g_shadow_mode) {
+                RCLCPP_WARN(g_node->get_logger(),
+                    "Shadow mode: takeover would be requested (urgency=%.2f >= threshold=%.2f), mission continues",
+                    urgency_, threshold_);
+                return BT::NodeStatus::SUCCESS;
+            }
             RCLCPP_WARN_THROTTLE(g_node->get_logger(), *g_node->get_clock(), 2000,
                 "Takeover requested: urgency=%.2f >= threshold=%.2f", urgency_, threshold_);
             return BT::NodeStatus::FAILURE;

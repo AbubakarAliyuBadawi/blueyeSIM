@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import threading
+import time
 
 import rclpy
 from cv_bridge import CvBridge
@@ -22,6 +23,9 @@ class CameraQualityMonitor(Node):
         self.declare_parameter("quality_topic", "/blueye/camera_quality")
         self.declare_parameter("latency_topic", "/blueye/camera_latency")
         self.declare_parameter("frame_gap_topic", "/blueye/camera_frame_gap")
+        # image measures behind the quality, for calibrating the thresholds below on recorded runs
+        self.declare_parameter("sharpness_topic", "/blueye/camera_sharpness")
+        self.declare_parameter("brightness_topic", "/blueye/camera_brightness")
         self.declare_parameter("excellent_sharpness", 200.0)
         self.declare_parameter("good_sharpness", 50.0)
         self.declare_parameter("poor_sharpness", 10.0)
@@ -33,6 +37,9 @@ class CameraQualityMonitor(Node):
         self.declare_parameter("poor_latency_s", 1.0)
         self.declare_parameter("good_frame_gap_s", 0.2)
         self.declare_parameter("poor_frame_gap_s", 0.7)
+        # rtsp: while the stream cannot be opened or stops delivering frames, Failed is published and it is reopened
+        self.declare_parameter("reconnect_s", 2.0)
+        self.declare_parameter("max_failed_reads", 30)
 
         camera_topic = str(self.get_parameter("camera_topic").value)
         quality_topic = str(self.get_parameter("quality_topic").value)
@@ -46,6 +53,8 @@ class CameraQualityMonitor(Node):
         self.quality_pub = self.create_publisher(String, quality_topic, 10)
         self.latency_pub = self.create_publisher(Float32, latency_topic, 10)
         self.frame_gap_pub = self.create_publisher(Float32, frame_gap_topic, 10)
+        self.sharpness_pub = self.create_publisher(Float32, str(self.get_parameter("sharpness_topic").value), 10)
+        self.brightness_pub = self.create_publisher(Float32, str(self.get_parameter("brightness_topic").value), 10)
 
         source_mode = str(self.get_parameter("source_mode").value).lower()
         if source_mode == "ros":
@@ -81,36 +90,50 @@ class CameraQualityMonitor(Node):
             "video/x-raw,format=BGR ! appsink drop=true max-buffers=1 sync=false"
         )
 
-        cap = cv2.VideoCapture(gst_pipeline, cv2.CAP_GSTREAMER)
-        if not cap.isOpened():
-            self.get_logger().warning("GStreamer RTSP pipeline failed; trying OpenCV FFMPEG")
-            cap = cv2.VideoCapture(rtsp_url, cv2.CAP_FFMPEG)
+        reconnect_s = float(self.get_parameter("reconnect_s").value)
+        max_failed_reads = int(self.get_parameter("max_failed_reads").value)
 
-        if not cap.isOpened():
-            self.get_logger().error(f"Unable to open camera stream: {rtsp_url}")
-            self._publish_quality("Failed", 0.0, 0.0)
-            return
+        while rclpy.ok() and not self.shutdown_requested:
+            cap = cv2.VideoCapture(gst_pipeline, cv2.CAP_GSTREAMER)
+            if not cap.isOpened():
+                self.get_logger().warning("GStreamer RTSP pipeline failed; trying OpenCV FFMPEG",
+                                          throttle_duration_sec=30.0)
+                cap = cv2.VideoCapture(rtsp_url, cv2.CAP_FFMPEG)
 
-        try:
-            while rclpy.ok() and not self.shutdown_requested:
-                ret, image = cap.read()
-                receive_time = self.get_clock().now()
-                frame_gap_s = self._frame_gap_s(receive_time)
-                self.last_receive_time = receive_time
+            if not cap.isOpened():
+                self.get_logger().error(f"Unable to open camera stream: {rtsp_url}; retrying every {reconnect_s} s",
+                                        throttle_duration_sec=30.0)
+                self._publish_quality("Failed", 0.0, 0.0)
+                time.sleep(reconnect_s)
+                continue
 
-                if not ret:
-                    self.get_logger().warning("Unable to fetch camera frame")
-                    self._publish_quality("Failed", 0.0, frame_gap_s)
-                    continue
+            failed_reads = 0
+            try:
+                while rclpy.ok() and not self.shutdown_requested and failed_reads < max_failed_reads:
+                    ret, image = cap.read()
+                    receive_time = self.get_clock().now()
+                    frame_gap_s = self._frame_gap_s(receive_time)
+                    self.last_receive_time = receive_time
 
-                self._process_image(image, 0.0, frame_gap_s)
-        finally:
-            cap.release()
+                    if not ret:
+                        failed_reads += 1
+                        self.get_logger().warning("Unable to fetch camera frame", throttle_duration_sec=5.0)
+                        self._publish_quality("Failed", 0.0, frame_gap_s)
+                        continue
+
+                    failed_reads = 0
+                    self._process_image(image, 0.0, frame_gap_s)
+            finally:
+                cap.release()
+            if failed_reads >= max_failed_reads:
+                self.get_logger().warning("Camera stream stopped delivering frames; reconnecting")
 
     def _process_image(self, image, latency_s: float, frame_gap_s: float):
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         sharpness = float(cv2.Laplacian(gray, cv2.CV_64F).var())
         brightness = float(np.mean(gray))
+        self.sharpness_pub.publish(Float32(data=sharpness))
+        self.brightness_pub.publish(Float32(data=brightness))
 
         quality = self._quality_from_image(sharpness, brightness)
         quality = self._downgrade_for_timing(quality, latency_s, frame_gap_s)

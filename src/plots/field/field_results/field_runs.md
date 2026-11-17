@@ -1,0 +1,4 @@
+| run | mode | mission_time_s | distance_m | result | alarms | requests_answered | battery_used_pct |
+|---|---|---|---|---|---|---|---|
+| pier_faults_run01_closedloop_20261025 | closed_loop | 934.2 | 66.3 | survey not completed in the recording (last phase: Homing) | 3 | 3 | 4.3 |
+| pier_nominal_run01_shadow_20261025 | shadow | 513.1 | 92.9 | survey completed; docking step from 467 s to the end of the run | 2 | 0 | 5.4 |

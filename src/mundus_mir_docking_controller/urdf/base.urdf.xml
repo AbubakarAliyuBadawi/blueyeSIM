@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot name="simple_vehicle">
+
+  <!-- Base link -->
+  <link name="base_link">
+  </link>
+
+  <!-- IMU link -->
+  <link name="imu_link">
+  </link>
+
+  <!-- Camera link -->
+  <link name="camera_link">
+  </link>
+
+  <!-- Joint connecting base_link to imu_link (fixed joint since they are at the same position) -->
+  <joint name="base_to_imu" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0" rpy="0 0 3.14159"/>
+  </joint>
+
+  <!-- Joint connecting base_link to camera_link (fixed joint since they are at the same position) -->
+  <joint name="base_to_camera" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+</robot>

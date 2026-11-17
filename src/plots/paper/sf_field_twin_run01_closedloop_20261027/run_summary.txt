@@ -1,0 +1,14 @@
+bag: sf_field_twin_run01_closedloop_20261027
+takeover mode: closed_loop
+mission result: mission finished: SUCCESS
+docking: Docking complete (final push finished)
+analysis window: 1.0 s to 1904.1 s of the bag (1903.0 s)
+distance travelled: 139.1 m
+battery: 100.0 % -> 79.2 %
+threshold: 0.65
+alarms (rising crossings, re-armed below 0.8 x threshold): 3
+peak urgency: 0.818 at 367.5 s (Takeover)
+evidence at peak: {"Altitude": "Marginal", "BatteryLevel": "High", "CameraQuality": "Excellent", "Current": "Low", "DVLStatus": "Nominal", "Fatigue": "Medium", "MissionPhase": "Transit", "SonarRange": "Critical", "Speed": "Safe", "Stress": "Low", "USBLStrength": "Weak"}
+samples before mission start (excluded): 2, max urgency 0.402
+operator events: takeover request at 178.5 s; accepted at 180.1 s; hand-back at 226.2 s; takeover request at 354.0 s; accepted at 356.0 s; hand-back at 380.9 s; takeover request at 440.0 s; accepted at 442.4 s; hand-back at 482.7 s
+takeovers: TO1 request at 178.5 s; TO2 request at 354.0 s; TO3 request at 440.0 s

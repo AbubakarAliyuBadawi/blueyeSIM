@@ -93,8 +93,8 @@ def load_network(path: str):
 # ── ROS node ──────────────────────────────────────────────────────────────────
 
 class BnStateViewer(Node):
-    def __init__(self):
-        super().__init__("bn_state_viewer")
+    def __init__(self, node_name: str = "bn_state_viewer"):
+        super().__init__(node_name)
         self.declare_parameter("bn_file", "")
         self.declare_parameter("evidence_topic", "/blueye/takeover_request/evidence")
         self._lock = threading.Lock()

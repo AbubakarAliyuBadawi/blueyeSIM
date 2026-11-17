@@ -1,0 +1,17 @@
+bag: pier_faults_run01_closedloop_20261025
+takeover mode: closed_loop
+mission result: survey not completed in the recording (last phase: Homing)
+docking: no docking_complete reported
+analysis window: 6.4 s to 940.5 s of the bag (934.2 s)
+distance travelled: 66.3 m
+battery: 75.8 % -> 71.5 %
+threshold: 0.65
+alarms (rising crossings, re-armed below 0.8 x threshold): 3
+peak urgency: 0.820 at 131.3 s (Takeover)
+evidence at peak: {"Altitude": "Safe", "BatteryLevel": "Medium", "CameraQuality": "Excellent", "Current": "Low", "DVLStatus": "Nominal", "Fatigue": "Low", "MissionPhase": "Transit", "SonarRange": "Critical", "Speed": "Moderate", "Stress": "Low", "USBLStrength": "Weak"}
+samples before mission start (excluded): 9, max urgency 0.409
+operator events: takeover request at 47.3 s; accepted at 50.2 s; hand-back at 65.9 s; takeover request at 124.3 s; accepted at 126.2 s; hand-back at 173.4 s; takeover request at 396.3 s; accepted at 398.6 s; hand-back at 428.9 s
+site: pier
+start: 5.4 m north, -3.3 m east of the dock reference, depth -0.15 m
+positions: the drone's own estimate (DVL dead reckoning from the position reset at the dock)
+takeovers: TO1 request at 47.3 s; TO2 request at 124.3 s; TO3 request at 396.3 s

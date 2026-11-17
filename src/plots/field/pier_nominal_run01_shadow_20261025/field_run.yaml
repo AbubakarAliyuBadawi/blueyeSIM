@@ -1,0 +1,12 @@
+# Field run: nominal mission at the pier, takeover_mode shadow (bag src/rosbags/field/pier_nominal_run01_shadow_20261025)
+site: pier
+# left out of all figures and tables: the vehicle held at H1 and the leg to S was restarted by hand
+exclude:
+  - ["2026-10-25 16:50:56", "2026-10-25 17:04:22"]
+# fig2_timeline_replay (plot_field_run.py --replay): placeholder until the run is repeated
+replay:
+  aruco_in_phases: {Undocking: All}
+  restart_operator_model: true
+  note: "Offline replay of the recorded evidence through the same network, with two changes:\nArUco visibility All during undocking
+    (the recording kept marker evidence from an earlier attempt); operator model (fatigue, stress)\nrestarted at the mission start.
+    A 13-min hold at the last homing waypoint (at 394 s) is left out of the time axis."

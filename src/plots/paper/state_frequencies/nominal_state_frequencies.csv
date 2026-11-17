@@ -1,0 +1,682 @@
+source,run,phase,node,state,n_observed,fraction,n_episodes,prior
+sim,SN,all,Current,Low,3727,1.0,1,0.5
+sim,SN,all,Current,Medium,0,0.0,0,0.35
+sim,SN,all,Current,High,0,0.0,0,0.15
+sim,SN,all,Current,(not entered),0,0.0,0,
+sim,SC,all,Current,Low,317,1.0,1,0.5
+sim,SC,all,Current,Medium,0,0.0,0,0.35
+sim,SC,all,Current,High,0,0.0,0,0.15
+sim,SC,all,Current,(not entered),0,0.0,0,
+sim,pooled,all,Current,Low,4044,1.0,2,0.5
+sim,pooled,all,Current,Medium,0,0.0,0,0.35
+sim,pooled,all,Current,High,0,0.0,0,0.15
+sim,pooled,all,Current,(not entered),0,0.0,0,
+sim,SN,all,Speed,Safe,3727,1.0,1,0.3588
+sim,SN,all,Speed,Moderate,0,0.0,0,0.3513
+sim,SN,all,Speed,High,0,0.0,0,0.2898
+sim,SN,all,Speed,(not entered),0,0.0,0,
+sim,SC,all,Speed,Safe,317,1.0,1,0.3588
+sim,SC,all,Speed,Moderate,0,0.0,0,0.3513
+sim,SC,all,Speed,High,0,0.0,0,0.2898
+sim,SC,all,Speed,(not entered),0,0.0,0,
+sim,pooled,all,Speed,Safe,4044,1.0,2,0.3588
+sim,pooled,all,Speed,Moderate,0,0.0,0,0.3513
+sim,pooled,all,Speed,High,0,0.0,0,0.2898
+sim,pooled,all,Speed,(not entered),0,0.0,0,
+sim,SN,all,BatteryLevel,High,3727,1.0,1,0.55
+sim,SN,all,BatteryLevel,Medium,0,0.0,0,0.3
+sim,SN,all,BatteryLevel,Low,0,0.0,0,0.12
+sim,SN,all,BatteryLevel,Critical,0,0.0,0,0.03
+sim,SN,all,BatteryLevel,(not entered),0,0.0,0,
+sim,SC,all,BatteryLevel,High,317,1.0,1,0.55
+sim,SC,all,BatteryLevel,Medium,0,0.0,0,0.3
+sim,SC,all,BatteryLevel,Low,0,0.0,0,0.12
+sim,SC,all,BatteryLevel,Critical,0,0.0,0,0.03
+sim,SC,all,BatteryLevel,(not entered),0,0.0,0,
+sim,pooled,all,BatteryLevel,High,4044,1.0,2,0.55
+sim,pooled,all,BatteryLevel,Medium,0,0.0,0,0.3
+sim,pooled,all,BatteryLevel,Low,0,0.0,0,0.12
+sim,pooled,all,BatteryLevel,Critical,0,0.0,0,0.03
+sim,pooled,all,BatteryLevel,(not entered),0,0.0,0,
+sim,SN,all,USBLStrength,Strong,588,0.1718,2,0.45
+sim,SN,all,USBLStrength,Moderate,1768,0.5167,2,0.3
+sim,SN,all,USBLStrength,Weak,1066,0.3115,1,0.2
+sim,SN,all,USBLStrength,Lost,0,0.0,0,0.05
+sim,SN,all,USBLStrength,(not entered),305,0.0818,2,
+sim,SC,all,USBLStrength,Strong,128,1.0,1,0.45
+sim,SC,all,USBLStrength,Moderate,0,0.0,0,0.3
+sim,SC,all,USBLStrength,Weak,0,0.0,0,0.2
+sim,SC,all,USBLStrength,Lost,0,0.0,0,0.05
+sim,SC,all,USBLStrength,(not entered),189,0.5962,1,
+sim,pooled,all,USBLStrength,Strong,588,0.1718,2,0.45
+sim,pooled,all,USBLStrength,Moderate,1768,0.5167,2,0.3
+sim,pooled,all,USBLStrength,Weak,1066,0.3115,1,0.2
+sim,pooled,all,USBLStrength,Lost,0,0.0,0,0.05
+sim,pooled,all,USBLStrength,(not entered),305,0.0818,2,
+sim,SN,all,DVLStatus,Nominal,3727,1.0,1,0.75
+sim,SN,all,DVLStatus,Degraded,0,0.0,0,0.2
+sim,SN,all,DVLStatus,Failed,0,0.0,0,0.05
+sim,SN,all,DVLStatus,(not entered),0,0.0,0,
+sim,SC,all,DVLStatus,Nominal,317,1.0,1,0.75
+sim,SC,all,DVLStatus,Degraded,0,0.0,0,0.2
+sim,SC,all,DVLStatus,Failed,0,0.0,0,0.05
+sim,SC,all,DVLStatus,(not entered),0,0.0,0,
+sim,pooled,all,DVLStatus,Nominal,4044,1.0,2,0.75
+sim,pooled,all,DVLStatus,Degraded,0,0.0,0,0.2
+sim,pooled,all,DVLStatus,Failed,0,0.0,0,0.05
+sim,pooled,all,DVLStatus,(not entered),0,0.0,0,
+sim,SN,all,Altitude,Safe,3543,0.9506,21,0.7
+sim,SN,all,Altitude,Marginal,184,0.0494,20,0.25
+sim,SN,all,Altitude,Unsafe,0,0.0,0,0.05
+sim,SN,all,Altitude,(not entered),0,0.0,0,
+sim,SC,all,Altitude,Safe,317,1.0,1,0.7
+sim,SC,all,Altitude,Marginal,0,0.0,0,0.25
+sim,SC,all,Altitude,Unsafe,0,0.0,0,0.05
+sim,SC,all,Altitude,(not entered),0,0.0,0,
+sim,pooled,all,Altitude,Safe,3860,0.9545,22,0.7
+sim,pooled,all,Altitude,Marginal,184,0.0455,20,0.25
+sim,pooled,all,Altitude,Unsafe,0,0.0,0,0.05
+sim,pooled,all,Altitude,(not entered),0,0.0,0,
+sim,SN,all,CameraQuality,Excellent,3727,1.0,1,0.3
+sim,SN,all,CameraQuality,Good,0,0.0,0,0.5
+sim,SN,all,CameraQuality,Poor,0,0.0,0,0.18
+sim,SN,all,CameraQuality,Failed,0,0.0,0,0.02
+sim,SN,all,CameraQuality,(not entered),0,0.0,0,
+sim,SC,all,CameraQuality,Excellent,317,1.0,1,0.3
+sim,SC,all,CameraQuality,Good,0,0.0,0,0.5
+sim,SC,all,CameraQuality,Poor,0,0.0,0,0.18
+sim,SC,all,CameraQuality,Failed,0,0.0,0,0.02
+sim,SC,all,CameraQuality,(not entered),0,0.0,0,
+sim,pooled,all,CameraQuality,Excellent,4044,1.0,2,0.3
+sim,pooled,all,CameraQuality,Good,0,0.0,0,0.5
+sim,pooled,all,CameraQuality,Poor,0,0.0,0,0.18
+sim,pooled,all,CameraQuality,Failed,0,0.0,0,0.02
+sim,pooled,all,CameraQuality,(not entered),0,0.0,0,
+sim,SN,all,SonarRange,Clear,3727,1.0,1,0.65
+sim,SN,all,SonarRange,Near,0,0.0,0,0.3
+sim,SN,all,SonarRange,Critical,0,0.0,0,0.05
+sim,SN,all,SonarRange,(not entered),0,0.0,0,
+sim,SC,all,SonarRange,Clear,317,1.0,1,0.65
+sim,SC,all,SonarRange,Near,0,0.0,0,0.3
+sim,SC,all,SonarRange,Critical,0,0.0,0,0.05
+sim,SC,all,SonarRange,(not entered),0,0.0,0,
+sim,pooled,all,SonarRange,Clear,4044,1.0,2,0.65
+sim,pooled,all,SonarRange,Near,0,0.0,0,0.3
+sim,pooled,all,SonarRange,Critical,0,0.0,0,0.05
+sim,pooled,all,SonarRange,(not entered),0,0.0,0,
+sim,SN,Undocking,SonarRange,Clear,72,1.0,1,0.65
+sim,SN,Undocking,SonarRange,Near,0,0.0,0,0.3
+sim,SN,Undocking,SonarRange,Critical,0,0.0,0,0.05
+sim,SN,Undocking,SonarRange,(not entered),0,0.0,0,
+sim,SC,Undocking,SonarRange,Clear,77,1.0,1,0.65
+sim,SC,Undocking,SonarRange,Near,0,0.0,0,0.3
+sim,SC,Undocking,SonarRange,Critical,0,0.0,0,0.05
+sim,SC,Undocking,SonarRange,(not entered),0,0.0,0,
+sim,pooled,Undocking,SonarRange,Clear,149,1.0,2,0.65
+sim,pooled,Undocking,SonarRange,Near,0,0.0,0,0.3
+sim,pooled,Undocking,SonarRange,Critical,0,0.0,0,0.05
+sim,pooled,Undocking,SonarRange,(not entered),0,0.0,0,
+sim,SN,Transit,SonarRange,Clear,705,1.0,1,0.65
+sim,SN,Transit,SonarRange,Near,0,0.0,0,0.3
+sim,SN,Transit,SonarRange,Critical,0,0.0,0,0.05
+sim,SN,Transit,SonarRange,(not entered),0,0.0,0,
+sim,SC,Transit,SonarRange,Clear,240,1.0,1,0.65
+sim,SC,Transit,SonarRange,Near,0,0.0,0,0.3
+sim,SC,Transit,SonarRange,Critical,0,0.0,0,0.05
+sim,SC,Transit,SonarRange,(not entered),0,0.0,0,
+sim,pooled,Transit,SonarRange,Clear,945,1.0,2,0.65
+sim,pooled,Transit,SonarRange,Near,0,0.0,0,0.3
+sim,pooled,Transit,SonarRange,Critical,0,0.0,0,0.05
+sim,pooled,Transit,SonarRange,(not entered),0,0.0,0,
+sim,SN,Inspection,SonarRange,Clear,806,1.0,1,0.65
+sim,SN,Inspection,SonarRange,Near,0,0.0,0,0.3
+sim,SN,Inspection,SonarRange,Critical,0,0.0,0,0.05
+sim,SN,Inspection,SonarRange,(not entered),0,0.0,0,
+sim,SC,Inspection,SonarRange,Clear,0,,0,0.65
+sim,SC,Inspection,SonarRange,Near,0,,0,0.3
+sim,SC,Inspection,SonarRange,Critical,0,,0,0.05
+sim,SC,Inspection,SonarRange,(not entered),0,,0,
+sim,pooled,Inspection,SonarRange,Clear,806,1.0,1,0.65
+sim,pooled,Inspection,SonarRange,Near,0,0.0,0,0.3
+sim,pooled,Inspection,SonarRange,Critical,0,0.0,0,0.05
+sim,pooled,Inspection,SonarRange,(not entered),0,0.0,0,
+sim,SN,Homing,SonarRange,Clear,2007,1.0,1,0.65
+sim,SN,Homing,SonarRange,Near,0,0.0,0,0.3
+sim,SN,Homing,SonarRange,Critical,0,0.0,0,0.05
+sim,SN,Homing,SonarRange,(not entered),0,0.0,0,
+sim,SC,Homing,SonarRange,Clear,0,,0,0.65
+sim,SC,Homing,SonarRange,Near,0,,0,0.3
+sim,SC,Homing,SonarRange,Critical,0,,0,0.05
+sim,SC,Homing,SonarRange,(not entered),0,,0,
+sim,pooled,Homing,SonarRange,Clear,2007,1.0,1,0.65
+sim,pooled,Homing,SonarRange,Near,0,0.0,0,0.3
+sim,pooled,Homing,SonarRange,Critical,0,0.0,0,0.05
+sim,pooled,Homing,SonarRange,(not entered),0,0.0,0,
+sim,SN,Docking,SonarRange,Clear,137,1.0,1,0.65
+sim,SN,Docking,SonarRange,Near,0,0.0,0,0.3
+sim,SN,Docking,SonarRange,Critical,0,0.0,0,0.05
+sim,SN,Docking,SonarRange,(not entered),0,0.0,0,
+sim,SC,Docking,SonarRange,Clear,0,,0,0.65
+sim,SC,Docking,SonarRange,Near,0,,0,0.3
+sim,SC,Docking,SonarRange,Critical,0,,0,0.05
+sim,SC,Docking,SonarRange,(not entered),0,,0,
+sim,pooled,Docking,SonarRange,Clear,137,1.0,1,0.65
+sim,pooled,Docking,SonarRange,Near,0,0.0,0,0.3
+sim,pooled,Docking,SonarRange,Critical,0,0.0,0,0.05
+sim,pooled,Docking,SonarRange,(not entered),0,0.0,0,
+sim,SN,all,RangeToTarget,Far,2556,0.6888,8,0.3
+sim,SN,all,RangeToTarget,Mid,878,0.2366,11,0.45
+sim,SN,all,RangeToTarget,Close,277,0.0746,11,0.25
+sim,SN,all,RangeToTarget,(not entered),16,0.0043,1,
+sim,SC,all,RangeToTarget,Far,240,0.7571,1,0.3
+sim,SC,all,RangeToTarget,Mid,50,0.1577,1,0.45
+sim,SC,all,RangeToTarget,Close,27,0.0852,1,0.25
+sim,SC,all,RangeToTarget,(not entered),0,0.0,0,
+sim,pooled,all,RangeToTarget,Far,2796,0.6941,9,0.3
+sim,pooled,all,RangeToTarget,Mid,928,0.2304,12,0.45
+sim,pooled,all,RangeToTarget,Close,304,0.0755,12,0.25
+sim,pooled,all,RangeToTarget,(not entered),16,0.004,1,
+sim,SN,Undocking,RangeToTarget,Far,0,0.0,0,0.3
+sim,SN,Undocking,RangeToTarget,Mid,46,0.6389,1,0.45
+sim,SN,Undocking,RangeToTarget,Close,26,0.3611,1,0.25
+sim,SN,Undocking,RangeToTarget,(not entered),0,0.0,0,
+sim,SC,Undocking,RangeToTarget,Far,0,0.0,0,0.3
+sim,SC,Undocking,RangeToTarget,Mid,50,0.6494,1,0.45
+sim,SC,Undocking,RangeToTarget,Close,27,0.3506,1,0.25
+sim,SC,Undocking,RangeToTarget,(not entered),0,0.0,0,
+sim,pooled,Undocking,RangeToTarget,Far,0,0.0,0,0.3
+sim,pooled,Undocking,RangeToTarget,Mid,96,0.6443,2,0.45
+sim,pooled,Undocking,RangeToTarget,Close,53,0.3557,2,0.25
+sim,pooled,Undocking,RangeToTarget,(not entered),0,0.0,0,
+sim,SN,Transit,RangeToTarget,Far,612,0.8681,1,0.3
+sim,SN,Transit,RangeToTarget,Mid,85,0.1206,1,0.45
+sim,SN,Transit,RangeToTarget,Close,8,0.0113,1,0.25
+sim,SN,Transit,RangeToTarget,(not entered),0,0.0,0,
+sim,SC,Transit,RangeToTarget,Far,240,1.0,1,0.3
+sim,SC,Transit,RangeToTarget,Mid,0,0.0,0,0.45
+sim,SC,Transit,RangeToTarget,Close,0,0.0,0,0.25
+sim,SC,Transit,RangeToTarget,(not entered),0,0.0,0,
+sim,pooled,Transit,RangeToTarget,Far,852,0.9016,2,0.3
+sim,pooled,Transit,RangeToTarget,Mid,85,0.0899,1,0.45
+sim,pooled,Transit,RangeToTarget,Close,8,0.0085,1,0.25
+sim,pooled,Transit,RangeToTarget,(not entered),0,0.0,0,
+sim,SN,Inspection,RangeToTarget,Far,242,0.3002,5,0.3
+sim,SN,Inspection,RangeToTarget,Mid,501,0.6216,5,0.45
+sim,SN,Inspection,RangeToTarget,Close,63,0.0782,5,0.25
+sim,SN,Inspection,RangeToTarget,(not entered),0,0.0,0,
+sim,SC,Inspection,RangeToTarget,Far,0,,0,0.3
+sim,SC,Inspection,RangeToTarget,Mid,0,,0,0.45
+sim,SC,Inspection,RangeToTarget,Close,0,,0,0.25
+sim,SC,Inspection,RangeToTarget,(not entered),0,,0,
+sim,pooled,Inspection,RangeToTarget,Far,242,0.3002,5,0.3
+sim,pooled,Inspection,RangeToTarget,Mid,501,0.6216,5,0.45
+sim,pooled,Inspection,RangeToTarget,Close,63,0.0782,5,0.25
+sim,pooled,Inspection,RangeToTarget,(not entered),0,0.0,0,
+sim,SN,Homing,RangeToTarget,Far,1702,0.848,2,0.3
+sim,SN,Homing,RangeToTarget,Mid,217,0.1081,2,0.45
+sim,SN,Homing,RangeToTarget,Close,88,0.0438,2,0.25
+sim,SN,Homing,RangeToTarget,(not entered),0,0.0,0,
+sim,SC,Homing,RangeToTarget,Far,0,,0,0.3
+sim,SC,Homing,RangeToTarget,Mid,0,,0,0.45
+sim,SC,Homing,RangeToTarget,Close,0,,0,0.25
+sim,SC,Homing,RangeToTarget,(not entered),0,,0,
+sim,pooled,Homing,RangeToTarget,Far,1702,0.848,2,0.3
+sim,pooled,Homing,RangeToTarget,Mid,217,0.1081,2,0.45
+sim,pooled,Homing,RangeToTarget,Close,88,0.0438,2,0.25
+sim,pooled,Homing,RangeToTarget,(not entered),0,0.0,0,
+sim,SN,Docking,RangeToTarget,Far,0,0.0,0,0.3
+sim,SN,Docking,RangeToTarget,Mid,29,0.2397,2,0.45
+sim,SN,Docking,RangeToTarget,Close,92,0.7603,2,0.25
+sim,SN,Docking,RangeToTarget,(not entered),16,0.1168,1,
+sim,SC,Docking,RangeToTarget,Far,0,,0,0.3
+sim,SC,Docking,RangeToTarget,Mid,0,,0,0.45
+sim,SC,Docking,RangeToTarget,Close,0,,0,0.25
+sim,SC,Docking,RangeToTarget,(not entered),0,,0,
+sim,pooled,Docking,RangeToTarget,Far,0,0.0,0,0.3
+sim,pooled,Docking,RangeToTarget,Mid,29,0.2397,2,0.45
+sim,pooled,Docking,RangeToTarget,Close,92,0.7603,2,0.25
+sim,pooled,Docking,RangeToTarget,(not entered),16,0.1168,1,
+sim,SN,all,ArUcoVisibility,All,215,0.5322,2,0.35
+sim,SN,all,ArUcoVisibility,Some,189,0.4678,4,0.45
+sim,SN,all,ArUcoVisibility,None,0,0.0,0,0.2
+sim,SN,all,ArUcoVisibility,(not entered),3323,0.8916,3,
+sim,SC,all,ArUcoVisibility,All,0,0.0,0,0.35
+sim,SC,all,ArUcoVisibility,Some,66,1.0,1,0.45
+sim,SC,all,ArUcoVisibility,None,0,0.0,0,0.2
+sim,SC,all,ArUcoVisibility,(not entered),251,0.7918,2,
+sim,pooled,all,ArUcoVisibility,All,215,0.4574,2,0.35
+sim,pooled,all,ArUcoVisibility,Some,255,0.5426,5,0.45
+sim,pooled,all,ArUcoVisibility,None,0,0.0,0,0.2
+sim,pooled,all,ArUcoVisibility,(not entered),3574,0.8838,5,
+sim,SN,Undocking,ArUcoVisibility,All,0,0.0,0,0.35
+sim,SN,Undocking,ArUcoVisibility,Some,48,1.0,1,0.45
+sim,SN,Undocking,ArUcoVisibility,None,0,0.0,0,0.2
+sim,SN,Undocking,ArUcoVisibility,(not entered),24,0.3333,1,
+sim,SC,Undocking,ArUcoVisibility,All,0,0.0,0,0.35
+sim,SC,Undocking,ArUcoVisibility,Some,48,1.0,1,0.45
+sim,SC,Undocking,ArUcoVisibility,None,0,0.0,0,0.2
+sim,SC,Undocking,ArUcoVisibility,(not entered),29,0.3766,1,
+sim,pooled,Undocking,ArUcoVisibility,All,0,0.0,0,0.35
+sim,pooled,Undocking,ArUcoVisibility,Some,96,1.0,2,0.45
+sim,pooled,Undocking,ArUcoVisibility,None,0,0.0,0,0.2
+sim,pooled,Undocking,ArUcoVisibility,(not entered),53,0.3557,2,
+sim,SN,Transit,ArUcoVisibility,All,0,0.0,0,0.35
+sim,SN,Transit,ArUcoVisibility,Some,18,1.0,1,0.45
+sim,SN,Transit,ArUcoVisibility,None,0,0.0,0,0.2
+sim,SN,Transit,ArUcoVisibility,(not entered),687,0.9745,1,
+sim,SC,Transit,ArUcoVisibility,All,0,0.0,0,0.35
+sim,SC,Transit,ArUcoVisibility,Some,18,1.0,1,0.45
+sim,SC,Transit,ArUcoVisibility,None,0,0.0,0,0.2
+sim,SC,Transit,ArUcoVisibility,(not entered),222,0.925,1,
+sim,pooled,Transit,ArUcoVisibility,All,0,0.0,0,0.35
+sim,pooled,Transit,ArUcoVisibility,Some,36,1.0,2,0.45
+sim,pooled,Transit,ArUcoVisibility,None,0,0.0,0,0.2
+sim,pooled,Transit,ArUcoVisibility,(not entered),909,0.9619,2,
+sim,SN,Inspection,ArUcoVisibility,All,0,,0,0.35
+sim,SN,Inspection,ArUcoVisibility,Some,0,,0,0.45
+sim,SN,Inspection,ArUcoVisibility,None,0,,0,0.2
+sim,SN,Inspection,ArUcoVisibility,(not entered),806,1.0,1,
+sim,SC,Inspection,ArUcoVisibility,All,0,,0,0.35
+sim,SC,Inspection,ArUcoVisibility,Some,0,,0,0.45
+sim,SC,Inspection,ArUcoVisibility,None,0,,0,0.2
+sim,SC,Inspection,ArUcoVisibility,(not entered),0,,0,
+sim,pooled,Inspection,ArUcoVisibility,All,0,,0,0.35
+sim,pooled,Inspection,ArUcoVisibility,Some,0,,0,0.45
+sim,pooled,Inspection,ArUcoVisibility,None,0,,0,0.2
+sim,pooled,Inspection,ArUcoVisibility,(not entered),806,1.0,1,
+sim,SN,Homing,ArUcoVisibility,All,169,0.7191,2,0.35
+sim,SN,Homing,ArUcoVisibility,Some,66,0.2809,2,0.45
+sim,SN,Homing,ArUcoVisibility,None,0,0.0,0,0.2
+sim,SN,Homing,ArUcoVisibility,(not entered),1772,0.8829,1,
+sim,SC,Homing,ArUcoVisibility,All,0,,0,0.35
+sim,SC,Homing,ArUcoVisibility,Some,0,,0,0.45
+sim,SC,Homing,ArUcoVisibility,None,0,,0,0.2
+sim,SC,Homing,ArUcoVisibility,(not entered),0,,0,
+sim,pooled,Homing,ArUcoVisibility,All,169,0.7191,2,0.35
+sim,pooled,Homing,ArUcoVisibility,Some,66,0.2809,2,0.45
+sim,pooled,Homing,ArUcoVisibility,None,0,0.0,0,0.2
+sim,pooled,Homing,ArUcoVisibility,(not entered),1772,0.8829,1,
+sim,SN,Docking,ArUcoVisibility,All,46,0.4466,1,0.35
+sim,SN,Docking,ArUcoVisibility,Some,57,0.5534,1,0.45
+sim,SN,Docking,ArUcoVisibility,None,0,0.0,0,0.2
+sim,SN,Docking,ArUcoVisibility,(not entered),34,0.2482,1,
+sim,SC,Docking,ArUcoVisibility,All,0,,0,0.35
+sim,SC,Docking,ArUcoVisibility,Some,0,,0,0.45
+sim,SC,Docking,ArUcoVisibility,None,0,,0,0.2
+sim,SC,Docking,ArUcoVisibility,(not entered),0,,0,
+sim,pooled,Docking,ArUcoVisibility,All,46,0.4466,1,0.35
+sim,pooled,Docking,ArUcoVisibility,Some,57,0.5534,1,0.45
+sim,pooled,Docking,ArUcoVisibility,None,0,0.0,0,0.2
+sim,pooled,Docking,ArUcoVisibility,(not entered),34,0.2482,1,
+sim,SN,all,WaypointTrackingError,Low,3619,0.9752,3,0.55
+sim,SN,all,WaypointTrackingError,Medium,92,0.0248,2,0.35
+sim,SN,all,WaypointTrackingError,High,0,0.0,0,0.1
+sim,SN,all,WaypointTrackingError,(not entered),16,0.0043,1,
+sim,SC,all,WaypointTrackingError,Low,317,1.0,1,0.55
+sim,SC,all,WaypointTrackingError,Medium,0,0.0,0,0.35
+sim,SC,all,WaypointTrackingError,High,0,0.0,0,0.1
+sim,SC,all,WaypointTrackingError,(not entered),0,0.0,0,
+sim,pooled,all,WaypointTrackingError,Low,3936,0.9772,4,0.55
+sim,pooled,all,WaypointTrackingError,Medium,92,0.0228,2,0.35
+sim,pooled,all,WaypointTrackingError,High,0,0.0,0,0.1
+sim,pooled,all,WaypointTrackingError,(not entered),16,0.004,1,
+sim,SN,all,Fatigue,Low,662,0.1776,53,0.55
+sim,SN,all,Fatigue,Medium,3057,0.8202,61,0.35
+sim,SN,all,Fatigue,High,8,0.0021,8,0.1
+sim,SN,all,Fatigue,(not entered),0,0.0,0,
+sim,SC,all,Fatigue,Low,317,1.0,1,0.55
+sim,SC,all,Fatigue,Medium,0,0.0,0,0.35
+sim,SC,all,Fatigue,High,0,0.0,0,0.1
+sim,SC,all,Fatigue,(not entered),0,0.0,0,
+sim,pooled,all,Fatigue,Low,979,0.2421,54,0.55
+sim,pooled,all,Fatigue,Medium,3057,0.7559,61,0.35
+sim,pooled,all,Fatigue,High,8,0.002,8,0.1
+sim,pooled,all,Fatigue,(not entered),0,0.0,0,
+sim,SN,all,Stress,Low,772,0.2071,53,0.6
+sim,SN,all,Stress,Medium,2955,0.7929,53,0.32
+sim,SN,all,Stress,High,0,0.0,0,0.08
+sim,SN,all,Stress,(not entered),0,0.0,0,
+sim,SC,all,Stress,Low,317,1.0,1,0.6
+sim,SC,all,Stress,Medium,0,0.0,0,0.32
+sim,SC,all,Stress,High,0,0.0,0,0.08
+sim,SC,all,Stress,(not entered),0,0.0,0,
+sim,pooled,all,Stress,Low,1089,0.2693,54,0.6
+sim,pooled,all,Stress,Medium,2955,0.7307,53,0.32
+sim,pooled,all,Stress,High,0,0.0,0,0.08
+sim,pooled,all,Stress,(not entered),0,0.0,0,
+sim,SN,all,MissionPhase,Undocking,72,0.0193,1,0.1
+sim,SN,all,MissionPhase,Transit,705,0.1892,1,0.2
+sim,SN,all,MissionPhase,Inspection,806,0.2163,1,0.35
+sim,SN,all,MissionPhase,Homing,2007,0.5385,1,0.2
+sim,SN,all,MissionPhase,Docking,137,0.0368,1,0.15
+sim,SN,all,MissionPhase,(not entered),0,0.0,0,
+sim,SC,all,MissionPhase,Undocking,77,0.2429,1,0.1
+sim,SC,all,MissionPhase,Transit,240,0.7571,1,0.2
+sim,SC,all,MissionPhase,Inspection,0,0.0,0,0.35
+sim,SC,all,MissionPhase,Homing,0,0.0,0,0.2
+sim,SC,all,MissionPhase,Docking,0,0.0,0,0.15
+sim,SC,all,MissionPhase,(not entered),0,0.0,0,
+sim,pooled,all,MissionPhase,Undocking,149,0.0368,2,0.1
+sim,pooled,all,MissionPhase,Transit,945,0.2337,2,0.2
+sim,pooled,all,MissionPhase,Inspection,806,0.1993,1,0.35
+sim,pooled,all,MissionPhase,Homing,2007,0.4963,1,0.2
+sim,pooled,all,MissionPhase,Docking,137,0.0339,1,0.15
+sim,pooled,all,MissionPhase,(not entered),0,0.0,0,
+field,FN,all,Current,Low,1026,1.0,2,0.5
+field,FN,all,Current,Medium,0,0.0,0,0.35
+field,FN,all,Current,High,0,0.0,0,0.15
+field,FN,all,Current,(not entered),0,0.0,0,
+field,FC,all,Current,Low,77,1.0,1,0.5
+field,FC,all,Current,Medium,0,0.0,0,0.35
+field,FC,all,Current,High,0,0.0,0,0.15
+field,FC,all,Current,(not entered),0,0.0,0,
+field,FN,all,Speed,Safe,976,0.9513,34,0.3588
+field,FN,all,Speed,Moderate,50,0.0487,33,0.3513
+field,FN,all,Speed,High,0,0.0,0,0.2898
+field,FN,all,Speed,(not entered),0,0.0,0,
+field,FC,all,Speed,Safe,74,0.961,4,0.3588
+field,FC,all,Speed,Moderate,3,0.039,3,0.3513
+field,FC,all,Speed,High,0,0.0,0,0.2898
+field,FC,all,Speed,(not entered),0,0.0,0,
+field,pooled,all,Speed,Safe,1050,0.9519,38,0.3588
+field,pooled,all,Speed,Moderate,53,0.0481,36,0.3513
+field,pooled,all,Speed,High,0,0.0,0,0.2898
+field,pooled,all,Speed,(not entered),0,0.0,0,
+field,FN,all,BatteryLevel,High,1026,1.0,2,0.55
+field,FN,all,BatteryLevel,Medium,0,0.0,0,0.3
+field,FN,all,BatteryLevel,Low,0,0.0,0,0.12
+field,FN,all,BatteryLevel,Critical,0,0.0,0,0.03
+field,FN,all,BatteryLevel,(not entered),0,0.0,0,
+field,FC,all,BatteryLevel,High,77,1.0,1,0.55
+field,FC,all,BatteryLevel,Medium,0,0.0,0,0.3
+field,FC,all,BatteryLevel,Low,0,0.0,0,0.12
+field,FC,all,BatteryLevel,Critical,0,0.0,0,0.03
+field,FC,all,BatteryLevel,(not entered),0,0.0,0,
+field,pooled,all,BatteryLevel,High,1103,1.0,3,0.55
+field,pooled,all,BatteryLevel,Medium,0,0.0,0,0.3
+field,pooled,all,BatteryLevel,Low,0,0.0,0,0.12
+field,pooled,all,BatteryLevel,Critical,0,0.0,0,0.03
+field,pooled,all,BatteryLevel,(not entered),0,0.0,0,
+field,FN,all,USBLStrength,Strong,1026,1.0,2,0.45
+field,FN,all,USBLStrength,Moderate,0,0.0,0,0.3
+field,FN,all,USBLStrength,Weak,0,0.0,0,0.2
+field,FN,all,USBLStrength,Lost,0,0.0,0,0.05
+field,FN,all,USBLStrength,(not entered),0,0.0,0,
+field,FC,all,USBLStrength,Strong,77,1.0,1,0.45
+field,FC,all,USBLStrength,Moderate,0,0.0,0,0.3
+field,FC,all,USBLStrength,Weak,0,0.0,0,0.2
+field,FC,all,USBLStrength,Lost,0,0.0,0,0.05
+field,FC,all,USBLStrength,(not entered),0,0.0,0,
+field,FN,all,DVLStatus,Nominal,1020,0.9942,6,0.75
+field,FN,all,DVLStatus,Degraded,4,0.0039,3,0.2
+field,FN,all,DVLStatus,Failed,2,0.0019,1,0.05
+field,FN,all,DVLStatus,(not entered),0,0.0,0,
+field,FC,all,DVLStatus,Nominal,77,1.0,1,0.75
+field,FC,all,DVLStatus,Degraded,0,0.0,0,0.2
+field,FC,all,DVLStatus,Failed,0,0.0,0,0.05
+field,FC,all,DVLStatus,(not entered),0,0.0,0,
+field,pooled,all,DVLStatus,Nominal,1097,0.9946,7,0.75
+field,pooled,all,DVLStatus,Degraded,4,0.0036,3,0.2
+field,pooled,all,DVLStatus,Failed,2,0.0018,1,0.05
+field,pooled,all,DVLStatus,(not entered),0,0.0,0,
+field,FN,all,Altitude,Safe,1025,0.999,3,0.7
+field,FN,all,Altitude,Marginal,1,0.001,1,0.25
+field,FN,all,Altitude,Unsafe,0,0.0,0,0.05
+field,FN,all,Altitude,(not entered),0,0.0,0,
+field,FC,all,Altitude,Safe,77,1.0,1,0.7
+field,FC,all,Altitude,Marginal,0,0.0,0,0.25
+field,FC,all,Altitude,Unsafe,0,0.0,0,0.05
+field,FC,all,Altitude,(not entered),0,0.0,0,
+field,pooled,all,Altitude,Safe,1102,0.9991,4,0.7
+field,pooled,all,Altitude,Marginal,1,0.0009,1,0.25
+field,pooled,all,Altitude,Unsafe,0,0.0,0,0.05
+field,pooled,all,Altitude,(not entered),0,0.0,0,
+field,FN,all,CameraQuality,Excellent,852,0.8304,6,0.3
+field,FN,all,CameraQuality,Good,64,0.0624,20,0.5
+field,FN,all,CameraQuality,Poor,110,0.1072,17,0.18
+field,FN,all,CameraQuality,Failed,0,0.0,0,0.02
+field,FN,all,CameraQuality,(not entered),0,0.0,0,
+field,FC,all,CameraQuality,Excellent,42,0.5455,18,0.3
+field,FC,all,CameraQuality,Good,35,0.4545,17,0.5
+field,FC,all,CameraQuality,Poor,0,0.0,0,0.18
+field,FC,all,CameraQuality,Failed,0,0.0,0,0.02
+field,FC,all,CameraQuality,(not entered),0,0.0,0,
+field,pooled,all,CameraQuality,Excellent,894,0.8105,24,0.3
+field,pooled,all,CameraQuality,Good,99,0.0898,37,0.5
+field,pooled,all,CameraQuality,Poor,110,0.0997,17,0.18
+field,pooled,all,CameraQuality,Failed,0,0.0,0,0.02
+field,pooled,all,CameraQuality,(not entered),0,0.0,0,
+field,FN,all,SonarRange,Clear,1026,1.0,2,0.65
+field,FN,all,SonarRange,Near,0,0.0,0,0.3
+field,FN,all,SonarRange,Critical,0,0.0,0,0.05
+field,FN,all,SonarRange,(not entered),0,0.0,0,
+field,FC,all,SonarRange,Clear,77,1.0,1,0.65
+field,FC,all,SonarRange,Near,0,0.0,0,0.3
+field,FC,all,SonarRange,Critical,0,0.0,0,0.05
+field,FC,all,SonarRange,(not entered),0,0.0,0,
+field,FN,Undocking,SonarRange,Clear,41,1.0,1,0.65
+field,FN,Undocking,SonarRange,Near,0,0.0,0,0.3
+field,FN,Undocking,SonarRange,Critical,0,0.0,0,0.05
+field,FN,Undocking,SonarRange,(not entered),0,0.0,0,
+field,FC,Undocking,SonarRange,Clear,36,1.0,1,0.65
+field,FC,Undocking,SonarRange,Near,0,0.0,0,0.3
+field,FC,Undocking,SonarRange,Critical,0,0.0,0,0.05
+field,FC,Undocking,SonarRange,(not entered),0,0.0,0,
+field,FN,Transit,SonarRange,Clear,314,1.0,2,0.65
+field,FN,Transit,SonarRange,Near,0,0.0,0,0.3
+field,FN,Transit,SonarRange,Critical,0,0.0,0,0.05
+field,FN,Transit,SonarRange,(not entered),0,0.0,0,
+field,FC,Transit,SonarRange,Clear,41,1.0,1,0.65
+field,FC,Transit,SonarRange,Near,0,0.0,0,0.3
+field,FC,Transit,SonarRange,Critical,0,0.0,0,0.05
+field,FC,Transit,SonarRange,(not entered),0,0.0,0,
+field,FN,Inspection,SonarRange,Clear,272,1.0,1,0.65
+field,FN,Inspection,SonarRange,Near,0,0.0,0,0.3
+field,FN,Inspection,SonarRange,Critical,0,0.0,0,0.05
+field,FN,Inspection,SonarRange,(not entered),0,0.0,0,
+field,FC,Inspection,SonarRange,Clear,0,,0,0.65
+field,FC,Inspection,SonarRange,Near,0,,0,0.3
+field,FC,Inspection,SonarRange,Critical,0,,0,0.05
+field,FC,Inspection,SonarRange,(not entered),0,,0,
+field,FN,Homing,SonarRange,Clear,308,1.0,2,0.65
+field,FN,Homing,SonarRange,Near,0,0.0,0,0.3
+field,FN,Homing,SonarRange,Critical,0,0.0,0,0.05
+field,FN,Homing,SonarRange,(not entered),0,0.0,0,
+field,FC,Homing,SonarRange,Clear,0,,0,0.65
+field,FC,Homing,SonarRange,Near,0,,0,0.3
+field,FC,Homing,SonarRange,Critical,0,,0,0.05
+field,FC,Homing,SonarRange,(not entered),0,,0,
+field,FN,Docking,SonarRange,Clear,91,1.0,1,0.65
+field,FN,Docking,SonarRange,Near,0,0.0,0,0.3
+field,FN,Docking,SonarRange,Critical,0,0.0,0,0.05
+field,FN,Docking,SonarRange,(not entered),0,0.0,0,
+field,FC,Docking,SonarRange,Clear,0,,0,0.65
+field,FC,Docking,SonarRange,Near,0,,0,0.3
+field,FC,Docking,SonarRange,Critical,0,,0,0.05
+field,FC,Docking,SonarRange,(not entered),0,,0,
+field,FN,all,RangeToTarget,Far,431,0.5059,7,0.3
+field,FN,all,RangeToTarget,Mid,261,0.3063,7,0.45
+field,FN,all,RangeToTarget,Close,160,0.1878,6,0.25
+field,FN,all,RangeToTarget,(not entered),174,0.1696,2,
+field,FC,all,RangeToTarget,Far,0,,0,0.3
+field,FC,all,RangeToTarget,Mid,0,,0,0.45
+field,FC,all,RangeToTarget,Close,0,,0,0.25
+field,FC,all,RangeToTarget,(not entered),77,1.0,1,
+field,pooled,all,RangeToTarget,Far,431,0.5059,7,0.3
+field,pooled,all,RangeToTarget,Mid,261,0.3063,7,0.45
+field,pooled,all,RangeToTarget,Close,160,0.1878,6,0.25
+field,pooled,all,RangeToTarget,(not entered),251,0.2276,3,
+field,FN,Undocking,RangeToTarget,Far,0,,0,0.3
+field,FN,Undocking,RangeToTarget,Mid,0,,0,0.45
+field,FN,Undocking,RangeToTarget,Close,0,,0,0.25
+field,FN,Undocking,RangeToTarget,(not entered),41,1.0,1,
+field,FC,Undocking,RangeToTarget,Far,0,,0,0.3
+field,FC,Undocking,RangeToTarget,Mid,0,,0,0.45
+field,FC,Undocking,RangeToTarget,Close,0,,0,0.25
+field,FC,Undocking,RangeToTarget,(not entered),36,1.0,1,
+field,pooled,Undocking,RangeToTarget,Far,0,,0,0.3
+field,pooled,Undocking,RangeToTarget,Mid,0,,0,0.45
+field,pooled,Undocking,RangeToTarget,Close,0,,0,0.25
+field,pooled,Undocking,RangeToTarget,(not entered),77,1.0,2,
+field,FN,Transit,RangeToTarget,Far,214,0.7985,1,0.3
+field,FN,Transit,RangeToTarget,Mid,41,0.153,1,0.45
+field,FN,Transit,RangeToTarget,Close,13,0.0485,1,0.25
+field,FN,Transit,RangeToTarget,(not entered),46,0.1465,2,
+field,FC,Transit,RangeToTarget,Far,0,,0,0.3
+field,FC,Transit,RangeToTarget,Mid,0,,0,0.45
+field,FC,Transit,RangeToTarget,Close,0,,0,0.25
+field,FC,Transit,RangeToTarget,(not entered),41,1.0,1,
+field,pooled,Transit,RangeToTarget,Far,214,0.7985,1,0.3
+field,pooled,Transit,RangeToTarget,Mid,41,0.153,1,0.45
+field,pooled,Transit,RangeToTarget,Close,13,0.0485,1,0.25
+field,pooled,Transit,RangeToTarget,(not entered),87,0.2451,3,
+field,FN,Inspection,RangeToTarget,Far,47,0.1728,3,0.3
+field,FN,Inspection,RangeToTarget,Mid,125,0.4596,3,0.45
+field,FN,Inspection,RangeToTarget,Close,100,0.3676,4,0.25
+field,FN,Inspection,RangeToTarget,(not entered),0,0.0,0,
+field,FC,Inspection,RangeToTarget,Far,0,,0,0.3
+field,FC,Inspection,RangeToTarget,Mid,0,,0,0.45
+field,FC,Inspection,RangeToTarget,Close,0,,0,0.25
+field,FC,Inspection,RangeToTarget,(not entered),0,,0,
+field,pooled,Inspection,RangeToTarget,Far,47,0.1728,3,0.3
+field,pooled,Inspection,RangeToTarget,Mid,125,0.4596,3,0.45
+field,pooled,Inspection,RangeToTarget,Close,100,0.3676,4,0.25
+field,pooled,Inspection,RangeToTarget,(not entered),0,0.0,0,
+field,FN,Homing,RangeToTarget,Far,170,0.5519,3,0.3
+field,FN,Homing,RangeToTarget,Mid,91,0.2955,3,0.45
+field,FN,Homing,RangeToTarget,Close,47,0.1526,2,0.25
+field,FN,Homing,RangeToTarget,(not entered),0,0.0,0,
+field,FC,Homing,RangeToTarget,Far,0,,0,0.3
+field,FC,Homing,RangeToTarget,Mid,0,,0,0.45
+field,FC,Homing,RangeToTarget,Close,0,,0,0.25
+field,FC,Homing,RangeToTarget,(not entered),0,,0,
+field,pooled,Homing,RangeToTarget,Far,170,0.5519,3,0.3
+field,pooled,Homing,RangeToTarget,Mid,91,0.2955,3,0.45
+field,pooled,Homing,RangeToTarget,Close,47,0.1526,2,0.25
+field,pooled,Homing,RangeToTarget,(not entered),0,0.0,0,
+field,FN,Docking,RangeToTarget,Far,0,0.0,0,0.3
+field,FN,Docking,RangeToTarget,Mid,4,1.0,1,0.45
+field,FN,Docking,RangeToTarget,Close,0,0.0,0,0.25
+field,FN,Docking,RangeToTarget,(not entered),87,0.956,1,
+field,FC,Docking,RangeToTarget,Far,0,,0,0.3
+field,FC,Docking,RangeToTarget,Mid,0,,0,0.45
+field,FC,Docking,RangeToTarget,Close,0,,0,0.25
+field,FC,Docking,RangeToTarget,(not entered),0,,0,
+field,pooled,Docking,RangeToTarget,Far,0,0.0,0,0.3
+field,pooled,Docking,RangeToTarget,Mid,4,1.0,1,0.45
+field,pooled,Docking,RangeToTarget,Close,0,0.0,0,0.25
+field,pooled,Docking,RangeToTarget,(not entered),87,0.956,1,
+field,FN,all,ArUcoVisibility,All,0,0.0,0,0.35
+field,FN,all,ArUcoVisibility,Some,0,0.0,0,0.45
+field,FN,all,ArUcoVisibility,None,41,1.0,1,0.2
+field,FN,all,ArUcoVisibility,(not entered),985,0.96,3,
+field,FC,all,ArUcoVisibility,All,0,,0,0.35
+field,FC,all,ArUcoVisibility,Some,0,,0,0.45
+field,FC,all,ArUcoVisibility,None,0,,0,0.2
+field,FC,all,ArUcoVisibility,(not entered),77,1.0,1,
+field,pooled,all,ArUcoVisibility,All,0,,0,0.35
+field,pooled,all,ArUcoVisibility,Some,0,,0,0.45
+field,pooled,all,ArUcoVisibility,None,0,,0,0.2
+field,pooled,all,ArUcoVisibility,(not entered),77,1.0,1,
+field,FN,Undocking,ArUcoVisibility,All,0,0.0,0,0.35
+field,FN,Undocking,ArUcoVisibility,Some,0,0.0,0,0.45
+field,FN,Undocking,ArUcoVisibility,None,41,1.0,1,0.2
+field,FN,Undocking,ArUcoVisibility,(not entered),0,0.0,0,
+field,FC,Undocking,ArUcoVisibility,All,0,,0,0.35
+field,FC,Undocking,ArUcoVisibility,Some,0,,0,0.45
+field,FC,Undocking,ArUcoVisibility,None,0,,0,0.2
+field,FC,Undocking,ArUcoVisibility,(not entered),36,1.0,1,
+field,pooled,Undocking,ArUcoVisibility,All,0,,0,0.35
+field,pooled,Undocking,ArUcoVisibility,Some,0,,0,0.45
+field,pooled,Undocking,ArUcoVisibility,None,0,,0,0.2
+field,pooled,Undocking,ArUcoVisibility,(not entered),36,1.0,1,
+field,FN,Transit,ArUcoVisibility,All,0,,0,0.35
+field,FN,Transit,ArUcoVisibility,Some,0,,0,0.45
+field,FN,Transit,ArUcoVisibility,None,0,,0,0.2
+field,FN,Transit,ArUcoVisibility,(not entered),314,1.0,2,
+field,FC,Transit,ArUcoVisibility,All,0,,0,0.35
+field,FC,Transit,ArUcoVisibility,Some,0,,0,0.45
+field,FC,Transit,ArUcoVisibility,None,0,,0,0.2
+field,FC,Transit,ArUcoVisibility,(not entered),41,1.0,1,
+field,pooled,Transit,ArUcoVisibility,All,0,,0,0.35
+field,pooled,Transit,ArUcoVisibility,Some,0,,0,0.45
+field,pooled,Transit,ArUcoVisibility,None,0,,0,0.2
+field,pooled,Transit,ArUcoVisibility,(not entered),41,1.0,1,
+field,FN,Inspection,ArUcoVisibility,All,0,,0,0.35
+field,FN,Inspection,ArUcoVisibility,Some,0,,0,0.45
+field,FN,Inspection,ArUcoVisibility,None,0,,0,0.2
+field,FN,Inspection,ArUcoVisibility,(not entered),272,1.0,1,
+field,FC,Inspection,ArUcoVisibility,All,0,,0,0.35
+field,FC,Inspection,ArUcoVisibility,Some,0,,0,0.45
+field,FC,Inspection,ArUcoVisibility,None,0,,0,0.2
+field,FC,Inspection,ArUcoVisibility,(not entered),0,,0,
+field,FN,Homing,ArUcoVisibility,All,0,,0,0.35
+field,FN,Homing,ArUcoVisibility,Some,0,,0,0.45
+field,FN,Homing,ArUcoVisibility,None,0,,0,0.2
+field,FN,Homing,ArUcoVisibility,(not entered),308,1.0,2,
+field,FC,Homing,ArUcoVisibility,All,0,,0,0.35
+field,FC,Homing,ArUcoVisibility,Some,0,,0,0.45
+field,FC,Homing,ArUcoVisibility,None,0,,0,0.2
+field,FC,Homing,ArUcoVisibility,(not entered),0,,0,
+field,FN,Docking,ArUcoVisibility,All,0,,0,0.35
+field,FN,Docking,ArUcoVisibility,Some,0,,0,0.45
+field,FN,Docking,ArUcoVisibility,None,0,,0,0.2
+field,FN,Docking,ArUcoVisibility,(not entered),91,1.0,1,
+field,FC,Docking,ArUcoVisibility,All,0,,0,0.35
+field,FC,Docking,ArUcoVisibility,Some,0,,0,0.45
+field,FC,Docking,ArUcoVisibility,None,0,,0,0.2
+field,FC,Docking,ArUcoVisibility,(not entered),0,,0,
+field,FN,all,WaypointTrackingError,Low,623,0.7312,6,0.55
+field,FN,all,WaypointTrackingError,Medium,219,0.257,5,0.35
+field,FN,all,WaypointTrackingError,High,10,0.0117,1,0.1
+field,FN,all,WaypointTrackingError,(not entered),174,0.1696,2,
+field,FC,all,WaypointTrackingError,Low,0,,0,0.55
+field,FC,all,WaypointTrackingError,Medium,0,,0,0.35
+field,FC,all,WaypointTrackingError,High,0,,0,0.1
+field,FC,all,WaypointTrackingError,(not entered),77,1.0,1,
+field,pooled,all,WaypointTrackingError,Low,623,0.7312,6,0.55
+field,pooled,all,WaypointTrackingError,Medium,219,0.257,5,0.35
+field,pooled,all,WaypointTrackingError,High,10,0.0117,1,0.1
+field,pooled,all,WaypointTrackingError,(not entered),251,0.2276,3,
+field,FN,all,Fatigue,Low,0,0.0,0,0.55
+field,FN,all,Fatigue,Medium,1019,0.9932,9,0.35
+field,FN,all,Fatigue,High,7,0.0068,7,0.1
+field,FN,all,Fatigue,(not entered),0,0.0,0,
+field,FC,all,Fatigue,Low,77,1.0,1,0.55
+field,FC,all,Fatigue,Medium,0,0.0,0,0.35
+field,FC,all,Fatigue,High,0,0.0,0,0.1
+field,FC,all,Fatigue,(not entered),0,0.0,0,
+field,pooled,all,Fatigue,Low,77,0.0698,1,0.55
+field,pooled,all,Fatigue,Medium,1019,0.9238,9,0.35
+field,pooled,all,Fatigue,High,7,0.0063,7,0.1
+field,pooled,all,Fatigue,(not entered),0,0.0,0,
+field,FN,all,Stress,Low,0,0.0,0,0.6
+field,FN,all,Stress,Medium,1026,1.0,2,0.32
+field,FN,all,Stress,High,0,0.0,0,0.08
+field,FN,all,Stress,(not entered),0,0.0,0,
+field,FC,all,Stress,Low,77,1.0,1,0.6
+field,FC,all,Stress,Medium,0,0.0,0,0.32
+field,FC,all,Stress,High,0,0.0,0,0.08
+field,FC,all,Stress,(not entered),0,0.0,0,
+field,pooled,all,Stress,Low,77,0.0698,1,0.6
+field,pooled,all,Stress,Medium,1026,0.9302,2,0.32
+field,pooled,all,Stress,High,0,0.0,0,0.08
+field,pooled,all,Stress,(not entered),0,0.0,0,
+field,FN,all,MissionPhase,Undocking,41,0.04,1,0.1
+field,FN,all,MissionPhase,Transit,314,0.306,2,0.2
+field,FN,all,MissionPhase,Inspection,272,0.2651,1,0.35
+field,FN,all,MissionPhase,Homing,308,0.3002,2,0.2
+field,FN,all,MissionPhase,Docking,91,0.0887,1,0.15
+field,FN,all,MissionPhase,(not entered),0,0.0,0,
+field,FC,all,MissionPhase,Undocking,36,0.4675,1,0.1
+field,FC,all,MissionPhase,Transit,41,0.5325,1,0.2
+field,FC,all,MissionPhase,Inspection,0,0.0,0,0.35
+field,FC,all,MissionPhase,Homing,0,0.0,0,0.2
+field,FC,all,MissionPhase,Docking,0,0.0,0,0.15
+field,FC,all,MissionPhase,(not entered),0,0.0,0,
+field,pooled,all,MissionPhase,Undocking,77,0.0698,2,0.1
+field,pooled,all,MissionPhase,Transit,355,0.3218,3,0.2
+field,pooled,all,MissionPhase,Inspection,272,0.2466,1,0.35
+field,pooled,all,MissionPhase,Homing,308,0.2792,2,0.2
+field,pooled,all,MissionPhase,Docking,91,0.0825,1,0.15
+field,pooled,all,MissionPhase,(not entered),0,0.0,0,
